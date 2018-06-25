@@ -1,0 +1,65 @@
+.btn-default:{
+	
+}
+hr{
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+}
+#top{
+	padding-top: 5px;
+	margin-bottom: 1px;
+}
+#guide{
+	margin-bottom: 1px;
+}
+#search{
+	padding-top: 5px;
+	/*background-color: #C0C0C0;*/
+}
+#main{
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 10px;
+}
+.container{
+	padding-right: 0px;
+	padding-left: 0px;
+}
+#touxiang{
+	width: 56px;
+	height: 56px;
+}
+#below{
+	padding-top: 10px;
+	background-color: #D5D5D5;
+}
+#mainLeft{
+	padding-right: 0px;
+}
+#myMessage{
+	border-radius: 8px;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-right: 0px;
+	
+	background-size: auto auto;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding-bottom: 15px;
+	padding-top: 20px;
+}
+#infomation{
+	font-size: 20px;
+	font-
+}
+#showAllInfo{
+	
+	font-size: 14px;
+}
+/*#search{
+	background: url(../img/背景三.jpg);
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+}*/
+	
