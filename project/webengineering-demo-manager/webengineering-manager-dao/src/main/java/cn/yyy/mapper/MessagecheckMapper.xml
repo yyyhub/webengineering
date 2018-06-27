@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.yyy.mapper.MessagecheckMapper" >
+  <resultMap id="BaseResultMap" type="cn.yyy.pojo.Messagecheck" >
+    <id column="messageid" property="messageid" jdbcType="INTEGER" />
+    <result column="receiveuserid" property="receiveuserid" jdbcType="INTEGER" />
+    <result column="senduserid" property="senduserid" jdbcType="INTEGER" />
+    <result column="sendtime" property="sendtime" jdbcType="DATE" />
+    <result column="checkstatus" property="checkstatus" jdbcType="VARCHAR" />
+    <result column="messagecontent" property="messagecontent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    messageid, receiveuserid, senduserid, sendtime, checkstatus, messagecontent
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.MessagecheckExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from messagecheck
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from messagecheck
+    where messageid = #{messageid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from messagecheck
+    where messageid = #{messageid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.yyy.pojo.MessagecheckExample" >
+    delete from messagecheck
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.yyy.pojo.Messagecheck" >
+    insert into messagecheck (messageid, receiveuserid, senduserid, 
+      sendtime, checkstatus, messagecontent
+      )
+    values (#{messageid,jdbcType=INTEGER}, #{receiveuserid,jdbcType=INTEGER}, #{senduserid,jdbcType=INTEGER}, 
+      #{sendtime,jdbcType=DATE}, #{checkstatus,jdbcType=VARCHAR}, #{messagecontent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.yyy.pojo.Messagecheck" >
+    insert into messagecheck
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="messageid != null" >
+        messageid,
+      </if>
+      <if test="receiveuserid != null" >
+        receiveuserid,
+      </if>
+      <if test="senduserid != null" >
+        senduserid,
+      </if>
+      <if test="sendtime != null" >
+        sendtime,
+      </if>
+      <if test="checkstatus != null" >
+        checkstatus,
+      </if>
+      <if test="messagecontent != null" >
+        messagecontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="messageid != null" >
+        #{messageid,jdbcType=INTEGER},
+      </if>
+      <if test="receiveuserid != null" >
+        #{receiveuserid,jdbcType=INTEGER},
+      </if>
+      <if test="senduserid != null" >
+        #{senduserid,jdbcType=INTEGER},
+      </if>
+      <if test="sendtime != null" >
+        #{sendtime,jdbcType=DATE},
+      </if>
+      <if test="checkstatus != null" >
+        #{checkstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="messagecontent != null" >
+        #{messagecontent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.yyy.pojo.MessagecheckExample" resultType="java.lang.Integer" >
+    select count(*) from messagecheck
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update messagecheck
+    <set >
+      <if test="record.messageid != null" >
+        messageid = #{record.messageid,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiveuserid != null" >
+        receiveuserid = #{record.receiveuserid,jdbcType=INTEGER},
+      </if>
+      <if test="record.senduserid != null" >
+        senduserid = #{record.senduserid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sendtime != null" >
+        sendtime = #{record.sendtime,jdbcType=DATE},
+      </if>
+      <if test="record.checkstatus != null" >
+        checkstatus = #{record.checkstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.messagecontent != null" >
+        messagecontent = #{record.messagecontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update messagecheck
+    set messageid = #{record.messageid,jdbcType=INTEGER},
+      receiveuserid = #{record.receiveuserid,jdbcType=INTEGER},
+      senduserid = #{record.senduserid,jdbcType=INTEGER},
+      sendtime = #{record.sendtime,jdbcType=DATE},
+      checkstatus = #{record.checkstatus,jdbcType=VARCHAR},
+      messagecontent = #{record.messagecontent,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.yyy.pojo.Messagecheck" >
+    update messagecheck
+    <set >
+      <if test="receiveuserid != null" >
+        receiveuserid = #{receiveuserid,jdbcType=INTEGER},
+      </if>
+      <if test="senduserid != null" >
+        senduserid = #{senduserid,jdbcType=INTEGER},
+      </if>
+      <if test="sendtime != null" >
+        sendtime = #{sendtime,jdbcType=DATE},
+      </if>
+      <if test="checkstatus != null" >
+        checkstatus = #{checkstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="messagecontent != null" >
+        messagecontent = #{messagecontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where messageid = #{messageid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.yyy.pojo.Messagecheck" >
+    update messagecheck
+    set receiveuserid = #{receiveuserid,jdbcType=INTEGER},
+      senduserid = #{senduserid,jdbcType=INTEGER},
+      sendtime = #{sendtime,jdbcType=DATE},
+      checkstatus = #{checkstatus,jdbcType=VARCHAR},
+      messagecontent = #{messagecontent,jdbcType=VARCHAR}
+    where messageid = #{messageid,jdbcType=INTEGER}
+  </update>
+</mapper>

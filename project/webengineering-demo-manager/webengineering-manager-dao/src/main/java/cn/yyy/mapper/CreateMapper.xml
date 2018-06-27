@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.yyy.mapper.CreateMapper" >
+  <resultMap id="BaseResultMap" type="cn.yyy.pojo.Create" >
+    <id column="staffid" property="staffid" jdbcType="INTEGER" />
+    <id column="courseid" property="courseid" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    staffid, courseid, createtime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.CreateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from create
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.CreateKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from create
+    where staffid = #{staffid,jdbcType=INTEGER}
+      and courseid = #{courseid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="cn.yyy.pojo.CreateKey" >
+    delete from create
+    where staffid = #{staffid,jdbcType=INTEGER}
+      and courseid = #{courseid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.yyy.pojo.CreateExample" >
+    delete from create
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.yyy.pojo.Create" >
+    insert into create (staffid, courseid, createtime
+      )
+    values (#{staffid,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{createtime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.yyy.pojo.Create" >
+    insert into create
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="staffid != null" >
+        staffid,
+      </if>
+      <if test="courseid != null" >
+        courseid,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="staffid != null" >
+        #{staffid,jdbcType=INTEGER},
+      </if>
+      <if test="courseid != null" >
+        #{courseid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.yyy.pojo.CreateExample" resultType="java.lang.Integer" >
+    select count(*) from create
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update create
+    <set >
+      <if test="record.staffid != null" >
+        staffid = #{record.staffid,jdbcType=INTEGER},
+      </if>
+      <if test="record.courseid != null" >
+        courseid = #{record.courseid,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update create
+    set staffid = #{record.staffid,jdbcType=INTEGER},
+      courseid = #{record.courseid,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.yyy.pojo.Create" >
+    update create
+    <set >
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+    </set>
+    where staffid = #{staffid,jdbcType=INTEGER}
+      and courseid = #{courseid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.yyy.pojo.Create" >
+    update create
+    set createtime = #{createtime,jdbcType=DATE}
+    where staffid = #{staffid,jdbcType=INTEGER}
+      and courseid = #{courseid,jdbcType=INTEGER}
+  </update>
+</mapper>
