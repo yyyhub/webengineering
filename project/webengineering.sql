@@ -1,389 +1,2412 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : zpl
-Source Server Version : 50720
+Source Server         : liwei
+Source Server Version : 50717
 Source Host           : localhost:3306
-Source Database       : webengineering
+Source Database       : web
 
 Target Server Type    : MYSQL
-Target Server Version : 50720
+Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-06-25 19:28:48
+Date: 2018-06-28 19:33:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `arrange`
--- ----------------------------
-DROP TABLE IF EXISTS `arrange`;
-CREATE TABLE `arrange` (
-  `taskid` int(20) NOT NULL,
-  `courseid` int(20) NOT NULL,
-  `staffid` int(20) NOT NULL,
-  `arrangetime` date NOT NULL,
-  `deadline` date NOT NULL,
-  PRIMARY KEY (`taskid`,`courseid`,`staffid`),
-  KEY `arrangecourseid` (`courseid`),
-  KEY `arrangestaffid` (`staffid`),
-  CONSTRAINT `arrangecourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `arrangestaffid` FOREIGN KEY (`staffid`) REFERENCES `teacher` (`staffid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `arrangetaskid` FOREIGN KEY (`taskid`) REFERENCES `task` (`taskid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of arrange
--- ----------------------------
-
--- ----------------------------
--- Table structure for `class`
+-- Table structure for class
 -- ----------------------------
 DROP TABLE IF EXISTS `class`;
 CREATE TABLE `class` (
-  `classid` int(20) NOT NULL AUTO_INCREMENT,
-  `classname` varchar(20) DEFAULT NULL,
-  `collegeid` int(20) NOT NULL,
+  `classid` int(11) NOT NULL AUTO_INCREMENT,
+  `classname` varchar(255) NOT NULL,
+  `courseid` int(11) NOT NULL,
+  `personnum` int(11) NOT NULL,
   PRIMARY KEY (`classid`),
-  UNIQUE KEY `classid` (`classid`),
-  KEY `collegeid` (`collegeid`),
-  CONSTRAINT `collegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `clacourseid` (`courseid`),
+  CONSTRAINT `clacourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=800000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of class
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `college`
+-- Table structure for college
 -- ----------------------------
 DROP TABLE IF EXISTS `college`;
 CREATE TABLE `college` (
-  `collegeid` int(20) NOT NULL AUTO_INCREMENT,
-  `collegename` varchar(50) NOT NULL,
-  `schoolname` varchar(50) NOT NULL,
-  PRIMARY KEY (`collegeid`),
-  UNIQUE KEY `collegeid` (`collegeid`),
-  KEY `schoolname` (`schoolname`),
-  CONSTRAINT `schoolname` FOREIGN KEY (`schoolname`) REFERENCES `school` (`schoolname`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `collegeid` int(11) NOT NULL AUTO_INCREMENT,
+  `collegename` varchar(255) NOT NULL,
+  PRIMARY KEY (`collegeid`)
+) ENGINE=InnoDB AUTO_INCREMENT=500000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of college
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `course`
+-- Table structure for course
 -- ----------------------------
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
-  `courseid` int(20) NOT NULL AUTO_INCREMENT,
-  `staffid` int(20) NOT NULL,
-  `coursename` varchar(20) NOT NULL,
+  `courseid` int(11) NOT NULL AUTO_INCREMENT,
+  `coursename` varchar(255) NOT NULL,
+  `teacherid` int(11) NOT NULL,
+  `collegeid` int(11) NOT NULL,
   PRIMARY KEY (`courseid`),
-  UNIQUE KEY `courseid` (`courseid`),
-  KEY `coursestaffid` (`staffid`),
-  CONSTRAINT `coursestaffid` FOREIGN KEY (`staffid`) REFERENCES `teacher` (`staffid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `couteacherid` (`teacherid`),
+  KEY `coucollegeid` (`collegeid`),
+  CONSTRAINT `coucollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `couteacherid` FOREIGN KEY (`teacherid`) REFERENCES `teacher` (`teacherid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=700000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `create`
+-- Table structure for job
 -- ----------------------------
-DROP TABLE IF EXISTS `create`;
-CREATE TABLE `create` (
-  `staffid` int(20) NOT NULL,
-  `courseid` int(20) NOT NULL,
-  `createtime` date NOT NULL,
-  PRIMARY KEY (`staffid`,`courseid`),
-  KEY `createcourseid` (`courseid`),
-  CONSTRAINT `createcourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `createstaffid` FOREIGN KEY (`staffid`) REFERENCES `teacher` (`staffid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `job`;
+CREATE TABLE `job` (
+  `jobid` int(11) NOT NULL AUTO_INCREMENT,
+  `studentid` int(11) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `grade` int(11) DEFAULT NULL,
+  `taskid` int(11) NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `jobname` varchar(255) NOT NULL,
+  `submittime` datetime NOT NULL,
+  PRIMARY KEY (`jobid`),
+  KEY `jobstudentid` (`studentid`),
+  KEY `jobtaskid` (`taskid`),
+  CONSTRAINT `jobstudentid` FOREIGN KEY (`studentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `jobtaskid` FOREIGN KEY (`taskid`) REFERENCES `task` (`taskid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=110000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of create
--- ----------------------------
-
--- ----------------------------
--- Table structure for `discuss`
--- ----------------------------
-DROP TABLE IF EXISTS `discuss`;
-CREATE TABLE `discuss` (
-  `discussid` int(20) NOT NULL AUTO_INCREMENT,
-  `problemid` int(20) NOT NULL,
-  PRIMARY KEY (`discussid`,`problemid`),
-  UNIQUE KEY `discussid` (`discussid`) USING BTREE,
-  KEY `discussproblemid` (`problemid`),
-  CONSTRAINT `discussproblemid` FOREIGN KEY (`problemid`) REFERENCES `problem` (`problemid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of discuss
+-- Records of job
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `join`
+-- Table structure for message
 -- ----------------------------
-DROP TABLE IF EXISTS `join`;
-CREATE TABLE `join` (
-  `studentid` int(20) NOT NULL,
-  `courseid` int(20) NOT NULL,
-  `jointime` date NOT NULL,
-  PRIMARY KEY (`studentid`,`courseid`),
-  KEY `joincourseid` (`courseid`),
-  CONSTRAINT `joincourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `joinstudentid` FOREIGN KEY (`studentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of join
--- ----------------------------
-
--- ----------------------------
--- Table structure for `mark`
--- ----------------------------
-DROP TABLE IF EXISTS `mark`;
-CREATE TABLE `mark` (
-  `courseid` int(20) NOT NULL,
-  `studentid` int(20) NOT NULL,
-  `staffid` int(20) NOT NULL,
-  `taskid` int(20) NOT NULL,
-  `grade` int(3) NOT NULL,
-  PRIMARY KEY (`courseid`,`studentid`),
-  KEY `markstudentid` (`studentid`),
-  KEY `markstaffid` (`staffid`),
-  KEY `marktaskid` (`taskid`),
-  CONSTRAINT `markcourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `markstaffid` FOREIGN KEY (`staffid`) REFERENCES `teacher` (`staffid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `markstudentid` FOREIGN KEY (`studentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `marktaskid` FOREIGN KEY (`taskid`) REFERENCES `task` (`taskid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of mark
--- ----------------------------
-
--- ----------------------------
--- Table structure for `messagecheck`
--- ----------------------------
-DROP TABLE IF EXISTS `messagecheck`;
-CREATE TABLE `messagecheck` (
-  `messageid` int(20) NOT NULL AUTO_INCREMENT,
-  `receiveuserid` int(20) NOT NULL,
-  `senduserid` int(20) NOT NULL,
-  `sendtime` date NOT NULL,
-  `checkstatus` varchar(20) NOT NULL,
-  `messagecontent` varchar(255) NOT NULL,
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `messageid` int(11) NOT NULL AUTO_INCREMENT,
+  `senduid` int(11) NOT NULL,
+  `receiveuid` int(11) NOT NULL,
+  `messagecontent` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `sendtime` datetime DEFAULT NULL,
   PRIMARY KEY (`messageid`),
-  UNIQUE KEY `messageid` (`messageid`),
-  KEY `senduserid` (`senduserid`),
-  KEY `receiveuserid` (`receiveuserid`),
-  CONSTRAINT `receiveuserid` FOREIGN KEY (`receiveuserid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `senduserid` FOREIGN KEY (`senduserid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `messenduid` (`senduid`),
+  KEY `mesreceiveuid` (`receiveuid`),
+  CONSTRAINT `mesreceiveuid` FOREIGN KEY (`receiveuid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `messenduid` FOREIGN KEY (`senduid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=600000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of messagecheck
--- ----------------------------
-
--- ----------------------------
--- Table structure for `problem`
--- ----------------------------
-DROP TABLE IF EXISTS `problem`;
-CREATE TABLE `problem` (
-  `problemid` int(20) NOT NULL AUTO_INCREMENT,
-  `releasestudentid` int(20) NOT NULL,
-  `problemname` varchar(255) NOT NULL,
-  `solvestatus` varchar(20) NOT NULL,
-  `problemcontent` text NOT NULL,
-  PRIMARY KEY (`problemid`,`releasestudentid`),
-  KEY `problemid` (`problemid`),
-  KEY `releasestudentid` (`releasestudentid`) USING BTREE,
-  CONSTRAINT `problemstudentid` FOREIGN KEY (`releasestudentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of problem
+-- Records of message
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `release`
--- ----------------------------
-DROP TABLE IF EXISTS `release`;
-CREATE TABLE `release` (
-  `releaseid` int(20) NOT NULL AUTO_INCREMENT,
-  `problemid` int(20) NOT NULL,
-  `releasetime` date NOT NULL,
-  PRIMARY KEY (`releaseid`,`problemid`),
-  UNIQUE KEY `releaseid` (`releaseid`),
-  KEY `releaseproblemid` (`problemid`),
-  CONSTRAINT `releaseproblemid` FOREIGN KEY (`problemid`) REFERENCES `problem` (`problemid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of release
--- ----------------------------
-
--- ----------------------------
--- Table structure for `school`
+-- Table structure for school
 -- ----------------------------
 DROP TABLE IF EXISTS `school`;
 CREATE TABLE `school` (
-  `schoolname` varchar(50) NOT NULL,
-  `schoolplace` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`schoolname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `schoolid` int(11) NOT NULL AUTO_INCREMENT,
+  `schoolname` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`schoolid`)
+) ENGINE=InnoDB AUTO_INCREMENT=402179 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of school
 -- ----------------------------
+INSERT INTO `school` VALUES ('400000', '\"合肥工业大学\"');
+INSERT INTO `school` VALUES ('400001', '\"中国科学技术大学\"');
+INSERT INTO `school` VALUES ('400002', '\"安徽大学\"');
+INSERT INTO `school` VALUES ('400003', '\"安徽理工大学\"');
+INSERT INTO `school` VALUES ('400004', '\"安徽工业大学\"');
+INSERT INTO `school` VALUES ('400005', '\"安徽工程大学\"');
+INSERT INTO `school` VALUES ('400006', '\"安徽农业大学\"');
+INSERT INTO `school` VALUES ('400007', '\"安徽医科大学\"');
+INSERT INTO `school` VALUES ('400008', '\"安徽师范大学\"');
+INSERT INTO `school` VALUES ('400009', '\"淮北师范大学\"');
+INSERT INTO `school` VALUES ('400010', '\"安徽财经大学\"');
+INSERT INTO `school` VALUES ('400011', '\"安徽三联学院\"');
+INSERT INTO `school` VALUES ('400012', '\"安徽建筑工业学院\"');
+INSERT INTO `school` VALUES ('400013', '\"安徽文达信息工程学院\"');
+INSERT INTO `school` VALUES ('400014', '\"安徽中医学院\"');
+INSERT INTO `school` VALUES ('400015', '\"皖南医学院\"');
+INSERT INTO `school` VALUES ('400016', '\"蚌埠医学院\"');
+INSERT INTO `school` VALUES ('400017', '\"淮南师范学院\"');
+INSERT INTO `school` VALUES ('400018', '\"安徽科技学院\"');
+INSERT INTO `school` VALUES ('400019', '\"阜阳师范学院\"');
+INSERT INTO `school` VALUES ('400020', '\"安庆师范学院\"');
+INSERT INTO `school` VALUES ('400021', '\"合肥师范学院\"');
+INSERT INTO `school` VALUES ('400022', '\"安徽外国语学院\"');
+INSERT INTO `school` VALUES ('400023', '\"滁州学院\"');
+INSERT INTO `school` VALUES ('400024', '\"池州学院\"');
+INSERT INTO `school` VALUES ('400025', '\"皖西学院\"');
+INSERT INTO `school` VALUES ('400026', '\"宿州学院\"');
+INSERT INTO `school` VALUES ('400027', '\"黄山学院\"');
+INSERT INTO `school` VALUES ('400028', '\"巢湖学院\"');
+INSERT INTO `school` VALUES ('400029', '\"蚌埠学院\"');
+INSERT INTO `school` VALUES ('400030', '\"铜陵学院\"');
+INSERT INTO `school` VALUES ('400031', '\"安徽新华学院\"');
+INSERT INTO `school` VALUES ('400032', '\"合肥学院\"');
+INSERT INTO `school` VALUES ('400033', '\"安徽医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400034', '\"安徽中医药高等专科学校\"');
+INSERT INTO `school` VALUES ('400035', '\"安庆医药高等专科学校\"');
+INSERT INTO `school` VALUES ('400036', '\"合肥幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400037', '\"亳州师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400038', '\"桐城师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400039', '\"马鞍山师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400040', '\"安徽汽车职业技术学院\"');
+INSERT INTO `school` VALUES ('400041', '\"皖西卫生职业学院\"');
+INSERT INTO `school` VALUES ('400042', '\"安徽职业技术学院\"');
+INSERT INTO `school` VALUES ('400043', '\"芜湖职业技术学院\"');
+INSERT INTO `school` VALUES ('400044', '\"安徽水利水电职业技术学院\"');
+INSERT INTO `school` VALUES ('400045', '\"淮北职业技术学院\"');
+INSERT INTO `school` VALUES ('400046', '\"安徽警官职业学院\"');
+INSERT INTO `school` VALUES ('400047', '\"安徽商贸职业技术学院\"');
+INSERT INTO `school` VALUES ('400048', '\"淮南职业技术学院\"');
+INSERT INTO `school` VALUES ('400049', '\"淮南联合大学\"');
+INSERT INTO `school` VALUES ('400050', '\"民办万博科技职业学院\"');
+INSERT INTO `school` VALUES ('400051', '\"铜陵职业技术学院\"');
+INSERT INTO `school` VALUES ('400052', '\"安徽财贸职业学院\"');
+INSERT INTO `school` VALUES ('400053', '\"安徽国际商务职业学院\"');
+INSERT INTO `school` VALUES ('400054', '\"马鞍山职业技术学院\"');
+INSERT INTO `school` VALUES ('400055', '\"安徽人口职业学院\"');
+INSERT INTO `school` VALUES ('400056', '\"安徽新闻出版职业技术学院\"');
+INSERT INTO `school` VALUES ('400057', '\"安徽城市管理职业学院\"');
+INSERT INTO `school` VALUES ('400058', '\"安徽林业职业技术学院\"');
+INSERT INTO `school` VALUES ('400059', '\"徽商职业学院\"');
+INSERT INTO `school` VALUES ('400060', '\"滁州职业技术学院\"');
+INSERT INTO `school` VALUES ('400061', '\"民办安徽旅游职业学院\"');
+INSERT INTO `school` VALUES ('400062', '\"安徽邮电职业技术学院\"');
+INSERT INTO `school` VALUES ('400063', '\"安庆职业技术学院\"');
+INSERT INTO `school` VALUES ('400064', '\"安徽广播影视职业技术学院\"');
+INSERT INTO `school` VALUES ('400065', '\"安徽涉外经济职业学院\"');
+INSERT INTO `school` VALUES ('400066', '\"安徽公安职业学院\"');
+INSERT INTO `school` VALUES ('400067', '\"安徽审计职业学院\"');
+INSERT INTO `school` VALUES ('400068', '\"宣城职业技术学院\"');
+INSERT INTO `school` VALUES ('400069', '\"亳州职业技术学院\"');
+INSERT INTO `school` VALUES ('400070', '\"安徽中澳科技职业学院\"');
+INSERT INTO `school` VALUES ('400071', '\"安徽工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400072', '\"安徽机电职业技术学院\"');
+INSERT INTO `school` VALUES ('400073', '\"安徽绿海商务职业学院\"');
+INSERT INTO `school` VALUES ('400074', '\"合肥共达职业技术学院\"');
+INSERT INTO `school` VALUES ('400075', '\"合肥科技职业学院\"');
+INSERT INTO `school` VALUES ('400076', '\"蚌埠经济技术职业学院\"');
+INSERT INTO `school` VALUES ('400077', '\"合肥职业技术学院\"');
+INSERT INTO `school` VALUES ('400078', '\"阜阳科技职业学院\"');
+INSERT INTO `school` VALUES ('400079', '\"池州职业技术学院\"');
+INSERT INTO `school` VALUES ('400080', '\"安徽矿业职业技术学院\"');
+INSERT INTO `school` VALUES ('400081', '\"安徽黄梅戏艺术职业学院\"');
+INSERT INTO `school` VALUES ('400082', '\"六安职业技术学院\"');
+INSERT INTO `school` VALUES ('400083', '\"民办合肥滨湖职业技术学院\"');
+INSERT INTO `school` VALUES ('400084', '\"合肥通用职业技术学院\"');
+INSERT INTO `school` VALUES ('400085', '\"安徽体育运动职业技术学院\"');
+INSERT INTO `school` VALUES ('400086', '\"安徽粮食工程职业学院\"');
+INSERT INTO `school` VALUES ('400087', '\"合肥信息技术职业学院\"');
+INSERT INTO `school` VALUES ('400088', '\"安徽艺术职业学院\"');
+INSERT INTO `school` VALUES ('400089', '\"民办合肥经济技术职业学院\"');
+INSERT INTO `school` VALUES ('400090', '\"安徽国防科技职业学院\"');
+INSERT INTO `school` VALUES ('400091', '\"安徽工商职业学院\"');
+INSERT INTO `school` VALUES ('400092', '\"宿州职业技术学院\"');
+INSERT INTO `school` VALUES ('400093', '\"安徽冶金科技职业学院\"');
+INSERT INTO `school` VALUES ('400094', '\"阜阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400095', '\"安徽工业经济职业技术学院\"');
+INSERT INTO `school` VALUES ('400096', '\"安徽电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('400097', '\"安徽交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400098', '\"安徽电气工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400099', '\"安徽工贸职业技术学院\"');
+INSERT INTO `school` VALUES ('400100', '\"安徽长江职业学院\"');
+INSERT INTO `school` VALUES ('400101', '\"安徽扬子职业技术学院\"');
+INSERT INTO `school` VALUES ('400102', '\"安徽现代信息工程职业学院\"');
+INSERT INTO `school` VALUES ('400103', '\"民办合肥财经职业学院\"');
+INSERT INTO `school` VALUES ('400104', '\"芜湖信息技术职业学院\"');
+INSERT INTO `school` VALUES ('400105', '\"黄山职业技术学院\"');
+INSERT INTO `school` VALUES ('400106', '\"滁州城市职业学院\"');
+INSERT INTO `school` VALUES ('400107', '\"澳门高等校际学院\"');
+INSERT INTO `school` VALUES ('400108', '\"澳门理工学院\"');
+INSERT INTO `school` VALUES ('400109', '\"澳门科技大学\"');
+INSERT INTO `school` VALUES ('400110', '\"联合国大学-国际软件技术研究所\"');
+INSERT INTO `school` VALUES ('400111', '\"澳门大学\"');
+INSERT INTO `school` VALUES ('400112', '\"北京大学\"');
+INSERT INTO `school` VALUES ('400113', '\"中国人民大学\"');
+INSERT INTO `school` VALUES ('400114', '\"清华大学\"');
+INSERT INTO `school` VALUES ('400115', '\"北京交通大学\"');
+INSERT INTO `school` VALUES ('400116', '\"北京科技大学\"');
+INSERT INTO `school` VALUES ('400117', '\"中国石油大学(北京）\"');
+INSERT INTO `school` VALUES ('400118', '\"中国矿业大学(北京)\"');
+INSERT INTO `school` VALUES ('400119', '\"中国地质大学(北京)\"');
+INSERT INTO `school` VALUES ('400120', '\"北京邮电大学\"');
+INSERT INTO `school` VALUES ('400121', '\"华北电力大学（北京）\"');
+INSERT INTO `school` VALUES ('400122', '\"北京化工大学\"');
+INSERT INTO `school` VALUES ('400123', '\"中国农业大学\"');
+INSERT INTO `school` VALUES ('400124', '\"北京林业大学\"');
+INSERT INTO `school` VALUES ('400125', '\"北京中医药大学\"');
+INSERT INTO `school` VALUES ('400126', '\"北京师范大学\"');
+INSERT INTO `school` VALUES ('400127', '\"北京外国语大学\"');
+INSERT INTO `school` VALUES ('400128', '\"北京语言大学\"');
+INSERT INTO `school` VALUES ('400129', '\"对外经济贸易大学\"');
+INSERT INTO `school` VALUES ('400130', '\"中央财经大学\"');
+INSERT INTO `school` VALUES ('400131', '\"中国政法大学\"');
+INSERT INTO `school` VALUES ('400132', '\"中央民族大学\"');
+INSERT INTO `school` VALUES ('400133', '\"中国人民公安大学\"');
+INSERT INTO `school` VALUES ('400134', '\"北京协和医学院\"');
+INSERT INTO `school` VALUES ('400135', '\"北京体育大学\"');
+INSERT INTO `school` VALUES ('400136', '\"北京理工大学\"');
+INSERT INTO `school` VALUES ('400137', '\"北京航空航天大学\"');
+INSERT INTO `school` VALUES ('400138', '\"北京信息科技大学\"');
+INSERT INTO `school` VALUES ('400139', '\"北京工商大学\"');
+INSERT INTO `school` VALUES ('400140', '\"北京联合大学\"');
+INSERT INTO `school` VALUES ('400141', '\"北京工业大学\"');
+INSERT INTO `school` VALUES ('400142', '\"北方工业大学\"');
+INSERT INTO `school` VALUES ('400143', '\"首都医科大学\"');
+INSERT INTO `school` VALUES ('400144', '\"首都师范大学\"');
+INSERT INTO `school` VALUES ('400145', '\"首都经济贸易大学\"');
+INSERT INTO `school` VALUES ('400146', '\"中国传媒大学\"');
+INSERT INTO `school` VALUES ('400147', '\"国际关系学院\"');
+INSERT INTO `school` VALUES ('400148', '\"中央戏剧学院\"');
+INSERT INTO `school` VALUES ('400149', '\"中央美术学院\"');
+INSERT INTO `school` VALUES ('400150', '\"中央音乐学院\"');
+INSERT INTO `school` VALUES ('400151', '\"北京电子科技学院\"');
+INSERT INTO `school` VALUES ('400152', '\"外交学院\"');
+INSERT INTO `school` VALUES ('400153', '\"中国劳动关系学院\"');
+INSERT INTO `school` VALUES ('400154', '\"中国青年政治学院\"');
+INSERT INTO `school` VALUES ('400155', '\"中华女子学院\"');
+INSERT INTO `school` VALUES ('400156', '\"北京服装学院\"');
+INSERT INTO `school` VALUES ('400157', '\"北京建筑工程学院\"');
+INSERT INTO `school` VALUES ('400158', '\"北京印刷学院\"');
+INSERT INTO `school` VALUES ('400159', '\"首钢工学院\"');
+INSERT INTO `school` VALUES ('400160', '\"北京石油化工学院\"');
+INSERT INTO `school` VALUES ('400161', '\"北京农学院\"');
+INSERT INTO `school` VALUES ('400162', '\"首都体育学院\"');
+INSERT INTO `school` VALUES ('400163', '\"北京第二外国语学院\"');
+INSERT INTO `school` VALUES ('400164', '\"北京物资学院\"');
+INSERT INTO `school` VALUES ('400165', '\"北京警察学院\"');
+INSERT INTO `school` VALUES ('400166', '\"中国音乐学院\"');
+INSERT INTO `school` VALUES ('400167', '\"中国戏曲学院\"');
+INSERT INTO `school` VALUES ('400168', '\"北京电影学院\"');
+INSERT INTO `school` VALUES ('400169', '\"北京舞蹈学院\"');
+INSERT INTO `school` VALUES ('400170', '\"北京城市学院\"');
+INSERT INTO `school` VALUES ('400171', '\"北京青年政治学院\"');
+INSERT INTO `school` VALUES ('400172', '\"北京交通运输职业学院\"');
+INSERT INTO `school` VALUES ('400173', '\"北京信息职业技术学院\"');
+INSERT INTO `school` VALUES ('400174', '\"北京科技经营管理学院\"');
+INSERT INTO `school` VALUES ('400175', '\"北京电子科技职业学院\"');
+INSERT INTO `school` VALUES ('400176', '\"北京工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400177', '\"北京科技职业学院\"');
+INSERT INTO `school` VALUES ('400178', '\"北京戏曲艺术职业学院\"');
+INSERT INTO `school` VALUES ('400179', '\"北京农业职业学院\"');
+INSERT INTO `school` VALUES ('400180', '\"北京汇佳职业学院\"');
+INSERT INTO `school` VALUES ('400181', '\"北京财贸职业学院\"');
+INSERT INTO `school` VALUES ('400182', '\"北京经济技术职业学院\"');
+INSERT INTO `school` VALUES ('400183', '\"北京北大方正软件职业技术学院\"');
+INSERT INTO `school` VALUES ('400184', '\"北京交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400185', '\"北京培黎职业学院\"');
+INSERT INTO `school` VALUES ('400186', '\"北京吉利大学\"');
+INSERT INTO `school` VALUES ('400187', '\"北京经济管理职业学院\"');
+INSERT INTO `school` VALUES ('400188', '\"北京卫生职业学院\"');
+INSERT INTO `school` VALUES ('400189', '\"北京政法职业学院\"');
+INSERT INTO `school` VALUES ('400190', '\"北京体育职业学院\"');
+INSERT INTO `school` VALUES ('400191', '\"北京社会管理职业学院\"');
+INSERT INTO `school` VALUES ('400192', '\"北京新圆明职业学院\"');
+INSERT INTO `school` VALUES ('400193', '\"北京现代职业技术学院\"');
+INSERT INTO `school` VALUES ('400194', '\"北京京北职业技术学院\"');
+INSERT INTO `school` VALUES ('400195', '\"北京经贸职业学院\"');
+INSERT INTO `school` VALUES ('400196', '\"北京劳动保障职业学院\"');
+INSERT INTO `school` VALUES ('400197', '\"清华大学五道口金融学院\"');
+INSERT INTO `school` VALUES ('400198', '\"财政部财政科学研究所\"');
+INSERT INTO `school` VALUES ('400199', '\"中国科学院\"');
+INSERT INTO `school` VALUES ('400200', '\"中国农业科学院\"');
+INSERT INTO `school` VALUES ('400201', '\"中国社会科学院研究生院\"');
+INSERT INTO `school` VALUES ('400202', '\"重庆大学\"');
+INSERT INTO `school` VALUES ('400203', '\"西南大学\"');
+INSERT INTO `school` VALUES ('400204', '\"重庆交通大学\"');
+INSERT INTO `school` VALUES ('400205', '\"重庆邮电大学\"');
+INSERT INTO `school` VALUES ('400206', '\"重庆理工大学\"');
+INSERT INTO `school` VALUES ('400207', '\"重庆医科大学\"');
+INSERT INTO `school` VALUES ('400208', '\"重庆师范大学\"');
+INSERT INTO `school` VALUES ('400209', '\"重庆工商大学\"');
+INSERT INTO `school` VALUES ('400210', '\"西南政法大学\"');
+INSERT INTO `school` VALUES ('400211', '\"重庆科技学院\"');
+INSERT INTO `school` VALUES ('400212', '\"长江师范学院\"');
+INSERT INTO `school` VALUES ('400213', '\"重庆第二师范学院\"');
+INSERT INTO `school` VALUES ('400214', '\"四川外语学院\"');
+INSERT INTO `school` VALUES ('400215', '\"重庆警察学院\"');
+INSERT INTO `school` VALUES ('400216', '\"四川美术学院\"');
+INSERT INTO `school` VALUES ('400217', '\"重庆三峡学院\"');
+INSERT INTO `school` VALUES ('400218', '\"重庆文理学院\"');
+INSERT INTO `school` VALUES ('400219', '\"重庆电力高等专科学校\"');
+INSERT INTO `school` VALUES ('400220', '\"重庆三峡医药高等专科学校\"');
+INSERT INTO `school` VALUES ('400221', '\"重庆医药高等专科学校\"');
+INSERT INTO `school` VALUES ('400222', '\"重庆化工职业学院\"');
+INSERT INTO `school` VALUES ('400223', '\"重庆工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400224', '\"重庆正大软件职业技术学院\"');
+INSERT INTO `school` VALUES ('400225', '\"重庆城市管理职业学院\"');
+INSERT INTO `school` VALUES ('400226', '\"重庆公共运输职业学院\"');
+INSERT INTO `school` VALUES ('400227', '\"重庆安全技术职业学院\"');
+INSERT INTO `school` VALUES ('400228', '\"重庆三峡职业学院\"');
+INSERT INTO `school` VALUES ('400229', '\"重庆工贸职业技术学院\"');
+INSERT INTO `school` VALUES ('400230', '\"重庆民生职业技术学院\"');
+INSERT INTO `school` VALUES ('400231', '\"重庆轻工职业学院\"');
+INSERT INTO `school` VALUES ('400232', '\"重庆机电职业技术学院\"');
+INSERT INTO `school` VALUES ('400233', '\"重庆电信职业学院\"');
+INSERT INTO `school` VALUES ('400234', '\"重庆电子工程职业学院\"');
+INSERT INTO `school` VALUES ('400235', '\"重庆城市职业学院\"');
+INSERT INTO `school` VALUES ('400236', '\"重庆水利电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400237', '\"重庆商务职业学院\"');
+INSERT INTO `school` VALUES ('400238', '\"重庆电讯职业学院\"');
+INSERT INTO `school` VALUES ('400239', '\"重庆能源职业学院\"');
+INSERT INTO `school` VALUES ('400240', '\"重庆传媒职业学院\"');
+INSERT INTO `school` VALUES ('400241', '\"重庆工商职业学院\"');
+INSERT INTO `school` VALUES ('400242', '\"重庆经贸职业学院\"');
+INSERT INTO `school` VALUES ('400243', '\"重庆建筑工程职业学院\"');
+INSERT INTO `school` VALUES ('400244', '\"重庆青年职业技术学院\"');
+INSERT INTO `school` VALUES ('400245', '\"重庆财经职业学院\"');
+INSERT INTO `school` VALUES ('400246', '\"重庆科创职业学院\"');
+INSERT INTO `school` VALUES ('400247', '\"重庆房地产职业学院\"');
+INSERT INTO `school` VALUES ('400248', '\"重庆海联职业技术学院\"');
+INSERT INTO `school` VALUES ('400249', '\"重庆信息技术职业学院\"');
+INSERT INTO `school` VALUES ('400250', '\"重庆航天职业技术学院\"');
+INSERT INTO `school` VALUES ('400251', '\"重庆工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400252', '\"重庆艺术工程职业学院\"');
+INSERT INTO `school` VALUES ('400253', '\"重庆旅游职业学院\"');
+INSERT INTO `school` VALUES ('400254', '\"重庆交通职业学院\"');
+INSERT INTO `school` VALUES ('400255', '\"厦门大学\"');
+INSERT INTO `school` VALUES ('400256', '\"华侨大学\"');
+INSERT INTO `school` VALUES ('400257', '\"福建农林大学\"');
+INSERT INTO `school` VALUES ('400258', '\"集美大学\"');
+INSERT INTO `school` VALUES ('400259', '\"福州大学\"');
+INSERT INTO `school` VALUES ('400260', '\"仰恩大学\"');
+INSERT INTO `school` VALUES ('400261', '\"福建医科大学\"');
+INSERT INTO `school` VALUES ('400262', '\"福建中医药大学\"');
+INSERT INTO `school` VALUES ('400263', '\"福建师范大学\"');
+INSERT INTO `school` VALUES ('400264', '\"厦门理工学院\"');
+INSERT INTO `school` VALUES ('400265', '\"闽南理工学院\"');
+INSERT INTO `school` VALUES ('400266', '\"福建工程学院\"');
+INSERT INTO `school` VALUES ('400267', '\"宁德师范学院\"');
+INSERT INTO `school` VALUES ('400268', '\"泉州师范学院\"');
+INSERT INTO `school` VALUES ('400269', '\"漳州师范学院\"');
+INSERT INTO `school` VALUES ('400270', '\"福州外语外贸学院\"');
+INSERT INTO `school` VALUES ('400271', '\"福建警察学院\"');
+INSERT INTO `school` VALUES ('400272', '\"闽江学院\"');
+INSERT INTO `school` VALUES ('400273', '\"三明学院\"');
+INSERT INTO `school` VALUES ('400274', '\"龙岩学院\"');
+INSERT INTO `school` VALUES ('400275', '\"莆田学院\"');
+INSERT INTO `school` VALUES ('400276', '\"武夷学院\"');
+INSERT INTO `school` VALUES ('400277', '\"福建江夏学院\"');
+INSERT INTO `school` VALUES ('400278', '\"厦门医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400279', '\"泉州医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400280', '\"福建幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400281', '\"泉州幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400282', '\"福建商业高等专科学校\"');
+INSERT INTO `school` VALUES ('400283', '\"福州英华职业学院\"');
+INSERT INTO `school` VALUES ('400284', '\"福建船政交通职业学院\"');
+INSERT INTO `school` VALUES ('400285', '\"厦门华厦职业学院\"');
+INSERT INTO `school` VALUES ('400286', '\"泉州纺织服装职业学院\"');
+INSERT INTO `school` VALUES ('400287', '\"漳州职业技术学院\"');
+INSERT INTO `school` VALUES ('400288', '\"黎明职业大学\"');
+INSERT INTO `school` VALUES ('400289', '\"福建华南女子职业学院\"');
+INSERT INTO `school` VALUES ('400290', '\"闽西职业技术学院\"');
+INSERT INTO `school` VALUES ('400291', '\"福州黎明职业技术学院\"');
+INSERT INTO `school` VALUES ('400292', '\"厦门东海职业技术学院\"');
+INSERT INTO `school` VALUES ('400293', '\"漳州卫生职业学院\"');
+INSERT INTO `school` VALUES ('400294', '\"福州职业技术学院\"');
+INSERT INTO `school` VALUES ('400295', '\"福州海峡职业技术学院\"');
+INSERT INTO `school` VALUES ('400296', '\"泉州理工职业学院\"');
+INSERT INTO `school` VALUES ('400297', '\"福建警官职业学院\"');
+INSERT INTO `school` VALUES ('400298', '\"闽北职业技术学院\"');
+INSERT INTO `school` VALUES ('400299', '\"泉州华光摄影艺术职业学院\"');
+INSERT INTO `school` VALUES ('400300', '\"福建林业职业技术学院\"');
+INSERT INTO `school` VALUES ('400301', '\"泉州经贸职业技术学院\"');
+INSERT INTO `school` VALUES ('400302', '\"福建卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('400303', '\"厦门华天涉外职业技术学院\"');
+INSERT INTO `school` VALUES ('400304', '\"漳州理工职业学院\"');
+INSERT INTO `school` VALUES ('400305', '\"厦门兴才职业技术学院\"');
+INSERT INTO `school` VALUES ('400306', '\"泉州信息职业技术学院\"');
+INSERT INTO `school` VALUES ('400307', '\"湄洲湾职业技术学院\"');
+INSERT INTO `school` VALUES ('400308', '\"福州软件职业技术学院\"');
+INSERT INTO `school` VALUES ('400309', '\"福州科技职业技术学院\"');
+INSERT INTO `school` VALUES ('400310', '\"福建艺术职业学院\"');
+INSERT INTO `school` VALUES ('400311', '\"福建生物工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400312', '\"德化陶瓷职业技术学院\"');
+INSERT INTO `school` VALUES ('400313', '\"福建体育职业技术学院\"');
+INSERT INTO `school` VALUES ('400314', '\"宁德职业技术学院\"');
+INSERT INTO `school` VALUES ('400315', '\"厦门软件职业技术学院\"');
+INSERT INTO `school` VALUES ('400316', '\"三明职业技术学院\"');
+INSERT INTO `school` VALUES ('400317', '\"福建对外经济贸易职业技术学院\"');
+INSERT INTO `school` VALUES ('400318', '\"厦门海洋职业技术学院\"');
+INSERT INTO `school` VALUES ('400319', '\"福建农业职业技术学院\"');
+INSERT INTO `school` VALUES ('400320', '\"福建信息职业技术学院\"');
+INSERT INTO `school` VALUES ('400321', '\"厦门演艺职业学院\"');
+INSERT INTO `school` VALUES ('400322', '\"武夷山职业学院\"');
+INSERT INTO `school` VALUES ('400323', '\"福建电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400324', '\"漳州科技职业学院\"');
+INSERT INTO `school` VALUES ('400325', '\"厦门城市职业学院\"');
+INSERT INTO `school` VALUES ('400326', '\"厦门南洋职业学院\"');
+INSERT INTO `school` VALUES ('400327', '\"漳州城市职业学院\"');
+INSERT INTO `school` VALUES ('400328', '\"福建水利电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400329', '\"泉州轻工职业学院\"');
+INSERT INTO `school` VALUES ('400330', '\"泉州泰山航海职业学院\"');
+INSERT INTO `school` VALUES ('400331', '\"厦门安防科技职业学院\"');
+INSERT INTO `school` VALUES ('400332', '\"兰州大学\"');
+INSERT INTO `school` VALUES ('400333', '\"西北民族大学\"');
+INSERT INTO `school` VALUES ('400334', '\"兰州理工大学\"');
+INSERT INTO `school` VALUES ('400335', '\"兰州交通大学\"');
+INSERT INTO `school` VALUES ('400336', '\"甘肃农业大学\"');
+INSERT INTO `school` VALUES ('400337', '\"西北师范大学\"');
+INSERT INTO `school` VALUES ('400338', '\"兰州工业学院\"');
+INSERT INTO `school` VALUES ('400339', '\"甘肃中医学院\"');
+INSERT INTO `school` VALUES ('400340', '\"陇东学院\"');
+INSERT INTO `school` VALUES ('400341', '\"甘肃民族师范学院\"');
+INSERT INTO `school` VALUES ('400342', '\"天水师范学院\"');
+INSERT INTO `school` VALUES ('400343', '\"兰州商学院\"');
+INSERT INTO `school` VALUES ('400344', '\"甘肃政法学院\"');
+INSERT INTO `school` VALUES ('400345', '\"河西学院\"');
+INSERT INTO `school` VALUES ('400346', '\"兰州城市学院\"');
+INSERT INTO `school` VALUES ('400347', '\"平凉医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400348', '\"张掖医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400349', '\"陇南师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400350', '\"定西师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400351', '\"甘肃机电职业技术学院\"');
+INSERT INTO `school` VALUES ('400352', '\"甘肃联合大学\"');
+INSERT INTO `school` VALUES ('400353', '\"兰州石化职业技术学院\"');
+INSERT INTO `school` VALUES ('400354', '\"兰州资源环境职业技术学院\"');
+INSERT INTO `school` VALUES ('400355', '\"甘肃畜牧工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400356', '\"甘肃农业职业技术学院\"');
+INSERT INTO `school` VALUES ('400357', '\"甘肃警察职业学院\"');
+INSERT INTO `school` VALUES ('400358', '\"甘肃交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400359', '\"武威职业学院\"');
+INSERT INTO `school` VALUES ('400360', '\"甘肃有色冶金职业技术学院\"');
+INSERT INTO `school` VALUES ('400361', '\"白银矿冶职业技术学院\"');
+INSERT INTO `school` VALUES ('400362', '\"甘肃钢铁职业技术学院\"');
+INSERT INTO `school` VALUES ('400363', '\"甘肃工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400364', '\"兰州职业技术学院\"');
+INSERT INTO `school` VALUES ('400365', '\"酒泉职业技术学院\"');
+INSERT INTO `school` VALUES ('400366', '\"甘肃建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('400367', '\"甘肃林业职业技术学院\"');
+INSERT INTO `school` VALUES ('400368', '\"兰州外语职业学院\"');
+INSERT INTO `school` VALUES ('400369', '\"中山大学\"');
+INSERT INTO `school` VALUES ('400370', '\"华南理工大学\"');
+INSERT INTO `school` VALUES ('400371', '\"暨南大学\"');
+INSERT INTO `school` VALUES ('400372', '\"汕头大学\"');
+INSERT INTO `school` VALUES ('400373', '\"深圳大学\"');
+INSERT INTO `school` VALUES ('400374', '\"五邑大学\"');
+INSERT INTO `school` VALUES ('400375', '\"广东工业大学\"');
+INSERT INTO `school` VALUES ('400376', '\"南方科技大学\"');
+INSERT INTO `school` VALUES ('400377', '\"华南农业大学\"');
+INSERT INTO `school` VALUES ('400378', '\"广东海洋大学\"');
+INSERT INTO `school` VALUES ('400379', '\"广州中医药大学\"');
+INSERT INTO `school` VALUES ('400380', '\"南方医科大学\"');
+INSERT INTO `school` VALUES ('400381', '\"华南师范大学\"');
+INSERT INTO `school` VALUES ('400382', '\"广东外语外贸大学\"');
+INSERT INTO `school` VALUES ('400383', '\"广州大学\"');
+INSERT INTO `school` VALUES ('400384', '\"北京师范大学-香港浸会大学联合国际学院\"');
+INSERT INTO `school` VALUES ('400385', '\"广东石油化工学院\"');
+INSERT INTO `school` VALUES ('400386', '\"肇庆学院\"');
+INSERT INTO `school` VALUES ('400387', '\"东莞理工学院\"');
+INSERT INTO `school` VALUES ('400388', '\"广东科技学院\"');
+INSERT INTO `school` VALUES ('400389', '\"仲恺农业工程学院\"');
+INSERT INTO `school` VALUES ('400390', '\"广东医学院\"');
+INSERT INTO `school` VALUES ('400391', '\"广州医学院\"');
+INSERT INTO `school` VALUES ('400392', '\"广东药学院\"');
+INSERT INTO `school` VALUES ('400393', '\"韶关学院\"');
+INSERT INTO `school` VALUES ('400394', '\"湛江师范学院\"');
+INSERT INTO `school` VALUES ('400395', '\"嘉应学院\"');
+INSERT INTO `school` VALUES ('400396', '\"韩山师范学院\"');
+INSERT INTO `school` VALUES ('400397', '\"惠州学院\"');
+INSERT INTO `school` VALUES ('400398', '\"广东第二师范学院\"');
+INSERT INTO `school` VALUES ('400399', '\"广东商学院\"');
+INSERT INTO `school` VALUES ('400400', '\"广东金融学院\"');
+INSERT INTO `school` VALUES ('400401', '\"广东警官学院\"');
+INSERT INTO `school` VALUES ('400402', '\"广州体育学院\"');
+INSERT INTO `school` VALUES ('400403', '\"广州美术学院\"');
+INSERT INTO `school` VALUES ('400404', '\"星海音乐学院\"');
+INSERT INTO `school` VALUES ('400405', '\"广东技术师范学院\"');
+INSERT INTO `school` VALUES ('400406', '\"广东培正学院\"');
+INSERT INTO `school` VALUES ('400407', '\"佛山科学技术学院\"');
+INSERT INTO `school` VALUES ('400408', '\"广东白云学院\"');
+INSERT INTO `school` VALUES ('400409', '\"广州航海高等专科学校\"');
+INSERT INTO `school` VALUES ('400410', '\"肇庆医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400411', '\"私立华联学院\"');
+INSERT INTO `school` VALUES ('400412', '\"民办南华工商学院\"');
+INSERT INTO `school` VALUES ('400413', '\"广州民航职业技术学院\"');
+INSERT INTO `school` VALUES ('400414', '\"广东食品药品职业学院\"');
+INSERT INTO `school` VALUES ('400415', '\"广东松山职业技术学院\"');
+INSERT INTO `school` VALUES ('400416', '\"深圳职业技术学院\"');
+INSERT INTO `school` VALUES ('400417', '\"潮汕职业技术学院\"');
+INSERT INTO `school` VALUES ('400418', '\"顺德职业技术学院\"');
+INSERT INTO `school` VALUES ('400419', '\"广东新安职业技术学院\"');
+INSERT INTO `school` VALUES ('400420', '\"广东农工商职业技术学院\"');
+INSERT INTO `school` VALUES ('400421', '\"广东交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400422', '\"广东水利电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400423', '\"广东轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('400424', '\"佛山职业技术学院\"');
+INSERT INTO `school` VALUES ('400425', '\"广州珠江职业技术学院\"');
+INSERT INTO `school` VALUES ('400426', '\"广州现代信息工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400427', '\"广东亚视演艺职业学院\"');
+INSERT INTO `school` VALUES ('400428', '\"清远职业技术学院\"');
+INSERT INTO `school` VALUES ('400429', '\"汕头职业技术学院\"');
+INSERT INTO `school` VALUES ('400430', '\"广东邮电职业技术学院\"');
+INSERT INTO `school` VALUES ('400431', '\"揭阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400432', '\"广州南洋理工职业学院\"');
+INSERT INTO `school` VALUES ('400433', '\"广州科技职业技术学院\"');
+INSERT INTO `school` VALUES ('400434', '\"广东科贸职业学院\"');
+INSERT INTO `school` VALUES ('400435', '\"深圳信息职业技术学院\"');
+INSERT INTO `school` VALUES ('400436', '\"中山职业技术学院\"');
+INSERT INTO `school` VALUES ('400437', '\"广东司法警官职业学院\"');
+INSERT INTO `school` VALUES ('400438', '\"广州松田职业学院\"');
+INSERT INTO `school` VALUES ('400439', '\"广东省外语艺术职业学院\"');
+INSERT INTO `school` VALUES ('400440', '\"广东文理职业学院\"');
+INSERT INTO `school` VALUES ('400441', '\"广州番禺职业技术学院\"');
+INSERT INTO `school` VALUES ('400442', '\"广州铁路职业技术学院\"');
+INSERT INTO `school` VALUES ('400443', '\"广州华南商贸职业学院\"');
+INSERT INTO `school` VALUES ('400444', '\"广州华立科技职业学院\"');
+INSERT INTO `school` VALUES ('400445', '\"广州城市职业学院\"');
+INSERT INTO `school` VALUES ('400446', '\"广东工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400447', '\"广州科技贸易职业学院\"');
+INSERT INTO `school` VALUES ('400448', '\"肇庆工商职业技术学院\"');
+INSERT INTO `school` VALUES ('400449', '\"广东体育职业技术学院\"');
+INSERT INTO `school` VALUES ('400450', '\"广东行政职业学院\"');
+INSERT INTO `school` VALUES ('400451', '\"广东文艺职业学院\"');
+INSERT INTO `school` VALUES ('400452', '\"广州体育职业技术学院\"');
+INSERT INTO `school` VALUES ('400453', '\"广东科学技术职业学院\"');
+INSERT INTO `school` VALUES ('400454', '\"中山火炬职业技术学院\"');
+INSERT INTO `school` VALUES ('400455', '\"江门职业技术学院\"');
+INSERT INTO `school` VALUES ('400456', '\"茂名职业技术学院\"');
+INSERT INTO `school` VALUES ('400457', '\"广州工程技术职业学院\"');
+INSERT INTO `school` VALUES ('400458', '\"广州涉外经济职业技术学院\"');
+INSERT INTO `school` VALUES ('400459', '\"惠州经济职业技术学院\"');
+INSERT INTO `school` VALUES ('400460', '\"广州城建职业学院\"');
+INSERT INTO `school` VALUES ('400461', '\"肇庆科技职业技术学院\"');
+INSERT INTO `school` VALUES ('400462', '\"珠海艺术职业学院\"');
+INSERT INTO `school` VALUES ('400463', '\"南海东软信息技术职业学院\"');
+INSERT INTO `school` VALUES ('400464', '\"广州康大职业技术学院\"');
+INSERT INTO `school` VALUES ('400465', '\"广州工商职业技术学院\"');
+INSERT INTO `school` VALUES ('400466', '\"广东青年职业学院\"');
+INSERT INTO `school` VALUES ('400467', '\"广州东华职业学院\"');
+INSERT INTO `school` VALUES ('400468', '\"广东创新科技职业学院\"');
+INSERT INTO `school` VALUES ('400469', '\"广东工贸职业技术学院\"');
+INSERT INTO `school` VALUES ('400470', '\"珠海城市职业技术学院\"');
+INSERT INTO `school` VALUES ('400471', '\"汕尾职业技术学院\"');
+INSERT INTO `school` VALUES ('400472', '\"广东财经职业学院\"');
+INSERT INTO `school` VALUES ('400473', '\"广东职业技术学院\"');
+INSERT INTO `school` VALUES ('400474', '\"罗定职业技术学院\"');
+INSERT INTO `school` VALUES ('400475', '\"河源职业技术学院\"');
+INSERT INTO `school` VALUES ('400476', '\"广东岭南职业技术学院\"');
+INSERT INTO `school` VALUES ('400477', '\"广东女子职业技术学院\"');
+INSERT INTO `school` VALUES ('400478', '\"广东建设职业技术学院\"');
+INSERT INTO `school` VALUES ('400479', '\"广东机电职业技术学院\"');
+INSERT INTO `school` VALUES ('400480', '\"广东理工职业学院\"');
+INSERT INTO `school` VALUES ('400481', '\"惠州卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('400482', '\"阳江职业技术学院\"');
+INSERT INTO `school` VALUES ('400483', '\"广东舞蹈戏剧职业学院\"');
+INSERT INTO `school` VALUES ('400484', '\"广东南方职业学院\"');
+INSERT INTO `school` VALUES ('400485', '\"广州华商职业学院\"');
+INSERT INTO `school` VALUES ('400486', '\"广州华夏职业学院\"');
+INSERT INTO `school` VALUES ('400487', '\"广东环境保护工程职业学院\"');
+INSERT INTO `school` VALUES ('400488', '\"广东信息工程职业学院\"');
+INSERT INTO `school` VALUES ('400489', '\"东莞职业技术学院\"');
+INSERT INTO `school` VALUES ('400490', '\"广西大学\"');
+INSERT INTO `school` VALUES ('400491', '\"桂林电子科技大学\"');
+INSERT INTO `school` VALUES ('400492', '\"桂林理工大学\"');
+INSERT INTO `school` VALUES ('400493', '\"广西医科大学\"');
+INSERT INTO `school` VALUES ('400494', '\"广西中医药大学\"');
+INSERT INTO `school` VALUES ('400495', '\"广西师范大学\"');
+INSERT INTO `school` VALUES ('400496', '\"广西民族大学\"');
+INSERT INTO `school` VALUES ('400497', '\"桂林航天工业学院\"');
+INSERT INTO `school` VALUES ('400498', '\"广西工学院\"');
+INSERT INTO `school` VALUES ('400499', '\"桂林医学院\"');
+INSERT INTO `school` VALUES ('400500', '\"右江民族医学院\"');
+INSERT INTO `school` VALUES ('400501', '\"广西师范学院\"');
+INSERT INTO `school` VALUES ('400502', '\"广西民族师范学院\"');
+INSERT INTO `school` VALUES ('400503', '\"河池学院\"');
+INSERT INTO `school` VALUES ('400504', '\"玉林师范学院\"');
+INSERT INTO `school` VALUES ('400505', '\"广西外国语学院\"');
+INSERT INTO `school` VALUES ('400506', '\"广西财经学院\"');
+INSERT INTO `school` VALUES ('400507', '\"广西艺术学院\"');
+INSERT INTO `school` VALUES ('400508', '\"百色学院\"');
+INSERT INTO `school` VALUES ('400509', '\"贺州学院\"');
+INSERT INTO `school` VALUES ('400510', '\"钦州学院\"');
+INSERT INTO `school` VALUES ('400511', '\"梧州学院\"');
+INSERT INTO `school` VALUES ('400512', '\"柳州医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400513', '\"柳州师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400514', '\"桂林师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400515', '\"广西幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400516', '\"桂林旅游高等专科学校\"');
+INSERT INTO `school` VALUES ('400517', '\"广西警官高等专科学校\"');
+INSERT INTO `school` VALUES ('400518', '\"广西体育高等专科学校\"');
+INSERT INTO `school` VALUES ('400519', '\"广西科技职业学院\"');
+INSERT INTO `school` VALUES ('400520', '\"广西卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('400521', '\"广西机电职业技术学院\"');
+INSERT INTO `school` VALUES ('400522', '\"广西职业技术学院\"');
+INSERT INTO `school` VALUES ('400523', '\"柳州职业技术学院\"');
+INSERT INTO `school` VALUES ('400524', '\"南宁职业技术学院\"');
+INSERT INTO `school` VALUES ('400525', '\"广西国际商务职业技术学院\"');
+INSERT INTO `school` VALUES ('400526', '\"广西经贸职业技术学院\"');
+INSERT INTO `school` VALUES ('400527', '\"北海职业学院\"');
+INSERT INTO `school` VALUES ('400528', '\"北海艺术设计职业学院\"');
+INSERT INTO `school` VALUES ('400529', '\"广西现代职业技术学院\"');
+INSERT INTO `school` VALUES ('400530', '\"桂林山水职业学院\"');
+INSERT INTO `school` VALUES ('400531', '\"广西演艺职业学院\"');
+INSERT INTO `school` VALUES ('400532', '\"广西工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400533', '\"广西电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400534', '\"广西经济职业学院\"');
+INSERT INTO `school` VALUES ('400535', '\"广西生态工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400536', '\"贵港职业学院\"');
+INSERT INTO `school` VALUES ('400537', '\"广西城市职业学院\"');
+INSERT INTO `school` VALUES ('400538', '\"广西工商职业技术学院\"');
+INSERT INTO `school` VALUES ('400539', '\"百色职业学院\"');
+INSERT INTO `school` VALUES ('400540', '\"广西农业职业技术学院\"');
+INSERT INTO `school` VALUES ('400541', '\"广西工程职业学院\"');
+INSERT INTO `school` VALUES ('400542', '\"柳州铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('400543', '\"广西理工职业技术学院\"');
+INSERT INTO `school` VALUES ('400544', '\"梧州职业学院\"');
+INSERT INTO `school` VALUES ('400545', '\"广西英华国际职业学院\"');
+INSERT INTO `school` VALUES ('400546', '\"广西建设职业技术学院\"');
+INSERT INTO `school` VALUES ('400547', '\"广西水利电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400548', '\"广西交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400549', '\"柳州城市职业学院\"');
+INSERT INTO `school` VALUES ('400550', '\"邕江大学\"');
+INSERT INTO `school` VALUES ('400551', '\"贵州大学\"');
+INSERT INTO `school` VALUES ('400552', '\"贵州师范大学\"');
+INSERT INTO `school` VALUES ('400553', '\"贵州财经大学\"');
+INSERT INTO `school` VALUES ('400554', '\"贵州民族大学\"');
+INSERT INTO `school` VALUES ('400555', '\"贵阳医学院\"');
+INSERT INTO `school` VALUES ('400556', '\"遵义医学院\"');
+INSERT INTO `school` VALUES ('400557', '\"贵阳中医学院\"');
+INSERT INTO `school` VALUES ('400558', '\"毕节学院\"');
+INSERT INTO `school` VALUES ('400559', '\"遵义师范学院\"');
+INSERT INTO `school` VALUES ('400560', '\"黔南民族师范学院\"');
+INSERT INTO `school` VALUES ('400561', '\"六盘水师范学院\"');
+INSERT INTO `school` VALUES ('400562', '\"兴义民族师范学院\"');
+INSERT INTO `school` VALUES ('400563', '\"贵州师范学院\"');
+INSERT INTO `school` VALUES ('400564', '\"安顺学院\"');
+INSERT INTO `school` VALUES ('400565', '\"贵阳学院\"');
+INSERT INTO `school` VALUES ('400566', '\"凯里学院\"');
+INSERT INTO `school` VALUES ('400567', '\"铜仁学院\"');
+INSERT INTO `school` VALUES ('400568', '\"黔南民族医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400569', '\"遵义医药高等专科学校\"');
+INSERT INTO `school` VALUES ('400570', '\"贵州商业高等专科学校\"');
+INSERT INTO `school` VALUES ('400571', '\"贵州航天职业技术学院\"');
+INSERT INTO `school` VALUES ('400572', '\"贵州电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('400573', '\"贵州交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400574', '\"贵州警官职业学院\"');
+INSERT INTO `school` VALUES ('400575', '\"遵义职业技术学院\"');
+INSERT INTO `school` VALUES ('400576', '\"贵阳护理职业学院\"');
+INSERT INTO `school` VALUES ('400577', '\"贵州工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400578', '\"贵州盛华职业学院\"');
+INSERT INTO `school` VALUES ('400579', '\"黔东南民族职业技术学院\"');
+INSERT INTO `school` VALUES ('400580', '\"安顺职业技术学院\"');
+INSERT INTO `school` VALUES ('400581', '\"贵州职业技术学院\"');
+INSERT INTO `school` VALUES ('400582', '\"毕节职业技术学院\"');
+INSERT INTO `school` VALUES ('400583', '\"贵州电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400584', '\"贵州工商职业学院\"');
+INSERT INTO `school` VALUES ('400585', '\"黔南民族职业技术学院\"');
+INSERT INTO `school` VALUES ('400586', '\"铜仁职业技术学院\"');
+INSERT INTO `school` VALUES ('400587', '\"贵州亚泰职业学院\"');
+INSERT INTO `school` VALUES ('400588', '\"贵州轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('400589', '\"贵阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400590', '\"六盘水职业技术学院\"');
+INSERT INTO `school` VALUES ('400591', '\"黔西南民族职业技术学院\"');
+INSERT INTO `school` VALUES ('400592', '\"海南大学\"');
+INSERT INTO `school` VALUES ('400593', '\"海南师范大学\"');
+INSERT INTO `school` VALUES ('400594', '\"海口经济学院\"');
+INSERT INTO `school` VALUES ('400595', '\"海南医学院\"');
+INSERT INTO `school` VALUES ('400596', '\"琼州学院\"');
+INSERT INTO `school` VALUES ('400597', '\"三亚学院\"');
+INSERT INTO `school` VALUES ('400598', '\"琼台师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400599', '\"海南职业技术学院\"');
+INSERT INTO `school` VALUES ('400600', '\"三亚城市职业学院\"');
+INSERT INTO `school` VALUES ('400601', '\"海南科技职业学院\"');
+INSERT INTO `school` VALUES ('400602', '\"三亚航空旅游职业学院\"');
+INSERT INTO `school` VALUES ('400603', '\"海南软件职业技术学院\"');
+INSERT INTO `school` VALUES ('400604', '\"海南经贸职业技术学院\"');
+INSERT INTO `school` VALUES ('400605', '\"海南工商职业学院\"');
+INSERT INTO `school` VALUES ('400606', '\"三亚理工职业学院\"');
+INSERT INTO `school` VALUES ('400607', '\"海南政法职业学院\"');
+INSERT INTO `school` VALUES ('400608', '\"海南外国语职业学院\"');
+INSERT INTO `school` VALUES ('400609', '\"河北大学\"');
+INSERT INTO `school` VALUES ('400610', '\"河北工业大学\"');
+INSERT INTO `school` VALUES ('400611', '\"华北电力大学（保定）\"');
+INSERT INTO `school` VALUES ('400612', '\"燕山大学\"');
+INSERT INTO `school` VALUES ('400613', '\"河北联合大学\"');
+INSERT INTO `school` VALUES ('400614', '\"河北科技大学\"');
+INSERT INTO `school` VALUES ('400615', '\"石家庄铁道大学\"');
+INSERT INTO `school` VALUES ('400616', '\"河北工程大学\"');
+INSERT INTO `school` VALUES ('400617', '\"河北农业大学\"');
+INSERT INTO `school` VALUES ('400618', '\"河北医科大学\"');
+INSERT INTO `school` VALUES ('400619', '\"河北师范大学\"');
+INSERT INTO `school` VALUES ('400620', '\"河北经贸大学\"');
+INSERT INTO `school` VALUES ('400621', '\"中国人民武装警察部队学院\"');
+INSERT INTO `school` VALUES ('400622', '\"中央司法警官学院\"');
+INSERT INTO `school` VALUES ('400623', '\"防灾科技学院\"');
+INSERT INTO `school` VALUES ('400624', '\"华北科技学院\"');
+INSERT INTO `school` VALUES ('400625', '\"北华航天工业学院\"');
+INSERT INTO `school` VALUES ('400626', '\"河北建筑工程学院\"');
+INSERT INTO `school` VALUES ('400627', '\"石家庄经济学院\"');
+INSERT INTO `school` VALUES ('400628', '\"河北科技学院\"');
+INSERT INTO `school` VALUES ('400629', '\"承德医学院\"');
+INSERT INTO `school` VALUES ('400630', '\"唐山师范学院\"');
+INSERT INTO `school` VALUES ('400631', '\"廊坊师范学院\"');
+INSERT INTO `school` VALUES ('400632', '\"沧州师范学院\"');
+INSERT INTO `school` VALUES ('400633', '\"河北民族师范学院\"');
+INSERT INTO `school` VALUES ('400634', '\"邢台学院\"');
+INSERT INTO `school` VALUES ('400635', '\"河北科技师范学院\"');
+INSERT INTO `school` VALUES ('400636', '\"河北外国语学院\"');
+INSERT INTO `school` VALUES ('400637', '\"河北金融学院\"');
+INSERT INTO `school` VALUES ('400638', '\"河北体育学院\"');
+INSERT INTO `school` VALUES ('400639', '\"河北传媒学院\"');
+INSERT INTO `school` VALUES ('400640', '\"河北美术学院\"');
+INSERT INTO `school` VALUES ('400641', '\"邯郸学院\"');
+INSERT INTO `school` VALUES ('400642', '\"衡水学院\"');
+INSERT INTO `school` VALUES ('400643', '\"石家庄学院\"');
+INSERT INTO `school` VALUES ('400644', '\"保定学院\"');
+INSERT INTO `school` VALUES ('400645', '\"唐山学院\"');
+INSERT INTO `school` VALUES ('400646', '\"河北北方学院\"');
+INSERT INTO `school` VALUES ('400647', '\"承德石油高等专科学校\"');
+INSERT INTO `school` VALUES ('400648', '\"河北工程技术高等专科学校\"');
+INSERT INTO `school` VALUES ('400649', '\"石家庄人民医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400650', '\"邢台医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400651', '\"石家庄医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400652', '\"沧州医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400653', '\"石家庄幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400654', '\"承德护理职业学院\"');
+INSERT INTO `school` VALUES ('400655', '\"河北化工医药职业技术学院\"');
+INSERT INTO `school` VALUES ('400656', '\"邯郸职业技术学院\"');
+INSERT INTO `school` VALUES ('400657', '\"张家口职业技术学院\"');
+INSERT INTO `school` VALUES ('400658', '\"沧州职业技术学院\"');
+INSERT INTO `school` VALUES ('400659', '\"保定职业技术学院\"');
+INSERT INTO `school` VALUES ('400660', '\"石家庄铁路职业技术学院\"');
+INSERT INTO `school` VALUES ('400661', '\"河北能源职业技术学院\"');
+INSERT INTO `school` VALUES ('400662', '\"石家庄职业技术学院\"');
+INSERT INTO `school` VALUES ('400663', '\"邢台职业技术学院\"');
+INSERT INTO `school` VALUES ('400664', '\"河北工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400665', '\"石家庄科技职业学院\"');
+INSERT INTO `school` VALUES ('400666', '\"河北劳动关系职业学院\"');
+INSERT INTO `school` VALUES ('400667', '\"唐山职业技术学院\"');
+INSERT INTO `school` VALUES ('400668', '\"渤海石油职业学院\"');
+INSERT INTO `school` VALUES ('400669', '\"石家庄科技工程职业学院\"');
+INSERT INTO `school` VALUES ('400670', '\"石家庄邮电职业技术学院\"');
+INSERT INTO `school` VALUES ('400671', '\"河北司法警官职业学院\"');
+INSERT INTO `school` VALUES ('400672', '\"冀中职业学院\"');
+INSERT INTO `school` VALUES ('400673', '\"石家庄工商职业学院\"');
+INSERT INTO `school` VALUES ('400674', '\"石家庄经济职业学院\"');
+INSERT INTO `school` VALUES ('400675', '\"石家庄城市职业学院\"');
+INSERT INTO `school` VALUES ('400676', '\"石家庄工程职业学院\"');
+INSERT INTO `school` VALUES ('400677', '\"河北省艺术职业学院\"');
+INSERT INTO `school` VALUES ('400678', '\"河北旅游职业学院\"');
+INSERT INTO `school` VALUES ('400679', '\"河北女子职业技术学院\"');
+INSERT INTO `school` VALUES ('400680', '\"廊坊职业技术学院\"');
+INSERT INTO `school` VALUES ('400681', '\"保定电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400682', '\"河北机电职业技术学院\"');
+INSERT INTO `school` VALUES ('400683', '\"石家庄科技信息职业学院\"');
+INSERT INTO `school` VALUES ('400684', '\"河北公安警察职业学院\"');
+INSERT INTO `school` VALUES ('400685', '\"石家庄外国语职业学院\"');
+INSERT INTO `school` VALUES ('400686', '\"河北建材职业技术学院\"');
+INSERT INTO `school` VALUES ('400687', '\"河北政法职业学院\"');
+INSERT INTO `school` VALUES ('400688', '\"河北石油职业技术学院\"');
+INSERT INTO `school` VALUES ('400689', '\"唐山工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400690', '\"衡水职业技术学院\"');
+INSERT INTO `school` VALUES ('400691', '\"秦皇岛职业技术学院\"');
+INSERT INTO `school` VALUES ('400692', '\"唐山科技职业技术学院\"');
+INSERT INTO `school` VALUES ('400693', '\"泊头职业学院\"');
+INSERT INTO `school` VALUES ('400694', '\"河北轨道运输职业技术学院\"');
+INSERT INTO `school` VALUES ('400695', '\"宣化科技职业学院\"');
+INSERT INTO `school` VALUES ('400696', '\"廊坊东方职业技术学院\"');
+INSERT INTO `school` VALUES ('400697', '\"廊坊卫生职业学院\"');
+INSERT INTO `school` VALUES ('400698', '\"河北软件职业技术学院\"');
+INSERT INTO `school` VALUES ('400699', '\"石家庄理工职业学院\"');
+INSERT INTO `school` VALUES ('400700', '\"石家庄信息工程职业学院\"');
+INSERT INTO `school` VALUES ('400701', '\"河北交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400702', '\"石家庄财经职业学院\"');
+INSERT INTO `school` VALUES ('400703', '\"河北外国语职业学院\"');
+INSERT INTO `school` VALUES ('400704', '\"廊坊燕京职业技术学院\"');
+INSERT INTO `school` VALUES ('400705', '\"郑州大学\"');
+INSERT INTO `school` VALUES ('400706', '\"河南大学\"');
+INSERT INTO `school` VALUES ('400707', '\"河南科技大学\"');
+INSERT INTO `school` VALUES ('400708', '\"河南理工大学\"');
+INSERT INTO `school` VALUES ('400709', '\"河南工业大学\"');
+INSERT INTO `school` VALUES ('400710', '\"河南农业大学\"');
+INSERT INTO `school` VALUES ('400711', '\"河南师范大学\"');
+INSERT INTO `school` VALUES ('400712', '\"河南财经政法大学\"');
+INSERT INTO `school` VALUES ('400713', '\"郑州华信学院\"');
+INSERT INTO `school` VALUES ('400714', '\"郑州科技学院\"');
+INSERT INTO `school` VALUES ('400715', '\"华北水利水电学院\"');
+INSERT INTO `school` VALUES ('400716', '\"郑州轻工业学院\"');
+INSERT INTO `school` VALUES ('400717', '\"中原工学院\"');
+INSERT INTO `school` VALUES ('400718', '\"郑州航空工业管理学院\"');
+INSERT INTO `school` VALUES ('400719', '\"河南城建学院\"');
+INSERT INTO `school` VALUES ('400720', '\"安阳工学院\"');
+INSERT INTO `school` VALUES ('400721', '\"南阳理工学院\"');
+INSERT INTO `school` VALUES ('400722', '\"黄河科技学院\"');
+INSERT INTO `school` VALUES ('400723', '\"河南工程学院\"');
+INSERT INTO `school` VALUES ('400724', '\"商丘工学院\"');
+INSERT INTO `school` VALUES ('400725', '\"洛阳理工学院\"');
+INSERT INTO `school` VALUES ('400726', '\"河南中医学院\"');
+INSERT INTO `school` VALUES ('400727', '\"新乡医学院\"');
+INSERT INTO `school` VALUES ('400728', '\"信阳师范学院\"');
+INSERT INTO `school` VALUES ('400729', '\"周口师范学院\"');
+INSERT INTO `school` VALUES ('400730', '\"商丘师范学院\"');
+INSERT INTO `school` VALUES ('400731', '\"安阳师范学院\"');
+INSERT INTO `school` VALUES ('400732', '\"南阳师范学院\"');
+INSERT INTO `school` VALUES ('400733', '\"洛阳师范学院\"');
+INSERT INTO `school` VALUES ('400734', '\"郑州师范学院\"');
+INSERT INTO `school` VALUES ('400735', '\"郑州升达经贸管理学院\"');
+INSERT INTO `school` VALUES ('400736', '\"郑州成功财经学院\"');
+INSERT INTO `school` VALUES ('400737', '\"河南警察学院\"');
+INSERT INTO `school` VALUES ('400738', '\"河南科技学院\"');
+INSERT INTO `school` VALUES ('400739', '\"新乡学院\"');
+INSERT INTO `school` VALUES ('400740', '\"平顶山学院\"');
+INSERT INTO `school` VALUES ('400741', '\"黄淮学院\"');
+INSERT INTO `school` VALUES ('400742', '\"许昌学院\"');
+INSERT INTO `school` VALUES ('400743', '\"商丘学院\"');
+INSERT INTO `school` VALUES ('400744', '\"铁道警官高等专科学校\"');
+INSERT INTO `school` VALUES ('400745', '\"郑州电力高等专科学校\"');
+INSERT INTO `school` VALUES ('400746', '\"河南机电高等专科学校\"');
+INSERT INTO `school` VALUES ('400747', '\"郑州牧业工程高等专科学校\"');
+INSERT INTO `school` VALUES ('400748', '\"信阳农业高等专科学校\"');
+INSERT INTO `school` VALUES ('400749', '\"南阳医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400750', '\"商丘医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400751', '\"漯河医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400752', '\"郑州澍青医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400753', '\"安阳幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400754', '\"郑州幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400755', '\"焦作师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400756', '\"河南财政税务高等专科学校\"');
+INSERT INTO `school` VALUES ('400757', '\"河南商业高等专科学校\"');
+INSERT INTO `school` VALUES ('400758', '\"焦作工贸职业学院\"');
+INSERT INTO `school` VALUES ('400759', '\"河南化工职业学院\"');
+INSERT INTO `school` VALUES ('400760', '\"郑州理工职业学院\"');
+INSERT INTO `school` VALUES ('400761', '\"郑州信息工程职业学院\"');
+INSERT INTO `school` VALUES ('400762', '\"河南艺术职业学院\"');
+INSERT INTO `school` VALUES ('400763', '\"开封文化艺术职业学院\"');
+INSERT INTO `school` VALUES ('400764', '\"三门峡职业技术学院\"');
+INSERT INTO `school` VALUES ('400765', '\"郑州铁路职业技术学院\"');
+INSERT INTO `school` VALUES ('400766', '\"黄河水利职业技术学院\"');
+INSERT INTO `school` VALUES ('400767', '\"漯河职业技术学院\"');
+INSERT INTO `school` VALUES ('400768', '\"开封大学\"');
+INSERT INTO `school` VALUES ('400769', '\"河南职业技术学院\"');
+INSERT INTO `school` VALUES ('400770', '\"中州大学\"');
+INSERT INTO `school` VALUES ('400771', '\"焦作大学\"');
+INSERT INTO `school` VALUES ('400772', '\"许昌职业技术学院\"');
+INSERT INTO `school` VALUES ('400773', '\"郑州信息科技职业学院\"');
+INSERT INTO `school` VALUES ('400774', '\"郑州经贸职业学院\"');
+INSERT INTO `school` VALUES ('400775', '\"河南工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400776', '\"河南司法警官职业学院\"');
+INSERT INTO `school` VALUES ('400777', '\"周口职业技术学院\"');
+INSERT INTO `school` VALUES ('400778', '\"鹤壁职业技术学院\"');
+INSERT INTO `school` VALUES ('400779', '\"平顶山工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400780', '\"商丘职业技术学院\"');
+INSERT INTO `school` VALUES ('400781', '\"濮阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400782', '\"嵩山少林武术职业学院\"');
+INSERT INTO `school` VALUES ('400783', '\"许昌电气职业学院\"');
+INSERT INTO `school` VALUES ('400784', '\"河南护理职业学院\"');
+INSERT INTO `school` VALUES ('400785', '\"河南机电职业学院\"');
+INSERT INTO `school` VALUES ('400786', '\"郑州电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400787', '\"安阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400788', '\"信阳涉外职业技术学院\"');
+INSERT INTO `school` VALUES ('400789', '\"郑州电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('400790', '\"洛阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400791', '\"郑州工业安全职业学院\"');
+INSERT INTO `school` VALUES ('400792', '\"永城职业学院\"');
+INSERT INTO `school` VALUES ('400793', '\"郑州旅游职业学院\"');
+INSERT INTO `school` VALUES ('400794', '\"郑州职业技术学院\"');
+INSERT INTO `school` VALUES ('400795', '\"信阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400796', '\"郑州商贸旅游职业学院\"');
+INSERT INTO `school` VALUES ('400797', '\"新乡职业技术学院\"');
+INSERT INTO `school` VALUES ('400798', '\"驻马店职业技术学院\"');
+INSERT INTO `school` VALUES ('400799', '\"河南经贸职业学院\"');
+INSERT INTO `school` VALUES ('400800', '\"河南交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400801', '\"河南农业职业学院\"');
+INSERT INTO `school` VALUES ('400802', '\"南阳职业学院\"');
+INSERT INTO `school` VALUES ('400803', '\"济源职业技术学院\"');
+INSERT INTO `school` VALUES ('400804', '\"周口科技职业学院\"');
+INSERT INTO `school` VALUES ('400805', '\"河南推拿职业学院\"');
+INSERT INTO `school` VALUES ('400806', '\"郑州城市职业学院\"');
+INSERT INTO `school` VALUES ('400807', '\"河南检察职业学院\"');
+INSERT INTO `school` VALUES ('400808', '\"河南工业贸易职业学院\"');
+INSERT INTO `school` VALUES ('400809', '\"郑州黄河护理职业学院\"');
+INSERT INTO `school` VALUES ('400810', '\"河南质量工程职业学院\"');
+INSERT INTO `school` VALUES ('400811', '\"漯河食品职业学院\"');
+INSERT INTO `school` VALUES ('400812', '\"郑州交通职业学院\"');
+INSERT INTO `school` VALUES ('400813', '\"河南建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('400814', '\"鹤壁汽车工程职业学院\"');
+INSERT INTO `school` VALUES ('400815', '\"许昌陶瓷职业学院\"');
+INSERT INTO `school` VALUES ('400816', '\"长垣烹饪职业技术学院\"');
+INSERT INTO `school` VALUES ('400817', '\"东北林业大学\"');
+INSERT INTO `school` VALUES ('400818', '\"哈尔滨工业大学\"');
+INSERT INTO `school` VALUES ('400819', '\"哈尔滨工程大学\"');
+INSERT INTO `school` VALUES ('400820', '\"黑龙江大学\"');
+INSERT INTO `school` VALUES ('400821', '\"佳木斯大学\"');
+INSERT INTO `school` VALUES ('400822', '\"齐齐哈尔大学\"');
+INSERT INTO `school` VALUES ('400823', '\"哈尔滨理工大学\"');
+INSERT INTO `school` VALUES ('400824', '\"东北石油大学\"');
+INSERT INTO `school` VALUES ('400825', '\"东北农业大学\"');
+INSERT INTO `school` VALUES ('400826', '\"黑龙江八一农垦大学\"');
+INSERT INTO `school` VALUES ('400827', '\"哈尔滨医科大学\"');
+INSERT INTO `school` VALUES ('400828', '\"黑龙江中医药大学\"');
+INSERT INTO `school` VALUES ('400829', '\"哈尔滨师范大学\"');
+INSERT INTO `school` VALUES ('400830', '\"哈尔滨商业大学\"');
+INSERT INTO `school` VALUES ('400831', '\"哈尔滨学院\"');
+INSERT INTO `school` VALUES ('400832', '\"黑龙江工程学院\"');
+INSERT INTO `school` VALUES ('400833', '\"齐齐哈尔工程学院\"');
+INSERT INTO `school` VALUES ('400834', '\"黑龙江科技学院\"');
+INSERT INTO `school` VALUES ('400835', '\"哈尔滨远东理工学院\"');
+INSERT INTO `school` VALUES ('400836', '\"哈尔滨石油学院\"');
+INSERT INTO `school` VALUES ('400837', '\"齐齐哈尔医学院\"');
+INSERT INTO `school` VALUES ('400838', '\"牡丹江医学院\"');
+INSERT INTO `school` VALUES ('400839', '\"牡丹江师范学院\"');
+INSERT INTO `school` VALUES ('400840', '\"大庆师范学院\"');
+INSERT INTO `school` VALUES ('400841', '\"黑龙江外国语学院\"');
+INSERT INTO `school` VALUES ('400842', '\"哈尔滨金融学院\"');
+INSERT INTO `school` VALUES ('400843', '\"哈尔滨德强商务学院\"');
+INSERT INTO `school` VALUES ('400844', '\"哈尔滨体育学院\"');
+INSERT INTO `school` VALUES ('400845', '\"黑龙江东方学院\"');
+INSERT INTO `school` VALUES ('400846', '\"绥化学院\"');
+INSERT INTO `school` VALUES ('400847', '\"哈尔滨剑桥学院\"');
+INSERT INTO `school` VALUES ('400848', '\"哈尔滨广厦学院\"');
+INSERT INTO `school` VALUES ('400849', '\"黑河学院\"');
+INSERT INTO `school` VALUES ('400850', '\"哈尔滨华德学院\"');
+INSERT INTO `school` VALUES ('400851', '\"黑龙江护理高等专科学校\"');
+INSERT INTO `school` VALUES ('400852', '\"大庆医学高等专科学校\"');
+INSERT INTO `school` VALUES ('400853', '\"齐齐哈尔高等师范专科学校\"');
+INSERT INTO `school` VALUES ('400854', '\"黑龙江幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400855', '\"鹤岗师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400856', '\"鸡西大学\"');
+INSERT INTO `school` VALUES ('400857', '\"黑龙江司法警官职业学院\"');
+INSERT INTO `school` VALUES ('400858', '\"黑龙江建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('400859', '\"牡丹江大学\"');
+INSERT INTO `school` VALUES ('400860', '\"伊春职业学院\"');
+INSERT INTO `school` VALUES ('400861', '\"黑龙江农垦职业学院\"');
+INSERT INTO `school` VALUES ('400862', '\"黑龙江农业职业技术学院\"');
+INSERT INTO `school` VALUES ('400863', '\"黑龙江林业职业技术学院\"');
+INSERT INTO `school` VALUES ('400864', '\"黑龙江农业工程职业学院\"');
+INSERT INTO `school` VALUES ('400865', '\"大庆职业学院\"');
+INSERT INTO `school` VALUES ('400866', '\"黑龙江农业经济职业学院\"');
+INSERT INTO `school` VALUES ('400867', '\"黑龙江旅游职业技术学院\"');
+INSERT INTO `school` VALUES ('400868', '\"大兴安岭职业学院\"');
+INSERT INTO `school` VALUES ('400869', '\"黑龙江职业学院\"');
+INSERT INTO `school` VALUES ('400870', '\"哈尔滨现代公共关系职业学院\"');
+INSERT INTO `school` VALUES ('400871', '\"黑龙江三江美术职业学院\"');
+INSERT INTO `school` VALUES ('400872', '\"黑龙江煤炭职业技术学院\"');
+INSERT INTO `school` VALUES ('400873', '\"黑龙江信息技术职业学院\"');
+INSERT INTO `school` VALUES ('400874', '\"黑龙江生态工程职业学院\"');
+INSERT INTO `school` VALUES ('400875', '\"七台河职业学院\"');
+INSERT INTO `school` VALUES ('400876', '\"黑龙江艺术职业学院\"');
+INSERT INTO `school` VALUES ('400877', '\"哈尔滨华夏计算机职业技术学院\"');
+INSERT INTO `school` VALUES ('400878', '\"黑龙江生物科技职业学院\"');
+INSERT INTO `school` VALUES ('400879', '\"黑龙江公安警官职业学院\"');
+INSERT INTO `school` VALUES ('400880', '\"黑龙江农垦科技职业学院\"');
+INSERT INTO `school` VALUES ('400881', '\"黑龙江商业职业学院\"');
+INSERT INTO `school` VALUES ('400882', '\"哈尔滨科学技术职业学院\"');
+INSERT INTO `school` VALUES ('400883', '\"黑龙江民族职业学院\"');
+INSERT INTO `school` VALUES ('400884', '\"哈尔滨铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('400885', '\"黑龙江粮食职业学院\"');
+INSERT INTO `school` VALUES ('400886', '\"哈尔滨江南职业技术学院\"');
+INSERT INTO `school` VALUES ('400887', '\"哈尔滨应用职业技术学院\"');
+INSERT INTO `school` VALUES ('400888', '\"黑龙江交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400889', '\"佳木斯职业学院\"');
+INSERT INTO `school` VALUES ('400890', '\"齐齐哈尔理工职业学院\"');
+INSERT INTO `school` VALUES ('400891', '\"哈尔滨工程技术职业学院\"');
+INSERT INTO `school` VALUES ('400892', '\"哈尔滨职业技术学院\"');
+INSERT INTO `school` VALUES ('400893', '\"哈尔滨电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400894', '\"武汉大学\"');
+INSERT INTO `school` VALUES ('400895', '\"中南财经政法大学\"');
+INSERT INTO `school` VALUES ('400896', '\"华中科技大学\"');
+INSERT INTO `school` VALUES ('400897', '\"武汉理工大学\"');
+INSERT INTO `school` VALUES ('400898', '\"中国地质大学(武汉）\"');
+INSERT INTO `school` VALUES ('400899', '\"华中农业大学\"');
+INSERT INTO `school` VALUES ('400900', '\"华中师范大学\"');
+INSERT INTO `school` VALUES ('400901', '\"中南民族大学\"');
+INSERT INTO `school` VALUES ('400902', '\"湖北大学\"');
+INSERT INTO `school` VALUES ('400903', '\"长江大学\"');
+INSERT INTO `school` VALUES ('400904', '\"江汉大学\"');
+INSERT INTO `school` VALUES ('400905', '\"三峡大学\"');
+INSERT INTO `school` VALUES ('400906', '\"武汉科技大学\"');
+INSERT INTO `school` VALUES ('400907', '\"湖北工业大学\"');
+INSERT INTO `school` VALUES ('400908', '\"武汉工程大学\"');
+INSERT INTO `school` VALUES ('400909', '\"武汉纺织大学\"');
+INSERT INTO `school` VALUES ('400910', '\"湖北中医药大学\"');
+INSERT INTO `school` VALUES ('400911', '\"荆楚理工学院\"');
+INSERT INTO `school` VALUES ('400912', '\"武汉工业学院\"');
+INSERT INTO `school` VALUES ('400913', '\"湖北汽车工业学院\"');
+INSERT INTO `school` VALUES ('400914', '\"武昌工学院\"');
+INSERT INTO `school` VALUES ('400915', '\"武昌理工学院\"');
+INSERT INTO `school` VALUES ('400916', '\"湖北医药学院\"');
+INSERT INTO `school` VALUES ('400917', '\"湖北师范学院\"');
+INSERT INTO `school` VALUES ('400918', '\"黄冈师范学院\"');
+INSERT INTO `school` VALUES ('400919', '\"湖北工程学院\"');
+INSERT INTO `school` VALUES ('400920', '\"湖北第二师范学院\"');
+INSERT INTO `school` VALUES ('400921', '\"湖北经济学院\"');
+INSERT INTO `school` VALUES ('400922', '\"武汉长江工商学院\"');
+INSERT INTO `school` VALUES ('400923', '\"湖北警官学院\"');
+INSERT INTO `school` VALUES ('400924', '\"武汉体育学院\"');
+INSERT INTO `school` VALUES ('400925', '\"湖北美术学院\"');
+INSERT INTO `school` VALUES ('400926', '\"武汉音乐学院\"');
+INSERT INTO `school` VALUES ('400927', '\"湖北民族学院\"');
+INSERT INTO `school` VALUES ('400928', '\"湖北科技学院\"');
+INSERT INTO `school` VALUES ('400929', '\"湖北理工学院\"');
+INSERT INTO `school` VALUES ('400930', '\"湖北文理学院\"');
+INSERT INTO `school` VALUES ('400931', '\"武汉生物工程学院\"');
+INSERT INTO `school` VALUES ('400932', '\"汉口学院\"');
+INSERT INTO `school` VALUES ('400933', '\"武汉东湖学院\"');
+INSERT INTO `school` VALUES ('400934', '\"湖北中医药高等专科学校\"');
+INSERT INTO `school` VALUES ('400935', '\"郧阳师范高等专科学校\"');
+INSERT INTO `school` VALUES ('400936', '\"武汉工贸职业学院\"');
+INSERT INTO `school` VALUES ('400937', '\"鄂州职业大学\"');
+INSERT INTO `school` VALUES ('400938', '\"荆州理工职业学院\"');
+INSERT INTO `school` VALUES ('400939', '\"武汉商业服务学院\"');
+INSERT INTO `school` VALUES ('400940', '\"恩施职业技术学院\"');
+INSERT INTO `school` VALUES ('400941', '\"襄阳职业技术学院\"');
+INSERT INTO `school` VALUES ('400942', '\"湖北职业技术学院\"');
+INSERT INTO `school` VALUES ('400943', '\"十堰职业技术学院\"');
+INSERT INTO `school` VALUES ('400944', '\"长江职业学院\"');
+INSERT INTO `school` VALUES ('400945', '\"武汉职业技术学院\"');
+INSERT INTO `school` VALUES ('400946', '\"武汉船舶职业技术学院\"');
+INSERT INTO `school` VALUES ('400947', '\"黄冈职业技术学院\"');
+INSERT INTO `school` VALUES ('400948', '\"武汉信息传播职业技术学院\"');
+INSERT INTO `school` VALUES ('400949', '\"湖北财税职业学院\"');
+INSERT INTO `school` VALUES ('400950', '\"武汉城市职业学院\"');
+INSERT INTO `school` VALUES ('400951', '\"湖北国土资源职业学院\"');
+INSERT INTO `school` VALUES ('400952', '\"咸宁职业技术学院\"');
+INSERT INTO `school` VALUES ('400953', '\"鄂东职业技术学院\"');
+INSERT INTO `school` VALUES ('400954', '\"黄冈科技职业学院\"');
+INSERT INTO `school` VALUES ('400955', '\"湖北艺术职业学院\"');
+INSERT INTO `school` VALUES ('400956', '\"三峡旅游职业技术学院\"');
+INSERT INTO `school` VALUES ('400957', '\"江汉艺术职业学院\"');
+INSERT INTO `school` VALUES ('400958', '\"湖北生态工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400959', '\"长江工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400960', '\"湖北生物科技职业学院\"');
+INSERT INTO `school` VALUES ('400961', '\"天门职业学院\"');
+INSERT INTO `school` VALUES ('400962', '\"随州职业技术学院\"');
+INSERT INTO `school` VALUES ('400963', '\"武汉警官职业学院\"');
+INSERT INTO `school` VALUES ('400964', '\"湖北开放职业学院\"');
+INSERT INTO `school` VALUES ('400965', '\"武汉科技职业学院\"');
+INSERT INTO `school` VALUES ('400966', '\"武汉交通职业学院\"');
+INSERT INTO `school` VALUES ('400967', '\"武汉商贸职业学院\"');
+INSERT INTO `school` VALUES ('400968', '\"武汉外语外事职业学院\"');
+INSERT INTO `school` VALUES ('400969', '\"湖北水利水电职业技术学院\"');
+INSERT INTO `school` VALUES ('400970', '\"湖北城市建设职业技术学院\"');
+INSERT INTO `school` VALUES ('400971', '\"武昌职业学院\"');
+INSERT INTO `school` VALUES ('400972', '\"湖北三峡职业技术学院\"');
+INSERT INTO `school` VALUES ('400973', '\"武汉民政职业学院\"');
+INSERT INTO `school` VALUES ('400974', '\"湖北体育职业学院\"');
+INSERT INTO `school` VALUES ('400975', '\"襄阳汽车职业技术学院\"');
+INSERT INTO `school` VALUES ('400976', '\"武汉航海职业技术学院\"');
+INSERT INTO `school` VALUES ('400977', '\"三峡电力职业学院\"');
+INSERT INTO `school` VALUES ('400978', '\"武汉铁路职业技术学院\"');
+INSERT INTO `school` VALUES ('400979', '\"湖北科技职业学院\"');
+INSERT INTO `school` VALUES ('400980', '\"湖北青年职业学院\"');
+INSERT INTO `school` VALUES ('400981', '\"黄石职业技术学院\"');
+INSERT INTO `school` VALUES ('400982', '\"武汉工业职业技术学院\"');
+INSERT INTO `school` VALUES ('400983', '\"武汉电力职业技术学院\"');
+INSERT INTO `school` VALUES ('400984', '\"仙桃职业学院\"');
+INSERT INTO `school` VALUES ('400985', '\"武汉工程职业技术学院\"');
+INSERT INTO `school` VALUES ('400986', '\"荆州职业技术学院\"');
+INSERT INTO `school` VALUES ('400987', '\"武汉软件工程职业学院\"');
+INSERT INTO `school` VALUES ('400988', '\"湖北轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('400989', '\"湖北交通职业技术学院\"');
+INSERT INTO `school` VALUES ('400990', '\"国防科学技术大学\"');
+INSERT INTO `school` VALUES ('400991', '\"中南大学\"');
+INSERT INTO `school` VALUES ('400992', '\"湖南大学\"');
+INSERT INTO `school` VALUES ('400993', '\"湘潭大学\"');
+INSERT INTO `school` VALUES ('400994', '\"湖南科技大学\"');
+INSERT INTO `school` VALUES ('400995', '\"吉首大学\"');
+INSERT INTO `school` VALUES ('400996', '\"长沙理工大学\"');
+INSERT INTO `school` VALUES ('400997', '\"南华大学\"');
+INSERT INTO `school` VALUES ('400998', '\"湖南工业大学\"');
+INSERT INTO `school` VALUES ('400999', '\"湖南农业大学\"');
+INSERT INTO `school` VALUES ('401000', '\"湖南中医药大学\"');
+INSERT INTO `school` VALUES ('401001', '\"湖南师范大学\"');
+INSERT INTO `school` VALUES ('401002', '\"长沙学院\"');
+INSERT INTO `school` VALUES ('401003', '\"湖南第一师范学院\"');
+INSERT INTO `school` VALUES ('401004', '\"湖南工学院\"');
+INSERT INTO `school` VALUES ('401005', '\"湖南理工学院\"');
+INSERT INTO `school` VALUES ('401006', '\"湖南城市学院\"');
+INSERT INTO `school` VALUES ('401007', '\"湖南工程学院\"');
+INSERT INTO `school` VALUES ('401008', '\"中南林业科技大学\"');
+INSERT INTO `school` VALUES ('401009', '\"长沙医学院\"');
+INSERT INTO `school` VALUES ('401010', '\"衡阳师范学院\"');
+INSERT INTO `school` VALUES ('401011', '\"湘南学院\"');
+INSERT INTO `school` VALUES ('401012', '\"湖南涉外经济学院\"');
+INSERT INTO `school` VALUES ('401013', '\"湖南财政经济学院\"');
+INSERT INTO `school` VALUES ('401014', '\"湖南商学院\"');
+INSERT INTO `school` VALUES ('401015', '\"湖南警察学院\"');
+INSERT INTO `school` VALUES ('401016', '\"湖南女子学院\"');
+INSERT INTO `school` VALUES ('401017', '\"湖南科技学院\"');
+INSERT INTO `school` VALUES ('401018', '\"湖南人文科技学院\"');
+INSERT INTO `school` VALUES ('401019', '\"湖南文理学院\"');
+INSERT INTO `school` VALUES ('401020', '\"邵阳学院\"');
+INSERT INTO `school` VALUES ('401021', '\"怀化学院\"');
+INSERT INTO `school` VALUES ('401022', '\"怀化医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401023', '\"邵阳医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401024', '\"益阳医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401025', '\"湖南中医药高等专科学校\"');
+INSERT INTO `school` VALUES ('401026', '\"株洲师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401027', '\"长沙师范学校\"');
+INSERT INTO `school` VALUES ('401028', '\"湖南税务高等专科学校\"');
+INSERT INTO `school` VALUES ('401029', '\"长沙航空职业技术学院\"');
+INSERT INTO `school` VALUES ('401030', '\"湖南冶金职业技术学院\"');
+INSERT INTO `school` VALUES ('401031', '\"湖南信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401032', '\"湖南大众传媒职业技术学院\"');
+INSERT INTO `school` VALUES ('401033', '\"湖南工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401034', '\"湖南环境生物职业技术学院\"');
+INSERT INTO `school` VALUES ('401035', '\"湖南铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('401036', '\"长沙民政职业技术学院\"');
+INSERT INTO `school` VALUES ('401037', '\"永州职业技术学院\"');
+INSERT INTO `school` VALUES ('401038', '\"湖南外国语职业学院\"');
+INSERT INTO `school` VALUES ('401039', '\"湖南电子科技职业学院\"');
+INSERT INTO `school` VALUES ('401040', '\"湖南都市职业学院\"');
+INSERT INTO `school` VALUES ('401041', '\"湖南科技经贸职业学院\"');
+INSERT INTO `school` VALUES ('401042', '\"湖南软件职业学院\"');
+INSERT INTO `school` VALUES ('401043', '\"湖南信息科学职业学院\"');
+INSERT INTO `school` VALUES ('401044', '\"湘西民族职业技术学院\"');
+INSERT INTO `school` VALUES ('401045', '\"衡阳财经工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401046', '\"益阳职业技术学院\"');
+INSERT INTO `school` VALUES ('401047', '\"湖南同德职业学院\"');
+INSERT INTO `school` VALUES ('401048', '\"湖南体育职业学院\"');
+INSERT INTO `school` VALUES ('401049', '\"湖南艺术职业学院\"');
+INSERT INTO `school` VALUES ('401050', '\"湖南司法警官职业学院\"');
+INSERT INTO `school` VALUES ('401051', '\"湖南工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401052', '\"湖南工艺美术职业学院\"');
+INSERT INTO `school` VALUES ('401053', '\"湖南电气职业技术学院\"');
+INSERT INTO `school` VALUES ('401054', '\"湖南民族职业学院\"');
+INSERT INTO `school` VALUES ('401055', '\"湖南外贸职业学院\"');
+INSERT INTO `school` VALUES ('401056', '\"邵阳职业技术学院\"');
+INSERT INTO `school` VALUES ('401057', '\"湖南吉利汽车职业技术学院\"');
+INSERT INTO `school` VALUES ('401058', '\"湖南水利水电职业技术学院\"');
+INSERT INTO `school` VALUES ('401059', '\"长沙商贸旅游职业技术学院\"');
+INSERT INTO `school` VALUES ('401060', '\"湖南科技工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401061', '\"湖南有色金属职业技术学院\"');
+INSERT INTO `school` VALUES ('401062', '\"湖南食品药品职业学院\"');
+INSERT INTO `school` VALUES ('401063', '\"长沙卫生职业学院\"');
+INSERT INTO `school` VALUES ('401064', '\"湖南网络工程职业学院\"');
+INSERT INTO `school` VALUES ('401065', '\"长沙环境保护职业技术学院\"');
+INSERT INTO `school` VALUES ('401066', '\"张家界航空工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401067', '\"长沙电力职业技术学院\"');
+INSERT INTO `school` VALUES ('401068', '\"株洲职业技术学院\"');
+INSERT INTO `school` VALUES ('401069', '\"湖南石油化工职业技术学院\"');
+INSERT INTO `school` VALUES ('401070', '\"湖南城建职业技术学院\"');
+INSERT INTO `school` VALUES ('401071', '\"湖南化工职业技术学院\"');
+INSERT INTO `school` VALUES ('401072', '\"潇湘职业学院\"');
+INSERT INTO `school` VALUES ('401073', '\"长沙职业技术学院\"');
+INSERT INTO `school` VALUES ('401074', '\"怀化职业技术学院\"');
+INSERT INTO `school` VALUES ('401075', '\"岳阳职业技术学院\"');
+INSERT INTO `school` VALUES ('401076', '\"常德职业技术学院\"');
+INSERT INTO `school` VALUES ('401077', '\"湖南交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401078', '\"娄底职业技术学院\"');
+INSERT INTO `school` VALUES ('401079', '\"湖南理工职业技术学院\"');
+INSERT INTO `school` VALUES ('401080', '\"长沙通信职业技术学院\"');
+INSERT INTO `school` VALUES ('401081', '\"湖南九嶷职业技术学院\"');
+INSERT INTO `school` VALUES ('401082', '\"湘潭职业技术学院\"');
+INSERT INTO `school` VALUES ('401083', '\"湖南商务职业技术学院\"');
+INSERT INTO `school` VALUES ('401084', '\"郴州职业技术学院\"');
+INSERT INTO `school` VALUES ('401085', '\"湖南生物机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401086', '\"保险职业学院\"');
+INSERT INTO `school` VALUES ('401087', '\"湖南科技职业学院\"');
+INSERT INTO `school` VALUES ('401088', '\"湖南现代物流职业技术学院\"');
+INSERT INTO `school` VALUES ('401089', '\"湖南安全技术职业学院\"');
+INSERT INTO `school` VALUES ('401090', '\"湖南高速铁路职业技术学院\"');
+INSERT INTO `school` VALUES ('401091', '\"湖南机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401092', '\"湖南铁路科技职业技术学院\"');
+INSERT INTO `school` VALUES ('401093', '\"湖南三一工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401094', '\"长沙南方职业学院\"');
+INSERT INTO `school` VALUES ('401095', '\"湖南高尔夫旅游职业学院\"');
+INSERT INTO `school` VALUES ('401096', '\"湖南工商职业学院\"');
+INSERT INTO `school` VALUES ('401097', '\"吉林大学\"');
+INSERT INTO `school` VALUES ('401098', '\"东北师范大学\"');
+INSERT INTO `school` VALUES ('401099', '\"延边大学\"');
+INSERT INTO `school` VALUES ('401100', '\"北华大学\"');
+INSERT INTO `school` VALUES ('401101', '\"长春大学\"');
+INSERT INTO `school` VALUES ('401102', '\"长春理工大学\"');
+INSERT INTO `school` VALUES ('401103', '\"长春工业大学\"');
+INSERT INTO `school` VALUES ('401104', '\"吉林农业大学\"');
+INSERT INTO `school` VALUES ('401105', '\"长春中医药大学\"');
+INSERT INTO `school` VALUES ('401106', '\"吉林师范大学\"');
+INSERT INTO `school` VALUES ('401107', '\"吉林财经大学\"');
+INSERT INTO `school` VALUES ('401108', '\"东北电力大学\"');
+INSERT INTO `school` VALUES ('401109', '\"长春工程学院\"');
+INSERT INTO `school` VALUES ('401110', '\"吉林建筑工程学院\"');
+INSERT INTO `school` VALUES ('401111', '\"吉林化工学院\"');
+INSERT INTO `school` VALUES ('401112', '\"长春建筑学院\"');
+INSERT INTO `school` VALUES ('401113', '\"吉林农业科技学院\"');
+INSERT INTO `school` VALUES ('401114', '\"吉林医药学院\"');
+INSERT INTO `school` VALUES ('401115', '\"通化师范学院\"');
+INSERT INTO `school` VALUES ('401116', '\"白城师范学院\"');
+INSERT INTO `school` VALUES ('401117', '\"吉林工程技术师范学院\"');
+INSERT INTO `school` VALUES ('401118', '\"长春师范学院\"');
+INSERT INTO `school` VALUES ('401119', '\"吉林华桥外国语学院\"');
+INSERT INTO `school` VALUES ('401120', '\"吉林工商学院\"');
+INSERT INTO `school` VALUES ('401121', '\"吉林警察学院\"');
+INSERT INTO `school` VALUES ('401122', '\"吉林体育学院\"');
+INSERT INTO `school` VALUES ('401123', '\"吉林艺术学院\"');
+INSERT INTO `school` VALUES ('401124', '\"吉林动画学院\"');
+INSERT INTO `school` VALUES ('401125', '\"长春汽车工业高等专科学校\"');
+INSERT INTO `school` VALUES ('401126', '\"长春医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401127', '\"白城医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401128', '\"长春金融高等专科学校\"');
+INSERT INTO `school` VALUES ('401129', '\"吉林科技职业技术学院\"');
+INSERT INTO `school` VALUES ('401130', '\"四平职业大学\"');
+INSERT INTO `school` VALUES ('401131', '\"辽源职业技术学院\"');
+INSERT INTO `school` VALUES ('401132', '\"长春东方职业学院\"');
+INSERT INTO `school` VALUES ('401133', '\"吉林交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401134', '\"吉林铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('401135', '\"吉林司法警官职业学院\"');
+INSERT INTO `school` VALUES ('401136', '\"白城职业技术学院\"');
+INSERT INTO `school` VALUES ('401137', '\"吉林工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401138', '\"吉林电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401139', '\"长白山职业技术学院\"');
+INSERT INTO `school` VALUES ('401140', '\"松原职业技术学院\"');
+INSERT INTO `school` VALUES ('401141', '\"长春信息技术职业学院\"');
+INSERT INTO `school` VALUES ('401142', '\"延边职业技术学院\"');
+INSERT INTO `school` VALUES ('401143', '\"长春职业技术学院\"');
+INSERT INTO `school` VALUES ('401144', '\"吉林农业工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401145', '\"吉林城市职业技术学院\"');
+INSERT INTO `school` VALUES ('401146', '\"南京大学\"');
+INSERT INTO `school` VALUES ('401147', '\"东南大学\"');
+INSERT INTO `school` VALUES ('401148', '\"中国矿业大学（徐州）\"');
+INSERT INTO `school` VALUES ('401149', '\"河海大学\"');
+INSERT INTO `school` VALUES ('401150', '\"江南大学\"');
+INSERT INTO `school` VALUES ('401151', '\"南京农业大学\"');
+INSERT INTO `school` VALUES ('401152', '\"中国药科大学\"');
+INSERT INTO `school` VALUES ('401153', '\"南京理工大学\"');
+INSERT INTO `school` VALUES ('401154', '\"南京航空航天大学\"');
+INSERT INTO `school` VALUES ('401155', '\"苏州大学\"');
+INSERT INTO `school` VALUES ('401156', '\"扬州大学\"');
+INSERT INTO `school` VALUES ('401157', '\"江苏大学\"');
+INSERT INTO `school` VALUES ('401158', '\"江苏科技大学\"');
+INSERT INTO `school` VALUES ('401159', '\"南京邮电大学\"');
+INSERT INTO `school` VALUES ('401160', '\"南京工业大学\"');
+INSERT INTO `school` VALUES ('401161', '\"常州大学\"');
+INSERT INTO `school` VALUES ('401162', '\"南京林业大学\"');
+INSERT INTO `school` VALUES ('401163', '\"南京医科大学\"');
+INSERT INTO `school` VALUES ('401164', '\"南京中医药大学\"');
+INSERT INTO `school` VALUES ('401165', '\"南京师范大学\"');
+INSERT INTO `school` VALUES ('401166', '\"江苏师范大学\"');
+INSERT INTO `school` VALUES ('401167', '\"南京财经大学\"');
+INSERT INTO `school` VALUES ('401168', '\"南通大学\"');
+INSERT INTO `school` VALUES ('401169', '\"西交利物浦大学\"');
+INSERT INTO `school` VALUES ('401170', '\"南京森林警察学院\"');
+INSERT INTO `school` VALUES ('401171', '\"南京信息工程大学\"');
+INSERT INTO `school` VALUES ('401172', '\"金陵科技学院\"');
+INSERT INTO `school` VALUES ('401173', '\"徐州工程学院\"');
+INSERT INTO `school` VALUES ('401174', '\"盐城工学院\"');
+INSERT INTO `school` VALUES ('401175', '\"淮阴工学院\"');
+INSERT INTO `school` VALUES ('401176', '\"常州工学院\"');
+INSERT INTO `school` VALUES ('401177', '\"南京工程学院\"');
+INSERT INTO `school` VALUES ('401178', '\"淮海工学院\"');
+INSERT INTO `school` VALUES ('401179', '\"徐州医学院\"');
+INSERT INTO `school` VALUES ('401180', '\"盐城师范学院\"');
+INSERT INTO `school` VALUES ('401181', '\"南京晓庄学院\"');
+INSERT INTO `school` VALUES ('401182', '\"苏州科技学院\"');
+INSERT INTO `school` VALUES ('401183', '\"江苏技术师范学院\"');
+INSERT INTO `school` VALUES ('401184', '\"淮阴师范学院\"');
+INSERT INTO `school` VALUES ('401185', '\"南京审计学院\"');
+INSERT INTO `school` VALUES ('401186', '\"江苏警官学院\"');
+INSERT INTO `school` VALUES ('401187', '\"南京体育学院\"');
+INSERT INTO `school` VALUES ('401188', '\"南京艺术学院\"');
+INSERT INTO `school` VALUES ('401189', '\"常熟理工学院\"');
+INSERT INTO `school` VALUES ('401190', '\"三江学院\"');
+INSERT INTO `school` VALUES ('401191', '\"无锡太湖学院\"');
+INSERT INTO `school` VALUES ('401192', '\"连云港师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401193', '\"泰州师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401194', '\"徐州幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401195', '\"镇江市高等专科学校\"');
+INSERT INTO `school` VALUES ('401196', '\"江苏畜牧兽医职业技术学院\"');
+INSERT INTO `school` VALUES ('401197', '\"无锡职业技术学院\"');
+INSERT INTO `school` VALUES ('401198', '\"南通纺织职业技术学院\"');
+INSERT INTO `school` VALUES ('401199', '\"苏州工艺美术职业技术学院\"');
+INSERT INTO `school` VALUES ('401200', '\"南京工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401201', '\"无锡商业职业技术学院\"');
+INSERT INTO `school` VALUES ('401202', '\"泰州职业技术学院\"');
+INSERT INTO `school` VALUES ('401203', '\"南通职业大学\"');
+INSERT INTO `school` VALUES ('401204', '\"连云港职业技术学院\"');
+INSERT INTO `school` VALUES ('401205', '\"民办明达职业技术学院\"');
+INSERT INTO `school` VALUES ('401206', '\"苏州职业大学\"');
+INSERT INTO `school` VALUES ('401207', '\"江苏城市职业学院\"');
+INSERT INTO `school` VALUES ('401208', '\"沙洲职业工学院\"');
+INSERT INTO `school` VALUES ('401209', '\"扬州市职业大学\"');
+INSERT INTO `school` VALUES ('401210', '\"江苏建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('401211', '\"南通航运职业技术学院\"');
+INSERT INTO `school` VALUES ('401212', '\"宿迁职业技术学院\"');
+INSERT INTO `school` VALUES ('401213', '\"江苏信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401214', '\"江苏农林职业技术学院\"');
+INSERT INTO `school` VALUES ('401215', '\"江苏食品职业技术学院\"');
+INSERT INTO `school` VALUES ('401216', '\"徐州工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401217', '\"常州机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401218', '\"常州轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('401219', '\"南京旅游职业学院\"');
+INSERT INTO `school` VALUES ('401220', '\"常州工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401221', '\"南京信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401222', '\"苏州高博软件技术职业学院\"');
+INSERT INTO `school` VALUES ('401223', '\"盐城卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('401224', '\"苏州工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401225', '\"江阴职业技术学院\"');
+INSERT INTO `school` VALUES ('401226', '\"南京城市职业学院\"');
+INSERT INTO `school` VALUES ('401227', '\"徐州生物工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401228', '\"苏州信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401229', '\"南京机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401230', '\"江苏建康职业学院\"');
+INSERT INTO `school` VALUES ('401231', '\"苏州卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('401232', '\"江苏海事职业技术学院\"');
+INSERT INTO `school` VALUES ('401233', '\"苏州经贸职业技术学院\"');
+INSERT INTO `school` VALUES ('401234', '\"江苏经贸职业技术学院\"');
+INSERT INTO `school` VALUES ('401235', '\"南京特殊教育职业技术学院\"');
+INSERT INTO `school` VALUES ('401236', '\"扬州环境资源职业技术学院\"');
+INSERT INTO `school` VALUES ('401237', '\"金肯职业技术学院\"');
+INSERT INTO `school` VALUES ('401238', '\"应天职业技术学院\"');
+INSERT INTO `school` VALUES ('401239', '\"南京化工职业技术学院\"');
+INSERT INTO `school` VALUES ('401240', '\"炎黄职业技术学院\"');
+INSERT INTO `school` VALUES ('401241', '\"苏州农业职业技术学院\"');
+INSERT INTO `school` VALUES ('401242', '\"无锡工艺职业技术学院\"');
+INSERT INTO `school` VALUES ('401243', '\"常州纺织服装职业技术学院\"');
+INSERT INTO `school` VALUES ('401244', '\"紫琅职业技术学院\"');
+INSERT INTO `school` VALUES ('401245', '\"常州信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401246', '\"健雄职业技术学院\"');
+INSERT INTO `school` VALUES ('401247', '\"江苏财经职业技术学院\"');
+INSERT INTO `school` VALUES ('401248', '\"盐城纺织职业技术学院\"');
+INSERT INTO `school` VALUES ('401249', '\"扬州工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401250', '\"江海职业技术学院\"');
+INSERT INTO `school` VALUES ('401251', '\"南京铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('401252', '\"九州职业技术学院\"');
+INSERT INTO `school` VALUES ('401253', '\"江苏联合职业技术学院\"');
+INSERT INTO `school` VALUES ('401254', '\"金山职业技术学院\"');
+INSERT INTO `school` VALUES ('401255', '\"无锡科技职业学院\"');
+INSERT INTO `school` VALUES ('401256', '\"硅湖职业技术学院\"');
+INSERT INTO `school` VALUES ('401257', '\"无锡城市职业技术学院\"');
+INSERT INTO `school` VALUES ('401258', '\"苏州托普信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401259', '\"正德职业技术学院\"');
+INSERT INTO `school` VALUES ('401260', '\"江南影视艺术职业学院\"');
+INSERT INTO `school` VALUES ('401261', '\"南通农业职业技术学院\"');
+INSERT INTO `school` VALUES ('401262', '\"苏州工业园区职业技术学院\"');
+INSERT INTO `school` VALUES ('401263', '\"太湖创意职业技术学院\"');
+INSERT INTO `school` VALUES ('401264', '\"淮安信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401265', '\"无锡南洋职业技术学院\"');
+INSERT INTO `school` VALUES ('401266', '\"钟山职业技术学院\"');
+INSERT INTO `school` VALUES ('401267', '\"南京交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401268', '\"建东职业技术学院\"');
+INSERT INTO `school` VALUES ('401269', '\"南京视觉艺术职业学院\"');
+INSERT INTO `school` VALUES ('401270', '\"昆山登云科技职业学院\"');
+INSERT INTO `school` VALUES ('401271', '\"苏州港大思培科技职业学院\"');
+INSERT INTO `school` VALUES ('401272', '\"宿迁泽达职业技术学院\"');
+INSERT INTO `school` VALUES ('401273', '\"苏州工业园区服务外包职业学院\"');
+INSERT INTO `school` VALUES ('401274', '\"南昌大学\"');
+INSERT INTO `school` VALUES ('401275', '\"江西理工大学\"');
+INSERT INTO `school` VALUES ('401276', '\"华东交通大学\"');
+INSERT INTO `school` VALUES ('401277', '\"东华理工大学\"');
+INSERT INTO `school` VALUES ('401278', '\"南昌航空大学\"');
+INSERT INTO `school` VALUES ('401279', '\"江西农业大学\"');
+INSERT INTO `school` VALUES ('401280', '\"江西师范大学\"');
+INSERT INTO `school` VALUES ('401281', '\"江西科技师范大学\"');
+INSERT INTO `school` VALUES ('401282', '\"江西财经大学\"');
+INSERT INTO `school` VALUES ('401283', '\"井冈山大学\"');
+INSERT INTO `school` VALUES ('401284', '\"景德镇陶瓷学院\"');
+INSERT INTO `school` VALUES ('401285', '\"南昌工程学院\"');
+INSERT INTO `school` VALUES ('401286', '\"南昌理工学院\"');
+INSERT INTO `school` VALUES ('401287', '\"南昌工学院\"');
+INSERT INTO `school` VALUES ('401288', '\"江西中医学院\"');
+INSERT INTO `school` VALUES ('401289', '\"赣南医学院\"');
+INSERT INTO `school` VALUES ('401290', '\"上饶师范学院\"');
+INSERT INTO `school` VALUES ('401291', '\"赣南师范学院\"');
+INSERT INTO `school` VALUES ('401292', '\"江西警察学院\"');
+INSERT INTO `school` VALUES ('401293', '\"江西服装学院\"');
+INSERT INTO `school` VALUES ('401294', '\"九江学院\"');
+INSERT INTO `school` VALUES ('401295', '\"江西科技学院\"');
+INSERT INTO `school` VALUES ('401296', '\"新余学院\"');
+INSERT INTO `school` VALUES ('401297', '\"宜春学院\"');
+INSERT INTO `school` VALUES ('401298', '\"江西中医药高等专科学校\"');
+INSERT INTO `school` VALUES ('401299', '\"南昌师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401300', '\"景德镇高等专科学校\"');
+INSERT INTO `school` VALUES ('401301', '\"萍乡高等专科学校\"');
+INSERT INTO `school` VALUES ('401302', '\"江西护理职业技术学院\"');
+INSERT INTO `school` VALUES ('401303', '\"九江职业技术学院\"');
+INSERT INTO `school` VALUES ('401304', '\"江西工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401305', '\"九江职业大学\"');
+INSERT INTO `school` VALUES ('401306', '\"江西泰豪动漫职业学院\"');
+INSERT INTO `school` VALUES ('401307', '\"江西先锋软件职业技术学院\"');
+INSERT INTO `school` VALUES ('401308', '\"江西工业贸易职业技术学院\"');
+INSERT INTO `school` VALUES ('401309', '\"江西枫林涉外经贸职业学院\"');
+INSERT INTO `school` VALUES ('401310', '\"江西司法警官职业学院\"');
+INSERT INTO `school` VALUES ('401311', '\"江西城市职业学院\"');
+INSERT INTO `school` VALUES ('401312', '\"江西太阳能科技职业学院\"');
+INSERT INTO `school` VALUES ('401313', '\"江西生物科技职业学院\"');
+INSERT INTO `school` VALUES ('401314', '\"江西电力职业技术学院\"');
+INSERT INTO `school` VALUES ('401315', '\"江西外语外贸职业学院\"');
+INSERT INTO `school` VALUES ('401316', '\"宜春职业技术学院\"');
+INSERT INTO `school` VALUES ('401317', '\"江西旅游商贸职业学院\"');
+INSERT INTO `school` VALUES ('401318', '\"抚州职业技术学院\"');
+INSERT INTO `school` VALUES ('401319', '\"江西青年职业学院\"');
+INSERT INTO `school` VALUES ('401320', '\"江西工程职业学院\"');
+INSERT INTO `school` VALUES ('401321', '\"江西建设职业技术学院\"');
+INSERT INTO `school` VALUES ('401322', '\"江西管理职业学院\"');
+INSERT INTO `school` VALUES ('401323', '\"江西农业工程职业学院\"');
+INSERT INTO `school` VALUES ('401324', '\"江西航空职业技术学院\"');
+INSERT INTO `school` VALUES ('401325', '\"江西经济管理职业学院\"');
+INSERT INTO `school` VALUES ('401326', '\"上饶职业技术学院\"');
+INSERT INTO `school` VALUES ('401327', '\"江西应用工程职业学院\"');
+INSERT INTO `school` VALUES ('401328', '\"江西制造职业技术学院\"');
+INSERT INTO `school` VALUES ('401329', '\"景德镇陶瓷职业技术学院\"');
+INSERT INTO `school` VALUES ('401330', '\"鹰潭职业技术学院\"');
+INSERT INTO `school` VALUES ('401331', '\"江西应用技术职业学院\"');
+INSERT INTO `school` VALUES ('401332', '\"江西渝州科技职业学院\"');
+INSERT INTO `school` VALUES ('401333', '\"共青科技职业学院\"');
+INSERT INTO `school` VALUES ('401334', '\"江西冶金职业技术学院\"');
+INSERT INTO `school` VALUES ('401335', '\"江西机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401336', '\"江西新闻出版职业技术学院\"');
+INSERT INTO `school` VALUES ('401337', '\"江西现代职业技术学院\"');
+INSERT INTO `school` VALUES ('401338', '\"江西艺术职业学院\"');
+INSERT INTO `school` VALUES ('401339', '\"赣西科技职业学院\"');
+INSERT INTO `school` VALUES ('401340', '\"江西科技职业学院\"');
+INSERT INTO `school` VALUES ('401341', '\"江西交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401342', '\"南昌职业学院\"');
+INSERT INTO `school` VALUES ('401343', '\"江西工业工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401344', '\"江西工商职业技术学院\"');
+INSERT INTO `school` VALUES ('401345', '\"江西信息应用职业技术学院\"');
+INSERT INTO `school` VALUES ('401346', '\"江西环境工程职业学院\"');
+INSERT INTO `school` VALUES ('401347', '\"江西陶瓷工艺美术职业技术学院\"');
+INSERT INTO `school` VALUES ('401348', '\"江西财经职业学院\"');
+INSERT INTO `school` VALUES ('401349', '\"大连理工大学\"');
+INSERT INTO `school` VALUES ('401350', '\"东北大学\"');
+INSERT INTO `school` VALUES ('401351', '\"大连海事大学\"');
+INSERT INTO `school` VALUES ('401352', '\"辽宁大学\"');
+INSERT INTO `school` VALUES ('401353', '\"大连大学\"');
+INSERT INTO `school` VALUES ('401354', '\"沈阳大学\"');
+INSERT INTO `school` VALUES ('401355', '\"沈阳理工大学\"');
+INSERT INTO `school` VALUES ('401356', '\"辽宁工程技术大学\"');
+INSERT INTO `school` VALUES ('401357', '\"沈阳工业大学\"');
+INSERT INTO `school` VALUES ('401358', '\"沈阳建筑大学\"');
+INSERT INTO `school` VALUES ('401359', '\"辽宁石油化工大学\"');
+INSERT INTO `school` VALUES ('401360', '\"大连交通大学\"');
+INSERT INTO `school` VALUES ('401361', '\"沈阳化工大学\"');
+INSERT INTO `school` VALUES ('401362', '\"辽宁科技大学\"');
+INSERT INTO `school` VALUES ('401363', '\"大连工业大学\"');
+INSERT INTO `school` VALUES ('401364', '\"辽宁工业大学\"');
+INSERT INTO `school` VALUES ('401365', '\"沈阳航空航天大学\"');
+INSERT INTO `school` VALUES ('401366', '\"沈阳农业大学\"');
+INSERT INTO `school` VALUES ('401367', '\"大连海洋大学\"');
+INSERT INTO `school` VALUES ('401368', '\"中国医科大学\"');
+INSERT INTO `school` VALUES ('401369', '\"大连医科大学\"');
+INSERT INTO `school` VALUES ('401370', '\"辽宁中医药大学\"');
+INSERT INTO `school` VALUES ('401371', '\"沈阳药科大学\"');
+INSERT INTO `school` VALUES ('401372', '\"辽宁师范大学\"');
+INSERT INTO `school` VALUES ('401373', '\"沈阳师范大学\"');
+INSERT INTO `school` VALUES ('401374', '\"渤海大学\"');
+INSERT INTO `school` VALUES ('401375', '\"东北财经大学\"');
+INSERT INTO `school` VALUES ('401376', '\"大连民族学院\"');
+INSERT INTO `school` VALUES ('401377', '\"中国刑事警察学院\"');
+INSERT INTO `school` VALUES ('401378', '\"沈阳工程学院\"');
+INSERT INTO `school` VALUES ('401379', '\"辽宁科技学院\"');
+INSERT INTO `school` VALUES ('401380', '\"大连东软信息学院\"');
+INSERT INTO `school` VALUES ('401381', '\"大连科技学院\"');
+INSERT INTO `school` VALUES ('401382', '\"辽宁医学院\"');
+INSERT INTO `school` VALUES ('401383', '\"沈阳医学院\"');
+INSERT INTO `school` VALUES ('401384', '\"辽宁何氏医学院\"');
+INSERT INTO `school` VALUES ('401385', '\"鞍山师范学院\"');
+INSERT INTO `school` VALUES ('401386', '\"大连外国语学院\"');
+INSERT INTO `school` VALUES ('401387', '\"辽宁财贸学院\"');
+INSERT INTO `school` VALUES ('401388', '\"沈阳体育学院\"');
+INSERT INTO `school` VALUES ('401389', '\"鲁迅美术学院\"');
+INSERT INTO `school` VALUES ('401390', '\"沈阳音乐学院\"');
+INSERT INTO `school` VALUES ('401391', '\"大连艺术学院\"');
+INSERT INTO `school` VALUES ('401392', '\"辽东学院\"');
+INSERT INTO `school` VALUES ('401393', '\"辽宁对外经贸学院\"');
+INSERT INTO `school` VALUES ('401394', '\"辽宁交通高等专科学校\"');
+INSERT INTO `school` VALUES ('401395', '\"朝阳师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401396', '\"抚顺师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401397', '\"铁岭师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401398', '\"锦州师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401399', '\"辽宁税务高等专科学校\"');
+INSERT INTO `school` VALUES ('401400', '\"辽宁警官高等专科学校\"');
+INSERT INTO `school` VALUES ('401401', '\"阜新高等专科学校\"');
+INSERT INTO `school` VALUES ('401402', '\"辽宁城市建设职业技术学院\"');
+INSERT INTO `school` VALUES ('401403', '\"辽宁冶金职业技术学院\"');
+INSERT INTO `school` VALUES ('401404', '\"辽宁工程职业学院\"');
+INSERT INTO `school` VALUES ('401405', '\"铁岭卫生职业学院\"');
+INSERT INTO `school` VALUES ('401406', '\"辽宁卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('401407', '\"抚顺职业技术学院\"');
+INSERT INTO `school` VALUES ('401408', '\"辽阳职业技术学院\"');
+INSERT INTO `school` VALUES ('401409', '\"大连职业技术学院\"');
+INSERT INTO `school` VALUES ('401410', '\"渤海船舶职业学院\"');
+INSERT INTO `school` VALUES ('401411', '\"盘锦职业技术学院\"');
+INSERT INTO `school` VALUES ('401412', '\"大连商务职业学院\"');
+INSERT INTO `school` VALUES ('401413', '\"辽宁农业职业技术学院\"');
+INSERT INTO `school` VALUES ('401414', '\"营口职业技术学院\"');
+INSERT INTO `school` VALUES ('401415', '\"沈阳职业技术学院\"');
+INSERT INTO `school` VALUES ('401416', '\"辽宁金融职业学院\"');
+INSERT INTO `school` VALUES ('401417', '\"辽河石油职业技术学院\"');
+INSERT INTO `school` VALUES ('401418', '\"辽宁装备制造职业技术学院\"');
+INSERT INTO `school` VALUES ('401419', '\"辽宁现代服务职业技术学院\"');
+INSERT INTO `school` VALUES ('401420', '\"辽宁政法职业学院\"');
+INSERT INTO `school` VALUES ('401421', '\"沈阳北软信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401422', '\"辽宁体育运动职业技术学院\"');
+INSERT INTO `school` VALUES ('401423', '\"辽宁职业学院\"');
+INSERT INTO `school` VALUES ('401424', '\"大连装备制造职业技术学院\"');
+INSERT INTO `school` VALUES ('401425', '\"沈阳航空职业技术学院\"');
+INSERT INTO `school` VALUES ('401426', '\"辽宁地质工程职业学院\"');
+INSERT INTO `school` VALUES ('401427', '\"辽宁铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('401428', '\"辽宁建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('401429', '\"大连枫叶职业技术学院\"');
+INSERT INTO `school` VALUES ('401430', '\"辽宁商贸职业学院\"');
+INSERT INTO `school` VALUES ('401431', '\"大连翻译职业学院\"');
+INSERT INTO `school` VALUES ('401432', '\"辽宁理工职业学院\"');
+INSERT INTO `school` VALUES ('401433', '\"大连软件职业学院\"');
+INSERT INTO `school` VALUES ('401434', '\"辽宁美术职业学院\"');
+INSERT INTO `school` VALUES ('401435', '\"大连航运职业技术学院\"');
+INSERT INTO `school` VALUES ('401436', '\"辽宁林业职业技术学院\"');
+INSERT INTO `school` VALUES ('401437', '\"辽宁经济职业技术学院\"');
+INSERT INTO `school` VALUES ('401438', '\"辽宁信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401439', '\"辽宁广告职业学院\"');
+INSERT INTO `school` VALUES ('401440', '\"大连汽车职业技术学院\"');
+INSERT INTO `school` VALUES ('401441', '\"辽宁机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401442', '\"辽宁石化职业技术学院\"');
+INSERT INTO `school` VALUES ('401443', '\"内蒙古大学\"');
+INSERT INTO `school` VALUES ('401444', '\"内蒙古科技大学\"');
+INSERT INTO `school` VALUES ('401445', '\"内蒙古民族大学\"');
+INSERT INTO `school` VALUES ('401446', '\"内蒙古工业大学\"');
+INSERT INTO `school` VALUES ('401447', '\"内蒙古农业大学\"');
+INSERT INTO `school` VALUES ('401448', '\"内蒙古医科大学\"');
+INSERT INTO `school` VALUES ('401449', '\"内蒙古师范大学\"');
+INSERT INTO `school` VALUES ('401450', '\"内蒙古财经大学\"');
+INSERT INTO `school` VALUES ('401451', '\"河套学院\"');
+INSERT INTO `school` VALUES ('401452', '\"赤峰学院\"');
+INSERT INTO `school` VALUES ('401453', '\"集宁师范学院\"');
+INSERT INTO `school` VALUES ('401454', '\"呼伦贝尔学院\"');
+INSERT INTO `school` VALUES ('401455', '\"呼和浩特民族学院\"');
+INSERT INTO `school` VALUES ('401456', '\"乌兰察布医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401457', '\"满洲里俄语职业学院\"');
+INSERT INTO `school` VALUES ('401458', '\"包头职业技术学院\"');
+INSERT INTO `school` VALUES ('401459', '\"内蒙古建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('401460', '\"内蒙古机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401461', '\"乌海职业技术学院\"');
+INSERT INTO `school` VALUES ('401462', '\"呼和浩特职业学院\"');
+INSERT INTO `school` VALUES ('401463', '\"内蒙古交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401464', '\"阿拉善职业技术学院\"');
+INSERT INTO `school` VALUES ('401465', '\"赤峰工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401466', '\"内蒙古能源职业学院\"');
+INSERT INTO `school` VALUES ('401467', '\"乌兰察布职业学院\"');
+INSERT INTO `school` VALUES ('401468', '\"内蒙古电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401469', '\"通辽职业学院\"');
+INSERT INTO `school` VALUES ('401470', '\"内蒙古化工职业学院\"');
+INSERT INTO `school` VALUES ('401471', '\"内蒙古商贸职业学院\"');
+INSERT INTO `school` VALUES ('401472', '\"包头铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('401473', '\"包头钢铁职业技术学院\"');
+INSERT INTO `school` VALUES ('401474', '\"内蒙古美术职业学院\"');
+INSERT INTO `school` VALUES ('401475', '\"科尔沁艺术职业学院\"');
+INSERT INTO `school` VALUES ('401476', '\"包头轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('401477', '\"锡林郭勒职业学院\"');
+INSERT INTO `school` VALUES ('401478', '\"兴安职业技术学院\"');
+INSERT INTO `school` VALUES ('401479', '\"内蒙古警察职业学院\"');
+INSERT INTO `school` VALUES ('401480', '\"内蒙古体育职业学院\"');
+INSERT INTO `school` VALUES ('401481', '\"内蒙古经贸外语职业学院\"');
+INSERT INTO `school` VALUES ('401482', '\"赤峰职业技术学院\"');
+INSERT INTO `school` VALUES ('401483', '\"内蒙古北方职业技术学院\"');
+INSERT INTO `school` VALUES ('401484', '\"鄂尔多斯职业学院\"');
+INSERT INTO `school` VALUES ('401485', '\"内蒙古科技职业学院\"');
+INSERT INTO `school` VALUES ('401486', '\"内蒙古丰州职业学院\"');
+INSERT INTO `school` VALUES ('401487', '\"呼伦贝尔职业技术学院\"');
+INSERT INTO `school` VALUES ('401488', '\"内蒙古工业职业学院\"');
+INSERT INTO `school` VALUES ('401489', '\"北方民族大学\"');
+INSERT INTO `school` VALUES ('401490', '\"宁夏大学\"');
+INSERT INTO `school` VALUES ('401491', '\"宁夏理工学院\"');
+INSERT INTO `school` VALUES ('401492', '\"宁夏医科大学\"');
+INSERT INTO `school` VALUES ('401493', '\"宁夏师范学院\"');
+INSERT INTO `school` VALUES ('401494', '\"银川能源学院\"');
+INSERT INTO `school` VALUES ('401495', '\"宁夏民族职业技术学院\"');
+INSERT INTO `school` VALUES ('401496', '\"宁夏司法警官职业学院\"');
+INSERT INTO `school` VALUES ('401497', '\"宁夏财经职业技术学院\"');
+INSERT INTO `school` VALUES ('401498', '\"宁夏工商职业技术学院\"');
+INSERT INTO `school` VALUES ('401499', '\"宁夏防沙治沙职业技术学院\"');
+INSERT INTO `school` VALUES ('401500', '\"宁夏职业技术学院\"');
+INSERT INTO `school` VALUES ('401501', '\"宁夏工业职业学院\"');
+INSERT INTO `school` VALUES ('401502', '\"宁夏建设职业技术学院\"');
+INSERT INTO `school` VALUES ('401503', '\"青海大学\"');
+INSERT INTO `school` VALUES ('401504', '\"青海师范大学\"');
+INSERT INTO `school` VALUES ('401505', '\"青海民族大学\"');
+INSERT INTO `school` VALUES ('401506', '\"青海畜牧兽医职业技术学院\"');
+INSERT INTO `school` VALUES ('401507', '\"青海卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('401508', '\"青海建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('401509', '\"青海交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401510', '\"青海警官职业学院\"');
+INSERT INTO `school` VALUES ('401511', '\"山东大学\"');
+INSERT INTO `school` VALUES ('401512', '\"中国石油大学(华东）\"');
+INSERT INTO `school` VALUES ('401513', '\"中国海洋大学\"');
+INSERT INTO `school` VALUES ('401514', '\"青岛大学\"');
+INSERT INTO `school` VALUES ('401515', '\"山东科技大学\"');
+INSERT INTO `school` VALUES ('401516', '\"山东理工大学\"');
+INSERT INTO `school` VALUES ('401517', '\"烟台大学\"');
+INSERT INTO `school` VALUES ('401518', '\"聊城大学\"');
+INSERT INTO `school` VALUES ('401519', '\"青岛科技大学\"');
+INSERT INTO `school` VALUES ('401520', '\"青岛理工大学\"');
+INSERT INTO `school` VALUES ('401521', '\"济南大学\"');
+INSERT INTO `school` VALUES ('401522', '\"山东建筑大学\"');
+INSERT INTO `school` VALUES ('401523', '\"山东农业大学\"');
+INSERT INTO `school` VALUES ('401524', '\"青岛农业大学\"');
+INSERT INTO `school` VALUES ('401525', '\"山东中医药大学\"');
+INSERT INTO `school` VALUES ('401526', '\"山东师范大学\"');
+INSERT INTO `school` VALUES ('401527', '\"曲阜师范大学\"');
+INSERT INTO `school` VALUES ('401528', '\"临沂大学\"');
+INSERT INTO `school` VALUES ('401529', '\"山东财经大学\"');
+INSERT INTO `school` VALUES ('401530', '\"鲁东大学\"');
+INSERT INTO `school` VALUES ('401531', '\"山东万杰医学院\"');
+INSERT INTO `school` VALUES ('401532', '\"潍坊科技学院\"');
+INSERT INTO `school` VALUES ('401533', '\"山东英才学院\"');
+INSERT INTO `school` VALUES ('401534', '\"山东轻工业学院\"');
+INSERT INTO `school` VALUES ('401535', '\"潍坊学院\"');
+INSERT INTO `school` VALUES ('401536', '\"山东交通学院\"');
+INSERT INTO `school` VALUES ('401537', '\"青岛工学院\"');
+INSERT INTO `school` VALUES ('401538', '\"潍坊医学院\"');
+INSERT INTO `school` VALUES ('401539', '\"泰山医学院\"');
+INSERT INTO `school` VALUES ('401540', '\"滨州医学院\"');
+INSERT INTO `school` VALUES ('401541', '\"济宁医学院\"');
+INSERT INTO `school` VALUES ('401542', '\"德州学院\"');
+INSERT INTO `school` VALUES ('401543', '\"齐鲁师范学院\"');
+INSERT INTO `school` VALUES ('401544', '\"山东工商学院\"');
+INSERT INTO `school` VALUES ('401545', '\"山东警察学院\"');
+INSERT INTO `school` VALUES ('401546', '\"山东青年政治学院\"');
+INSERT INTO `school` VALUES ('401547', '\"山东政法学院\"');
+INSERT INTO `school` VALUES ('401548', '\"山东体育学院\"');
+INSERT INTO `school` VALUES ('401549', '\"山东艺术学院\"');
+INSERT INTO `school` VALUES ('401550', '\"山东工艺美术学院\"');
+INSERT INTO `school` VALUES ('401551', '\"泰山学院\"');
+INSERT INTO `school` VALUES ('401552', '\"枣庄学院\"');
+INSERT INTO `school` VALUES ('401553', '\"烟台南山学院\"');
+INSERT INTO `school` VALUES ('401554', '\"青岛滨海学院\"');
+INSERT INTO `school` VALUES ('401555', '\"济宁学院\"');
+INSERT INTO `school` VALUES ('401556', '\"菏泽学院\"');
+INSERT INTO `school` VALUES ('401557', '\"滨州学院\"');
+INSERT INTO `school` VALUES ('401558', '\"山东女子学院\"');
+INSERT INTO `school` VALUES ('401559', '\"山东协和学院\"');
+INSERT INTO `school` VALUES ('401560', '\"青岛黄海学院\"');
+INSERT INTO `school` VALUES ('401561', '\"山东电力高等专科学校\"');
+INSERT INTO `school` VALUES ('401562', '\"菏泽医学专科学校\"');
+INSERT INTO `school` VALUES ('401563', '\"山东医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401564', '\"山东中医药高等专科学校\"');
+INSERT INTO `school` VALUES ('401565', '\"淄博师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401566', '\"济南幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401567', '\"山东畜牧兽医职业学院\"');
+INSERT INTO `school` VALUES ('401568', '\"山东商业职业技术学院\"');
+INSERT INTO `school` VALUES ('401569', '\"日照职业技术学院\"');
+INSERT INTO `school` VALUES ('401570', '\"曲阜远东职业技术学院\"');
+INSERT INTO `school` VALUES ('401571', '\"青岛职业技术学院\"');
+INSERT INTO `school` VALUES ('401572', '\"济宁职业技术学院\"');
+INSERT INTO `school` VALUES ('401573', '\"山东劳动职业技术学院\"');
+INSERT INTO `school` VALUES ('401574', '\"聊城职业技术学院\"');
+INSERT INTO `school` VALUES ('401575', '\"莱芜职业技术学院\"');
+INSERT INTO `school` VALUES ('401576', '\"威海职业学院\"');
+INSERT INTO `school` VALUES ('401577', '\"滨州职业学院\"');
+INSERT INTO `school` VALUES ('401578', '\"山东杏林科技职业学院\"');
+INSERT INTO `school` VALUES ('401579', '\"山东工业职业学院\"');
+INSERT INTO `school` VALUES ('401580', '\"山东胜利职业学院\"');
+INSERT INTO `school` VALUES ('401581', '\"山东华宇职业技术学院\"');
+INSERT INTO `school` VALUES ('401582', '\"山东商务职业学院\"');
+INSERT INTO `school` VALUES ('401583', '\"枣庄科技职业学院\"');
+INSERT INTO `school` VALUES ('401584', '\"山东水利职业学院\"');
+INSERT INTO `school` VALUES ('401585', '\"山东力明科技职业学院\"');
+INSERT INTO `school` VALUES ('401586', '\"东营职业学院\"');
+INSERT INTO `school` VALUES ('401587', '\"潍坊职业学院\"');
+INSERT INTO `school` VALUES ('401588', '\"山东职业学院\"');
+INSERT INTO `school` VALUES ('401589', '\"德州职业技术学院\"');
+INSERT INTO `school` VALUES ('401590', '\"青岛飞洋职业技术学院\"');
+INSERT INTO `school` VALUES ('401591', '\"青岛港湾职业技术学院\"');
+INSERT INTO `school` VALUES ('401592', '\"潍坊护理职业学院\"');
+INSERT INTO `school` VALUES ('401593', '\"潍坊工商职业学院\"');
+INSERT INTO `school` VALUES ('401594', '\"山东凯文科技职业学院\"');
+INSERT INTO `school` VALUES ('401595', '\"烟台汽车工程职业学院\"');
+INSERT INTO `school` VALUES ('401596', '\"山东城市建设职业学院\"');
+INSERT INTO `school` VALUES ('401597', '\"山东大王职业学院\"');
+INSERT INTO `school` VALUES ('401598', '\"烟台职业学院\"');
+INSERT INTO `school` VALUES ('401599', '\"山东海事职业学院\"');
+INSERT INTO `school` VALUES ('401600', '\"山东科技职业学院\"');
+INSERT INTO `school` VALUES ('401601', '\"泰山护理职业学院\"');
+INSERT INTO `school` VALUES ('401602', '\"山东圣翰财贸职业学院\"');
+INSERT INTO `school` VALUES ('401603', '\"青岛酒店管理职业技术学院\"');
+INSERT INTO `school` VALUES ('401604', '\"山东服装职业学院\"');
+INSERT INTO `school` VALUES ('401605', '\"枣庄职业学院\"');
+INSERT INTO `school` VALUES ('401606', '\"山东外国语职业学院\"');
+INSERT INTO `school` VALUES ('401607', '\"潍坊工程职业学院\"');
+INSERT INTO `school` VALUES ('401608', '\"济南工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401609', '\"青岛求实职业技术学院\"');
+INSERT INTO `school` VALUES ('401610', '\"青岛恒星职业技术学院\"');
+INSERT INTO `school` VALUES ('401611', '\"山东传媒职业学院\"');
+INSERT INTO `school` VALUES ('401612', '\"济南职业学院\"');
+INSERT INTO `school` VALUES ('401613', '\"德州科技职业学院\"');
+INSERT INTO `school` VALUES ('401614', '\"泰山职业技术学院\"');
+INSERT INTO `school` VALUES ('401615', '\"济南护理职业学院\"');
+INSERT INTO `school` VALUES ('401616', '\"淄博职业学院\"');
+INSERT INTO `school` VALUES ('401617', '\"山东电子职业技术学院\"');
+INSERT INTO `school` VALUES ('401618', '\"山东现代职业学院\"');
+INSERT INTO `school` VALUES ('401619', '\"山东药品食品职业学院\"');
+INSERT INTO `school` VALUES ('401620', '\"菏泽家政职业学院\"');
+INSERT INTO `school` VALUES ('401621', '\"山东旅游职业学院\"');
+INSERT INTO `school` VALUES ('401622', '\"临沂职业学院\"');
+INSERT INTO `school` VALUES ('401623', '\"山东信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401624', '\"山东理工职业学院\"');
+INSERT INTO `school` VALUES ('401625', '\"山东铝业职业学院\"');
+INSERT INTO `school` VALUES ('401626', '\"山东经贸职业学院\"');
+INSERT INTO `school` VALUES ('401627', '\"山东司法警官职业学院\"');
+INSERT INTO `school` VALUES ('401628', '\"烟台工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401629', '\"山东丝绸纺织职业学院\"');
+INSERT INTO `school` VALUES ('401630', '\"山东外贸职业学院\"');
+INSERT INTO `school` VALUES ('401631', '\"山东化工职业学院\"');
+INSERT INTO `school` VALUES ('401632', '\"山东交通职业学院\"');
+INSERT INTO `school` VALUES ('401633', '\"山东外事翻译职业学院\"');
+INSERT INTO `school` VALUES ('401634', '\"青岛远洋船员职业学院\"');
+INSERT INTO `school` VALUES ('401635', '\"山东文化产业职业学院\"');
+INSERT INTO `school` VALUES ('401636', '\"哈尔滨工业大学（威海校区）\"');
+INSERT INTO `school` VALUES ('401637', '\"山西大学\"');
+INSERT INTO `school` VALUES ('401638', '\"太原理工大学\"');
+INSERT INTO `school` VALUES ('401639', '\"中北大学\"');
+INSERT INTO `school` VALUES ('401640', '\"太原科技大学\"');
+INSERT INTO `school` VALUES ('401641', '\"山西农业大学\"');
+INSERT INTO `school` VALUES ('401642', '\"山西医科大学\"');
+INSERT INTO `school` VALUES ('401643', '\"山西师范大学\"');
+INSERT INTO `school` VALUES ('401644', '\"山西大同大学\"');
+INSERT INTO `school` VALUES ('401645', '\"山西财经大学\"');
+INSERT INTO `school` VALUES ('401646', '\"太原工业学院\"');
+INSERT INTO `school` VALUES ('401647', '\"山西中医学院\"');
+INSERT INTO `school` VALUES ('401648', '\"长治医学院\"');
+INSERT INTO `school` VALUES ('401649', '\"吕梁学院\"');
+INSERT INTO `school` VALUES ('401650', '\"忻州师范学院\"');
+INSERT INTO `school` VALUES ('401651', '\"太原师范学院\"');
+INSERT INTO `school` VALUES ('401652', '\"运城学院\"');
+INSERT INTO `school` VALUES ('401653', '\"长治学院\"');
+INSERT INTO `school` VALUES ('401654', '\"晋中学院\"');
+INSERT INTO `school` VALUES ('401655', '\"山西工商学院\"');
+INSERT INTO `school` VALUES ('401656', '\"太原电力高等专科学校\"');
+INSERT INTO `school` VALUES ('401657', '\"运城幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401658', '\"晋中师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401659', '\"阳泉师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401660', '\"山西省财政税务专科学校\"');
+INSERT INTO `school` VALUES ('401661', '\"山西警官高等专科学校\"');
+INSERT INTO `school` VALUES ('401662', '\"太原大学\"');
+INSERT INTO `school` VALUES ('401663', '\"山西药科职业学院\"');
+INSERT INTO `school` VALUES ('401664', '\"山西兴华职业学院\"');
+INSERT INTO `school` VALUES ('401665', '\"山西建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('401666', '\"山西轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('401667', '\"山西工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401668', '\"运城职业技术学院\"');
+INSERT INTO `school` VALUES ('401669', '\"山西老区职业技术学院\"');
+INSERT INTO `school` VALUES ('401670', '\"大同煤炭职业技术学院\"');
+INSERT INTO `school` VALUES ('401671', '\"山西交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401672', '\"山西艺术职业学院\"');
+INSERT INTO `school` VALUES ('401673', '\"长治职业技术学院\"');
+INSERT INTO `school` VALUES ('401674', '\"晋城职业技术学院\"');
+INSERT INTO `school` VALUES ('401675', '\"山西电力职业技术学院\"');
+INSERT INTO `school` VALUES ('401676', '\"山西体育职业学院\"');
+INSERT INTO `school` VALUES ('401677', '\"山西警官职业学院\"');
+INSERT INTO `school` VALUES ('401678', '\"山西国际商务职业学院\"');
+INSERT INTO `school` VALUES ('401679', '\"山西华澳商贸职业学院\"');
+INSERT INTO `school` VALUES ('401680', '\"山西机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401681', '\"山西戏剧职业学院\"');
+INSERT INTO `school` VALUES ('401682', '\"山西财贸职业技术学院\"');
+INSERT INTO `school` VALUES ('401683', '\"山西林业职业技术学院\"');
+INSERT INTO `school` VALUES ('401684', '\"山西水利职业技术学院\"');
+INSERT INTO `school` VALUES ('401685', '\"阳泉职业技术学院\"');
+INSERT INTO `school` VALUES ('401686', '\"晋中职业技术学院\"');
+INSERT INTO `school` VALUES ('401687', '\"运城护理职业学院\"');
+INSERT INTO `school` VALUES ('401688', '\"忻州职业技术学院\"');
+INSERT INTO `school` VALUES ('401689', '\"山西金融职业学院\"');
+INSERT INTO `school` VALUES ('401690', '\"临汾职业技术学院\"');
+INSERT INTO `school` VALUES ('401691', '\"山西职业技术学院\"');
+INSERT INTO `school` VALUES ('401692', '\"太原城市职业技术学院\"');
+INSERT INTO `school` VALUES ('401693', '\"山西运城农业职业技术学院\"');
+INSERT INTO `school` VALUES ('401694', '\"山西青年职业学院\"');
+INSERT INTO `school` VALUES ('401695', '\"山西经贸职业学院\"');
+INSERT INTO `school` VALUES ('401696', '\"山西同文职业技术学院\"');
+INSERT INTO `school` VALUES ('401697', '\"山西信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401698', '\"山西管理职业学院\"');
+INSERT INTO `school` VALUES ('401699', '\"山西旅游职业学院\"');
+INSERT INTO `school` VALUES ('401700', '\"潞安职业技术学院\"');
+INSERT INTO `school` VALUES ('401701', '\"太原旅游职业学院\"');
+INSERT INTO `school` VALUES ('401702', '\"朔州职业技术学院\"');
+INSERT INTO `school` VALUES ('401703', '\"山西煤炭职业技术学院\"');
+INSERT INTO `school` VALUES ('401704', '\"第四军医大学\"');
+INSERT INTO `school` VALUES ('401705', '\"西安交通大学\"');
+INSERT INTO `school` VALUES ('401706', '\"长安大学\"');
+INSERT INTO `school` VALUES ('401707', '\"西安电子科技大学\"');
+INSERT INTO `school` VALUES ('401708', '\"西北农林科技大学\"');
+INSERT INTO `school` VALUES ('401709', '\"陕西师范大学\"');
+INSERT INTO `school` VALUES ('401710', '\"西北工业大学\"');
+INSERT INTO `school` VALUES ('401711', '\"西北大学\"');
+INSERT INTO `school` VALUES ('401712', '\"延安大学\"');
+INSERT INTO `school` VALUES ('401713', '\"西安理工大学\"');
+INSERT INTO `school` VALUES ('401714', '\"西安建筑科技大学\"');
+INSERT INTO `school` VALUES ('401715', '\"西安科技大学\"');
+INSERT INTO `school` VALUES ('401716', '\"西安石油大学\"');
+INSERT INTO `school` VALUES ('401717', '\"西安工程大学\"');
+INSERT INTO `school` VALUES ('401718', '\"西安工业大学\"');
+INSERT INTO `school` VALUES ('401719', '\"西安邮电大学\"');
+INSERT INTO `school` VALUES ('401720', '\"西安外国语大学\"');
+INSERT INTO `school` VALUES ('401721', '\"西北政法大学\"');
+INSERT INTO `school` VALUES ('401722', '\"陕西科技大学\"');
+INSERT INTO `school` VALUES ('401723', '\"西安思源学院\"');
+INSERT INTO `school` VALUES ('401724', '\"陕西国际商贸学院\"');
+INSERT INTO `school` VALUES ('401725', '\"西安航空学院\"');
+INSERT INTO `school` VALUES ('401726', '\"陕西中医学院\"');
+INSERT INTO `school` VALUES ('401727', '\"西安医学院\"');
+INSERT INTO `school` VALUES ('401728', '\"宝鸡文理学院\"');
+INSERT INTO `school` VALUES ('401729', '\"渭南师范学院\"');
+INSERT INTO `school` VALUES ('401730', '\"榆林学院\"');
+INSERT INTO `school` VALUES ('401731', '\"陕西理工学院\"');
+INSERT INTO `school` VALUES ('401732', '\"咸阳师范学院\"');
+INSERT INTO `school` VALUES ('401733', '\"陕西学前师范学院\"');
+INSERT INTO `school` VALUES ('401734', '\"西安财经学院\"');
+INSERT INTO `school` VALUES ('401735', '\"西安体育学院\"');
+INSERT INTO `school` VALUES ('401736', '\"西安美术学院\"');
+INSERT INTO `school` VALUES ('401737', '\"西安音乐学院\"');
+INSERT INTO `school` VALUES ('401738', '\"陕西服装工程学院\"');
+INSERT INTO `school` VALUES ('401739', '\"西京学院\"');
+INSERT INTO `school` VALUES ('401740', '\"西安翻译学院\"');
+INSERT INTO `school` VALUES ('401741', '\"西安外事学院\"');
+INSERT INTO `school` VALUES ('401742', '\"西安文理学院\"');
+INSERT INTO `school` VALUES ('401743', '\"西安欧亚学院\"');
+INSERT INTO `school` VALUES ('401744', '\"西安培华学院\"');
+INSERT INTO `school` VALUES ('401745', '\"商洛学院\"');
+INSERT INTO `school` VALUES ('401746', '\"安康学院\"');
+INSERT INTO `school` VALUES ('401747', '\"西安电力高等专科学校\"');
+INSERT INTO `school` VALUES ('401748', '\"西安医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401749', '\"陕西工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401750', '\"杨凌职业技术学院\"');
+INSERT INTO `school` VALUES ('401751', '\"西安东方亚太职业技术学院\"');
+INSERT INTO `school` VALUES ('401752', '\"西安汽车科技职业学院\"');
+INSERT INTO `school` VALUES ('401753', '\"西安科技商贸职业学院\"');
+INSERT INTO `school` VALUES ('401754', '\"西安海棠职业学院\"');
+INSERT INTO `school` VALUES ('401755', '\"陕西邮电职业技术学院\"');
+INSERT INTO `school` VALUES ('401756', '\"陕西警官职业学院\"');
+INSERT INTO `school` VALUES ('401757', '\"商洛职业技术学院\"');
+INSERT INTO `school` VALUES ('401758', '\"陕西经济管理职业技术学院\"');
+INSERT INTO `school` VALUES ('401759', '\"陕西铁路工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401760', '\"陕西电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401761', '\"西安职业技术学院\"');
+INSERT INTO `school` VALUES ('401762', '\"陕西旅游烹饪职业学院\"');
+INSERT INTO `school` VALUES ('401763', '\"咸阳职业技术学院\"');
+INSERT INTO `school` VALUES ('401764', '\"铜川职业技术学院\"');
+INSERT INTO `school` VALUES ('401765', '\"安康职业技术学院\"');
+INSERT INTO `school` VALUES ('401766', '\"西安铁路职业技术学院\"');
+INSERT INTO `school` VALUES ('401767', '\"西安航空职业技术学院\"');
+INSERT INTO `school` VALUES ('401768', '\"陕西职业技术学院\"');
+INSERT INTO `school` VALUES ('401769', '\"陕西能源职业技术学院\"');
+INSERT INTO `school` VALUES ('401770', '\"陕西交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401771', '\"渭南职业技术学院\"');
+INSERT INTO `school` VALUES ('401772', '\"陕西国防工业职业技术学院\"');
+INSERT INTO `school` VALUES ('401773', '\"陕西航空职业技术学院\"');
+INSERT INTO `school` VALUES ('401774', '\"陕西电子科技职业学院\"');
+INSERT INTO `school` VALUES ('401775', '\"陕西工商职业学院\"');
+INSERT INTO `school` VALUES ('401776', '\"陕西青年职业学院\"');
+INSERT INTO `school` VALUES ('401777', '\"西安高新科技职业学院\"');
+INSERT INTO `school` VALUES ('401778', '\"西安城市建设职业学院\"');
+INSERT INTO `school` VALUES ('401779', '\"延安职业技术学院\"');
+INSERT INTO `school` VALUES ('401780', '\"汉中职业技术学院\"');
+INSERT INTO `school` VALUES ('401781', '\"宝鸡职业技术学院\"');
+INSERT INTO `school` VALUES ('401782', '\"陕西财经职业技术学院\"');
+INSERT INTO `school` VALUES ('401783', '\"榆林职业技术学院\"');
+INSERT INTO `school` VALUES ('401784', '\"复旦大学\"');
+INSERT INTO `school` VALUES ('401785', '\"同济大学\"');
+INSERT INTO `school` VALUES ('401786', '\"上海交通大学\"');
+INSERT INTO `school` VALUES ('401787', '\"华东理工大学\"');
+INSERT INTO `school` VALUES ('401788', '\"东华大学\"');
+INSERT INTO `school` VALUES ('401789', '\"华东师范大学\"');
+INSERT INTO `school` VALUES ('401790', '\"上海外国语大学\"');
+INSERT INTO `school` VALUES ('401791', '\"上海财经大学\"');
+INSERT INTO `school` VALUES ('401792', '\"上海大学\"');
+INSERT INTO `school` VALUES ('401793', '\"上海理工大学\"');
+INSERT INTO `school` VALUES ('401794', '\"上海海事大学\"');
+INSERT INTO `school` VALUES ('401795', '\"上海工程技术大学\"');
+INSERT INTO `school` VALUES ('401796', '\"上海海洋大学\"');
+INSERT INTO `school` VALUES ('401797', '\"上海中医药大学\"');
+INSERT INTO `school` VALUES ('401798', '\"上海师范大学\"');
+INSERT INTO `school` VALUES ('401799', '\"华东政法大学\"');
+INSERT INTO `school` VALUES ('401800', '\"上海海关学院\"');
+INSERT INTO `school` VALUES ('401801', '\"上海建桥学院\"');
+INSERT INTO `school` VALUES ('401802', '\"上海政法学院\"');
+INSERT INTO `school` VALUES ('401803', '\"上海电机学院\"');
+INSERT INTO `school` VALUES ('401804', '\"上海第二工业大学\"');
+INSERT INTO `school` VALUES ('401805', '\"上海电力学院\"');
+INSERT INTO `school` VALUES ('401806', '\"上海应用技术学院\"');
+INSERT INTO `school` VALUES ('401807', '\"上海对外贸易学院\"');
+INSERT INTO `school` VALUES ('401808', '\"上海立信会计学院\"');
+INSERT INTO `school` VALUES ('401809', '\"上海金融学院\"');
+INSERT INTO `school` VALUES ('401810', '\"上海商学院\"');
+INSERT INTO `school` VALUES ('401811', '\"上海体育学院\"');
+INSERT INTO `school` VALUES ('401812', '\"上海音乐学院\"');
+INSERT INTO `school` VALUES ('401813', '\"上海戏剧学院\"');
+INSERT INTO `school` VALUES ('401814', '\"上海杉达学院\"');
+INSERT INTO `school` VALUES ('401815', '\"第二军医大学\"');
+INSERT INTO `school` VALUES ('401816', '\"上海出版印刷高等专科学校\"');
+INSERT INTO `school` VALUES ('401817', '\"上海医疗器械高等专科学校\"');
+INSERT INTO `school` VALUES ('401818', '\"上海医药高等专科学校\"');
+INSERT INTO `school` VALUES ('401819', '\"上海旅游高等专科学校\"');
+INSERT INTO `school` VALUES ('401820', '\"上海公安高等专科学校\"');
+INSERT INTO `school` VALUES ('401821', '\"上海民航职业技术学院\"');
+INSERT INTO `school` VALUES ('401822', '\"上海电影艺术职业学院\"');
+INSERT INTO `school` VALUES ('401823', '\"上海健康职业技术学院\"');
+INSERT INTO `school` VALUES ('401824', '\"上海东海职业技术学院\"');
+INSERT INTO `school` VALUES ('401825', '\"上海新侨职业技术学院\"');
+INSERT INTO `school` VALUES ('401826', '\"上海工会管理职业学院\"');
+INSERT INTO `school` VALUES ('401827', '\"上海工艺美术职业学院\"');
+INSERT INTO `school` VALUES ('401828', '\"上海震旦职业学院\"');
+INSERT INTO `school` VALUES ('401829', '\"上海立达职业技术学院\"');
+INSERT INTO `school` VALUES ('401830', '\"上海中华职业技术学院\"');
+INSERT INTO `school` VALUES ('401831', '\"上海兴韦信息技术职业学院\"');
+INSERT INTO `school` VALUES ('401832', '\"上海邦德职业技术学院\"');
+INSERT INTO `school` VALUES ('401833', '\"上海农林职业技术学院\"');
+INSERT INTO `school` VALUES ('401834', '\"上海思博职业技术学院\"');
+INSERT INTO `school` VALUES ('401835', '\"上海欧华职业技术学院\"');
+INSERT INTO `school` VALUES ('401836', '\"上海民远职业技术学院\"');
+INSERT INTO `school` VALUES ('401837', '\"上海交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401838', '\"上海建峰职业技术学院\"');
+INSERT INTO `school` VALUES ('401839', '\"上海城市管理职业技术学院\"');
+INSERT INTO `school` VALUES ('401840', '\"上海体育职业学院\"');
+INSERT INTO `school` VALUES ('401841', '\"上海电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401842', '\"上海行健职业学院\"');
+INSERT INTO `school` VALUES ('401843', '\"上海济光职业技术学院\"');
+INSERT INTO `school` VALUES ('401844', '\"上海工商外国语职业学院\"');
+INSERT INTO `school` VALUES ('401845', '\"上海海事职业技术学院\"');
+INSERT INTO `school` VALUES ('401846', '\"上海科学技术职业学院\"');
+INSERT INTO `school` VALUES ('401847', '\"上海中侨职业技术学院\"');
+INSERT INTO `school` VALUES ('401848', '\"四川大学\"');
+INSERT INTO `school` VALUES ('401849', '\"西南交通大学\"');
+INSERT INTO `school` VALUES ('401850', '\"电子科技大学\"');
+INSERT INTO `school` VALUES ('401851', '\"西南财经大学\"');
+INSERT INTO `school` VALUES ('401852', '\"西南民族大学\"');
+INSERT INTO `school` VALUES ('401853', '\"成都理工大学\"');
+INSERT INTO `school` VALUES ('401854', '\"西华大学\"');
+INSERT INTO `school` VALUES ('401855', '\"西南科技大学\"');
+INSERT INTO `school` VALUES ('401856', '\"四川农业大学\"');
+INSERT INTO `school` VALUES ('401857', '\"成都中医药大学\"');
+INSERT INTO `school` VALUES ('401858', '\"四川师范大学\"');
+INSERT INTO `school` VALUES ('401859', '\"西华师范大学\"');
+INSERT INTO `school` VALUES ('401860', '\"中国民用航空飞行学院\"');
+INSERT INTO `school` VALUES ('401861', '\"西南石油大学\"');
+INSERT INTO `school` VALUES ('401862', '\"成都工业学院\"');
+INSERT INTO `school` VALUES ('401863', '\"成都信息工程学院\"');
+INSERT INTO `school` VALUES ('401864', '\"四川理工学院\"');
+INSERT INTO `school` VALUES ('401865', '\"成都东软学院\"');
+INSERT INTO `school` VALUES ('401866', '\"泸州医学院\"');
+INSERT INTO `school` VALUES ('401867', '\"川北医学院\"');
+INSERT INTO `school` VALUES ('401868', '\"成都医学院\"');
+INSERT INTO `school` VALUES ('401869', '\"乐山师范学院\"');
+INSERT INTO `school` VALUES ('401870', '\"内江师范学院\"');
+INSERT INTO `school` VALUES ('401871', '\"四川文理学院\"');
+INSERT INTO `school` VALUES ('401872', '\"成都师范学院\"');
+INSERT INTO `school` VALUES ('401873', '\"四川警察学院\"');
+INSERT INTO `school` VALUES ('401874', '\"成都体育学院\"');
+INSERT INTO `school` VALUES ('401875', '\"四川音乐学院\"');
+INSERT INTO `school` VALUES ('401876', '\"四川民族学院\"');
+INSERT INTO `school` VALUES ('401877', '\"绵阳师范学院\"');
+INSERT INTO `school` VALUES ('401878', '\"攀枝花学院\"');
+INSERT INTO `school` VALUES ('401879', '\"成都学院\"');
+INSERT INTO `school` VALUES ('401880', '\"宜宾学院\"');
+INSERT INTO `school` VALUES ('401881', '\"西昌学院\"');
+INSERT INTO `school` VALUES ('401882', '\"成都纺织高等专科学校\"');
+INSERT INTO `school` VALUES ('401883', '\"四川烹饪高等专科学校\"');
+INSERT INTO `school` VALUES ('401884', '\"四川中医药高等专科学校\"');
+INSERT INTO `school` VALUES ('401885', '\"阿坝师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401886', '\"川北幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401887', '\"四川幼儿师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401888', '\"民办四川天一学院\"');
+INSERT INTO `school` VALUES ('401889', '\"成都航空职业技术学院\"');
+INSERT INTO `school` VALUES ('401890', '\"四川商务职业学院\"');
+INSERT INTO `school` VALUES ('401891', '\"四川卫生康复职业学院\"');
+INSERT INTO `school` VALUES ('401892', '\"四川三河职业学院\"');
+INSERT INTO `school` VALUES ('401893', '\"四川电影电视职业学院\"');
+INSERT INTO `school` VALUES ('401894', '\"四川城市职业学院\"');
+INSERT INTO `school` VALUES ('401895', '\"四川汽车职业技术学院\"');
+INSERT INTO `school` VALUES ('401896', '\"成都农业科技职业学院\"');
+INSERT INTO `school` VALUES ('401897', '\"四川科技职业学院\"');
+INSERT INTO `school` VALUES ('401898', '\"宜宾职业技术学院\"');
+INSERT INTO `school` VALUES ('401899', '\"四川文化产业职业学院\"');
+INSERT INTO `school` VALUES ('401900', '\"四川华新现代职业学院\"');
+INSERT INTO `school` VALUES ('401901', '\"四川长江职业学院\"');
+INSERT INTO `school` VALUES ('401902', '\"四川司法警官职业学院\"');
+INSERT INTO `school` VALUES ('401903', '\"四川警安职业学院\"');
+INSERT INTO `school` VALUES ('401904', '\"四川信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401905', '\"广安职业技术学院\"');
+INSERT INTO `school` VALUES ('401906', '\"四川现代职业学院\"');
+INSERT INTO `school` VALUES ('401907', '\"四川艺术职业学院\"');
+INSERT INTO `school` VALUES ('401908', '\"内江职业技术学院\"');
+INSERT INTO `school` VALUES ('401909', '\"成都职业技术学院\"');
+INSERT INTO `school` VALUES ('401910', '\"南充职业技术学院\"');
+INSERT INTO `school` VALUES ('401911', '\"四川水利职业技术学院\"');
+INSERT INTO `school` VALUES ('401912', '\"四川化工职业技术学院\"');
+INSERT INTO `school` VALUES ('401913', '\"四川航天职业技术学院\"');
+INSERT INTO `school` VALUES ('401914', '\"四川邮电职业技术学院\"');
+INSERT INTO `school` VALUES ('401915', '\"四川国际标榜职业学院\"');
+INSERT INTO `school` VALUES ('401916', '\"乐山职业技术学院\"');
+INSERT INTO `school` VALUES ('401917', '\"四川管理职业学院\"');
+INSERT INTO `school` VALUES ('401918', '\"四川财经职业学院\"');
+INSERT INTO `school` VALUES ('401919', '\"四川文化传媒职业学院\"');
+INSERT INTO `school` VALUES ('401920', '\"泸州职业技术学院\"');
+INSERT INTO `school` VALUES ('401921', '\"眉山职业技术学院\"');
+INSERT INTO `school` VALUES ('401922', '\"四川职业技术学院\"');
+INSERT INTO `school` VALUES ('401923', '\"四川托普信息技术职业学院\"');
+INSERT INTO `school` VALUES ('401924', '\"成都艺术职业学院\"');
+INSERT INTO `school` VALUES ('401925', '\"雅安职业技术学院\"');
+INSERT INTO `school` VALUES ('401926', '\"四川建筑职业技术学院\"');
+INSERT INTO `school` VALUES ('401927', '\"四川机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401928', '\"四川交通职业技术学院\"');
+INSERT INTO `school` VALUES ('401929', '\"达州职业技术学院\"');
+INSERT INTO `school` VALUES ('401930', '\"四川工商职业技术学院\"');
+INSERT INTO `school` VALUES ('401931', '\"绵阳职业技术学院\"');
+INSERT INTO `school` VALUES ('401932', '\"四川电力职业技术学院\"');
+INSERT INTO `school` VALUES ('401933', '\"四川工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401934', '\"国立台湾大学\"');
+INSERT INTO `school` VALUES ('401935', '\"国立清华大学\"');
+INSERT INTO `school` VALUES ('401936', '\"国立成功大学\"');
+INSERT INTO `school` VALUES ('401937', '\"国立阳明大学\"');
+INSERT INTO `school` VALUES ('401938', '\"台湾交通大学\"');
+INSERT INTO `school` VALUES ('401939', '\"台北医学大学\"');
+INSERT INTO `school` VALUES ('401940', '\"国立中央大学\"');
+INSERT INTO `school` VALUES ('401941', '\"国立台湾大学科学与技术学院(原名国立台湾科技学院）\"');
+INSERT INTO `school` VALUES ('401942', '\"国立中山大学\"');
+INSERT INTO `school` VALUES ('401943', '\"国立台湾师范大学\"');
+INSERT INTO `school` VALUES ('401944', '\"国立政治大学\"');
+INSERT INTO `school` VALUES ('401945', '\"国立中兴大学\"');
+INSERT INTO `school` VALUES ('401946', '\"南开大学\"');
+INSERT INTO `school` VALUES ('401947', '\"天津大学\"');
+INSERT INTO `school` VALUES ('401948', '\"中国民航大学\"');
+INSERT INTO `school` VALUES ('401949', '\"天津工业大学\"');
+INSERT INTO `school` VALUES ('401950', '\"天津科技大学\"');
+INSERT INTO `school` VALUES ('401951', '\"天津理工大学\"');
+INSERT INTO `school` VALUES ('401952', '\"天津医科大学\"');
+INSERT INTO `school` VALUES ('401953', '\"天津中医药大学\"');
+INSERT INTO `school` VALUES ('401954', '\"天津师范大学\"');
+INSERT INTO `school` VALUES ('401955', '\"天津职业技术师范大学\"');
+INSERT INTO `school` VALUES ('401956', '\"天津外国语大学\"');
+INSERT INTO `school` VALUES ('401957', '\"天津财经大学\"');
+INSERT INTO `school` VALUES ('401958', '\"天津商业大学\"');
+INSERT INTO `school` VALUES ('401959', '\"天津天狮学院\"');
+INSERT INTO `school` VALUES ('401960', '\"天津城市建设学院\"');
+INSERT INTO `school` VALUES ('401961', '\"天津农学院\"');
+INSERT INTO `school` VALUES ('401962', '\"天津体育学院\"');
+INSERT INTO `school` VALUES ('401963', '\"天津美术学院\"');
+INSERT INTO `school` VALUES ('401964', '\"天津音乐学院\"');
+INSERT INTO `school` VALUES ('401965', '\"天津医学高等专科学校\"');
+INSERT INTO `school` VALUES ('401966', '\"天津工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401967', '\"天津机电职业技术学院\"');
+INSERT INTO `school` VALUES ('401968', '\"天津现代职业技术学院\"');
+INSERT INTO `school` VALUES ('401969', '\"天津公安警官职业学院\"');
+INSERT INTO `school` VALUES ('401970', '\"天津轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('401971', '\"天津职业大学\"');
+INSERT INTO `school` VALUES ('401972', '\"天津渤海职业技术学院\"');
+INSERT INTO `school` VALUES ('401973', '\"天津滨海职业学院\"');
+INSERT INTO `school` VALUES ('401974', '\"天津电子信息职业技术学院\"');
+INSERT INTO `school` VALUES ('401975', '\"天津石油职业技术学院\"');
+INSERT INTO `school` VALUES ('401976', '\"天津交通职业学院\"');
+INSERT INTO `school` VALUES ('401977', '\"天津中德职业技术学院\"');
+INSERT INTO `school` VALUES ('401978', '\"天津城市职业学院\"');
+INSERT INTO `school` VALUES ('401979', '\"天津冶金职业技术学院\"');
+INSERT INTO `school` VALUES ('401980', '\"天津商务职业学院\"');
+INSERT INTO `school` VALUES ('401981', '\"天津城市建设管理职业技术学院\"');
+INSERT INTO `school` VALUES ('401982', '\"天津生物工程职业技术学院\"');
+INSERT INTO `school` VALUES ('401983', '\"天津艺术职业学院\"');
+INSERT INTO `school` VALUES ('401984', '\"天津国土资源和房屋职业学院\"');
+INSERT INTO `school` VALUES ('401985', '\"天津海运职业学院\"');
+INSERT INTO `school` VALUES ('401986', '\"天津青年职业学院\"');
+INSERT INTO `school` VALUES ('401987', '\"天津广播影视职业学院\"');
+INSERT INTO `school` VALUES ('401988', '\"天津铁道职业技术学院\"');
+INSERT INTO `school` VALUES ('401989', '\"天津开发区职业技术学院\"');
+INSERT INTO `school` VALUES ('401990', '\"天津工艺美术职业学院\"');
+INSERT INTO `school` VALUES ('401991', '\"西藏大学\"');
+INSERT INTO `school` VALUES ('401992', '\"西藏藏医学院\"');
+INSERT INTO `school` VALUES ('401993', '\"西藏民族学院\"');
+INSERT INTO `school` VALUES ('401994', '\"拉萨师范高等专科学校\"');
+INSERT INTO `school` VALUES ('401995', '\"西藏警官高等专科学校\"');
+INSERT INTO `school` VALUES ('401996', '\"西藏职业技术学院\"');
+INSERT INTO `school` VALUES ('401997', '\"香港大学\"');
+INSERT INTO `school` VALUES ('401998', '\"香港中文大学\"');
+INSERT INTO `school` VALUES ('401999', '\"香港科技大学\"');
+INSERT INTO `school` VALUES ('402000', '\"香港城市大学\"');
+INSERT INTO `school` VALUES ('402001', '\"香港理工大学\"');
+INSERT INTO `school` VALUES ('402002', '\"香港浸会大学\"');
+INSERT INTO `school` VALUES ('402003', '\"香港岭南大学\"');
+INSERT INTO `school` VALUES ('402004', '\"香港教育学院\"');
+INSERT INTO `school` VALUES ('402005', '\"新疆大学\"');
+INSERT INTO `school` VALUES ('402006', '\"石河子大学\"');
+INSERT INTO `school` VALUES ('402007', '\"新疆农业大学\"');
+INSERT INTO `school` VALUES ('402008', '\"塔里木大学\"');
+INSERT INTO `school` VALUES ('402009', '\"新疆医科大学\"');
+INSERT INTO `school` VALUES ('402010', '\"新疆师范大学\"');
+INSERT INTO `school` VALUES ('402011', '\"新疆财经大学\"');
+INSERT INTO `school` VALUES ('402012', '\"新疆工程学院\"');
+INSERT INTO `school` VALUES ('402013', '\"伊犁师范学院\"');
+INSERT INTO `school` VALUES ('402014', '\"喀什师范学院\"');
+INSERT INTO `school` VALUES ('402015', '\"新疆警察学院\"');
+INSERT INTO `school` VALUES ('402016', '\"新疆艺术学院\"');
+INSERT INTO `school` VALUES ('402017', '\"昌吉学院\"');
+INSERT INTO `school` VALUES ('402018', '\"新疆维吾尔医学专科学校\"');
+INSERT INTO `school` VALUES ('402019', '\"和田师范专科学校\"');
+INSERT INTO `school` VALUES ('402020', '\"新疆兵团警官高等专科学校\"');
+INSERT INTO `school` VALUES ('402021', '\"新疆农业职业技术学院\"');
+INSERT INTO `school` VALUES ('402022', '\"乌鲁木齐职业大学\"');
+INSERT INTO `school` VALUES ('402023', '\"新疆机电职业技术学院\"');
+INSERT INTO `school` VALUES ('402024', '\"新疆轻工职业技术学院\"');
+INSERT INTO `school` VALUES ('402025', '\"克拉玛依职业技术学院\"');
+INSERT INTO `school` VALUES ('402026', '\"新疆职业大学\"');
+INSERT INTO `school` VALUES ('402027', '\"伊犁职业技术学院\"');
+INSERT INTO `school` VALUES ('402028', '\"新疆建设职业技术学院\"');
+INSERT INTO `school` VALUES ('402029', '\"巴音郭楞职业技术学院\"');
+INSERT INTO `school` VALUES ('402030', '\"阿克苏职业技术学院\"');
+INSERT INTO `school` VALUES ('402031', '\"新疆天山职业技术学院\"');
+INSERT INTO `school` VALUES ('402032', '\"新疆现代职业技术学院\"');
+INSERT INTO `school` VALUES ('402033', '\"新疆交通职业技术学院\"');
+INSERT INTO `school` VALUES ('402034', '\"新疆石河子职业技术学院\"');
+INSERT INTO `school` VALUES ('402035', '\"新疆能源职业技术学院\"');
+INSERT INTO `school` VALUES ('402036', '\"新疆体育职业技术学院\"');
+INSERT INTO `school` VALUES ('402037', '\"新疆应用职业技术学院\"');
+INSERT INTO `school` VALUES ('402038', '\"昌吉职业技术学院\"');
+INSERT INTO `school` VALUES ('402039', '\"新疆师范高等专科学校\"');
+INSERT INTO `school` VALUES ('402040', '\"云南大学\"');
+INSERT INTO `school` VALUES ('402041', '\"昆明理工大学\"');
+INSERT INTO `school` VALUES ('402042', '\"云南农业大学\"');
+INSERT INTO `school` VALUES ('402043', '\"西南林业大学\"');
+INSERT INTO `school` VALUES ('402044', '\"昆明医科大学\"');
+INSERT INTO `school` VALUES ('402045', '\"云南师范大学\"');
+INSERT INTO `school` VALUES ('402046', '\"云南财经大学\"');
+INSERT INTO `school` VALUES ('402047', '\"云南民族大学\"');
+INSERT INTO `school` VALUES ('402048', '\"云南中医学院\"');
+INSERT INTO `school` VALUES ('402049', '\"昭通学院\"');
+INSERT INTO `school` VALUES ('402050', '\"曲靖师范学院\"');
+INSERT INTO `school` VALUES ('402051', '\"玉溪师范学院\"');
+INSERT INTO `school` VALUES ('402052', '\"楚雄师范学院\"');
+INSERT INTO `school` VALUES ('402053', '\"普洱学院\"');
+INSERT INTO `school` VALUES ('402054', '\"红河学院\"');
+INSERT INTO `school` VALUES ('402055', '\"云南工商学院\"');
+INSERT INTO `school` VALUES ('402056', '\"云南警官学院\"');
+INSERT INTO `school` VALUES ('402057', '\"云南艺术学院\"');
+INSERT INTO `school` VALUES ('402058', '\"大理学院\"');
+INSERT INTO `school` VALUES ('402059', '\"昆明学院\"');
+INSERT INTO `school` VALUES ('402060', '\"保山学院\"');
+INSERT INTO `school` VALUES ('402061', '\"文山学院\"');
+INSERT INTO `school` VALUES ('402062', '\"昆明冶金高等专科学校\"');
+INSERT INTO `school` VALUES ('402063', '\"曲靖医学高等专科学校\"');
+INSERT INTO `school` VALUES ('402064', '\"楚雄医药高等专科学校\"');
+INSERT INTO `school` VALUES ('402065', '\"保山中医药高等专科学校\"');
+INSERT INTO `school` VALUES ('402066', '\"丽江师范高等专科学校\"');
+INSERT INTO `school` VALUES ('402067', '\"德宏师范高等专科学校\"');
+INSERT INTO `school` VALUES ('402068', '\"临沧师范高等专科学校\"');
+INSERT INTO `school` VALUES ('402069', '\"云南经贸外事职业学院\"');
+INSERT INTO `school` VALUES ('402070', '\"云南农业职业技术学院\"');
+INSERT INTO `school` VALUES ('402071', '\"昆明工业职业技术学院\"');
+INSERT INTO `school` VALUES ('402072', '\"云南机电职业技术学院\"');
+INSERT INTO `school` VALUES ('402073', '\"云南热带作物职业学院\"');
+INSERT INTO `school` VALUES ('402074', '\"云南司法警官职业学院\"');
+INSERT INTO `school` VALUES ('402075', '\"云南国防工业职业技术学院\"');
+INSERT INTO `school` VALUES ('402076', '\"云南锡业职业技术学院\"');
+INSERT INTO `school` VALUES ('402077', '\"云南能源职业技术学院\"');
+INSERT INTO `school` VALUES ('402078', '\"云南三鑫职业技术学院\"');
+INSERT INTO `school` VALUES ('402079', '\"德宏职业学院\"');
+INSERT INTO `school` VALUES ('402080', '\"云南新兴职业学院\"');
+INSERT INTO `school` VALUES ('402081', '\"云南旅游职业学院\"');
+INSERT INTO `school` VALUES ('402082', '\"云南经济管理职业学院\"');
+INSERT INTO `school` VALUES ('402083', '\"云南外事外语职业学院\"');
+INSERT INTO `school` VALUES ('402084', '\"红河卫生职业学院\"');
+INSERT INTO `school` VALUES ('402085', '\"玉溪农业职业技术学院\"');
+INSERT INTO `school` VALUES ('402086', '\"云南文化艺术职业学院\"');
+INSERT INTO `school` VALUES ('402087', '\"昆明艺术职业学院\"');
+INSERT INTO `school` VALUES ('402088', '\"昆明扬帆职业技术学院\"');
+INSERT INTO `school` VALUES ('402089', '\"云南城市建设职业学院\"');
+INSERT INTO `school` VALUES ('402090', '\"西双版纳职业技术学院\"');
+INSERT INTO `school` VALUES ('402091', '\"云南林业职业技术学院\"');
+INSERT INTO `school` VALUES ('402092', '\"云南国土资源职业学院\"');
+INSERT INTO `school` VALUES ('402093', '\"昆明卫生职业学院\"');
+INSERT INTO `school` VALUES ('402094', '\"云南科技信息职业学院\"');
+INSERT INTO `school` VALUES ('402095', '\"云南体育运动职业技术学院\"');
+INSERT INTO `school` VALUES ('402096', '\"云南现代职业技术学院\"');
+INSERT INTO `school` VALUES ('402097', '\"云南交通职业技术学院\"');
+INSERT INTO `school` VALUES ('402098', '\"云南商务职业学院\"');
+INSERT INTO `school` VALUES ('402099', '\"浙江大学\"');
+INSERT INTO `school` VALUES ('402100', '\"宁波大学\"');
+INSERT INTO `school` VALUES ('402101', '\"浙江工业大学\"');
+INSERT INTO `school` VALUES ('402102', '\"杭州电子科技大学\"');
+INSERT INTO `school` VALUES ('402103', '\"浙江理工大学\"');
+INSERT INTO `school` VALUES ('402104', '\"浙江农林大学\"');
+INSERT INTO `school` VALUES ('402105', '\"浙江中医药大学\"');
+INSERT INTO `school` VALUES ('402106', '\"浙江师范大学\"');
+INSERT INTO `school` VALUES ('402107', '\"杭州师范大学\"');
+INSERT INTO `school` VALUES ('402108', '\"浙江工商大学\"');
+INSERT INTO `school` VALUES ('402109', '\"宁波诺丁汉大学\"');
+INSERT INTO `school` VALUES ('402110', '\"温州大学\"');
+INSERT INTO `school` VALUES ('402111', '\"公安海警学院\"');
+INSERT INTO `school` VALUES ('402112', '\"宁波大红鹰学院\"');
+INSERT INTO `school` VALUES ('402113', '\"浙江越秀外国语学院\"');
+INSERT INTO `school` VALUES ('402114', '\"宁波工程学院\"');
+INSERT INTO `school` VALUES ('402115', '\"中国计量学院\"');
+INSERT INTO `school` VALUES ('402116', '\"嘉兴学院\"');
+INSERT INTO `school` VALUES ('402117', '\"浙江科技学院\"');
+INSERT INTO `school` VALUES ('402118', '\"浙江海洋学院\"');
+INSERT INTO `school` VALUES ('402119', '\"温州医学院\"');
+INSERT INTO `school` VALUES ('402120', '\"绍兴文理学院\"');
+INSERT INTO `school` VALUES ('402121', '\"台州学院\"');
+INSERT INTO `school` VALUES ('402122', '\"湖州师范学院\"');
+INSERT INTO `school` VALUES ('402123', '\"浙江传媒学院\"');
+INSERT INTO `school` VALUES ('402124', '\"浙江外国语学院\"');
+INSERT INTO `school` VALUES ('402125', '\"浙江财经学院\"');
+INSERT INTO `school` VALUES ('402126', '\"浙江警察学院\"');
+INSERT INTO `school` VALUES ('402127', '\"中国美术学院\"');
+INSERT INTO `school` VALUES ('402128', '\"丽水学院\"');
+INSERT INTO `school` VALUES ('402129', '\"浙江树人学院\"');
+INSERT INTO `school` VALUES ('402130', '\"浙江万里学院\"');
+INSERT INTO `school` VALUES ('402131', '\"衢州学院\"');
+INSERT INTO `school` VALUES ('402132', '\"浙江水利水电专科学校\"');
+INSERT INTO `school` VALUES ('402133', '\"浙江医药高等专科学校\"');
+INSERT INTO `school` VALUES ('402134', '\"浙江医学高等专科学校\"');
+INSERT INTO `school` VALUES ('402135', '\"宁波职业技术学院\"');
+INSERT INTO `school` VALUES ('402136', '\"金华职业技术学院\"');
+INSERT INTO `school` VALUES ('402137', '\"浙江交通职业技术学院\"');
+INSERT INTO `school` VALUES ('402138', '\"温州职业技术学院\"');
+INSERT INTO `school` VALUES ('402139', '\"台州职业技术学院\"');
+INSERT INTO `school` VALUES ('402140', '\"浙江旅游职业学院\"');
+INSERT INTO `school` VALUES ('402141', '\"宁波城市职业技术学院\"');
+INSERT INTO `school` VALUES ('402142', '\"浙江工商职业技术学院\"');
+INSERT INTO `school` VALUES ('402143', '\"浙江经济职业技术学院\"');
+INSERT INTO `school` VALUES ('402144', '\"浙江机电职业技术学院\"');
+INSERT INTO `school` VALUES ('402145', '\"杭州万向职业技术学院\"');
+INSERT INTO `school` VALUES ('402146', '\"浙江商业职业技术学院\"');
+INSERT INTO `school` VALUES ('402147', '\"浙江汽车职业技术学院\"');
+INSERT INTO `school` VALUES ('402148', '\"浙江横店影视职业学院\"');
+INSERT INTO `school` VALUES ('402149', '\"浙江警官职业学院\"');
+INSERT INTO `school` VALUES ('402150', '\"嘉兴南洋职业技术学院\"');
+INSERT INTO `school` VALUES ('402151', '\"浙江工业职业技术学院\"');
+INSERT INTO `school` VALUES ('402152', '\"杭州科技职业技术学院\"');
+INSERT INTO `school` VALUES ('402153', '\"浙江建设职业技术学院\"');
+INSERT INTO `school` VALUES ('402154', '\"浙江经贸职业技术学院\"');
+INSERT INTO `school` VALUES ('402155', '\"浙江育英职业技术学院\"');
+INSERT INTO `school` VALUES ('402156', '\"温州科技职业学院\"');
+INSERT INTO `school` VALUES ('402157', '\"浙江长征职业技术学院\"');
+INSERT INTO `school` VALUES ('402158', '\"绍兴职业技术学院\"');
+INSERT INTO `school` VALUES ('402159', '\"杭州职业技术学院\"');
+INSERT INTO `school` VALUES ('402160', '\"浙江纺织服装职业技术学院\"');
+INSERT INTO `school` VALUES ('402161', '\"台州科技职业学院\"');
+INSERT INTO `school` VALUES ('402162', '\"浙江邮电职业技术学院\"');
+INSERT INTO `school` VALUES ('402163', '\"浙江同济科技职业学院\"');
+INSERT INTO `school` VALUES ('402164', '\"浙江广厦建设职业技术学院\"');
+INSERT INTO `school` VALUES ('402165', '\"浙江体育职业技术学院\"');
+INSERT INTO `school` VALUES ('402166', '\"宁波卫生职业技术学院\"');
+INSERT INTO `school` VALUES ('402167', '\"浙江工贸职业技术学院\"');
+INSERT INTO `school` VALUES ('402168', '\"浙江国际海运职业技术学院\"');
+INSERT INTO `school` VALUES ('402169', '\"嘉兴职业技术学院\"');
+INSERT INTO `school` VALUES ('402170', '\"湖州职业技术学院\"');
+INSERT INTO `school` VALUES ('402171', '\"衢州职业技术学院\"');
+INSERT INTO `school` VALUES ('402172', '\"丽水职业技术学院\"');
+INSERT INTO `school` VALUES ('402173', '\"浙江金融职业学院\"');
+INSERT INTO `school` VALUES ('402174', '\"义乌工商职业技术学院\"');
+INSERT INTO `school` VALUES ('402175', '\"浙江东方职业技术学院\"');
+INSERT INTO `school` VALUES ('402176', '\"浙江艺术职业学院\"');
+INSERT INTO `school` VALUES ('402177', '\"浙江农业商贸职业学院\"');
+INSERT INTO `school` VALUES ('402178', '\"浙江电力职业技术学院\"');
 
 -- ----------------------------
--- Table structure for `speak`
+-- Table structure for select
 -- ----------------------------
-DROP TABLE IF EXISTS `speak`;
-CREATE TABLE `speak` (
-  `discussid` int(20) NOT NULL,
-  `problemid` int(20) NOT NULL,
-  `spokesmanid` int(20) NOT NULL,
-  PRIMARY KEY (`discussid`),
-  KEY `spokesmanid` (`spokesmanid`),
-  KEY `speakproblemid` (`problemid`),
-  CONSTRAINT `speakdiscussid` FOREIGN KEY (`discussid`) REFERENCES `discuss` (`discussid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `speakproblemid` FOREIGN KEY (`problemid`) REFERENCES `problem` (`problemid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `spokesmanid` FOREIGN KEY (`spokesmanid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE
+DROP TABLE IF EXISTS `select`;
+CREATE TABLE `select` (
+  `studentid` int(11) NOT NULL,
+  `classid` int(11) NOT NULL,
+  PRIMARY KEY (`studentid`,`classid`),
+  KEY `selclassid` (`classid`),
+  CONSTRAINT `selclassid` FOREIGN KEY (`classid`) REFERENCES `class` (`classid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `selstudentid` FOREIGN KEY (`studentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of speak
+-- Records of select
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `student`
+-- Table structure for student
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
-  `studentid` int(20) NOT NULL AUTO_INCREMENT,
-  `userid` int(20) NOT NULL,
-  `classid` int(20) NOT NULL,
+  `studentid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `schoolid` int(11) NOT NULL,
+  `collegeid` int(11) NOT NULL,
+  `sid` int(11) NOT NULL,
   PRIMARY KEY (`studentid`),
-  UNIQUE KEY `studentid` (`studentid`),
-  KEY `studentuserid` (`userid`),
-  KEY `classid` (`classid`),
-  CONSTRAINT `classid` FOREIGN KEY (`classid`) REFERENCES `class` (`classid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `studentuserid` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `stuuserid` (`userid`),
+  KEY `stuschoolid` (`schoolid`),
+  KEY `stucollegeid` (`collegeid`),
+  CONSTRAINT `stucollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `stuschoolid` FOREIGN KEY (`schoolid`) REFERENCES `school` (`schoolid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `stuuserid` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=200000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `submit`
--- ----------------------------
-DROP TABLE IF EXISTS `submit`;
-CREATE TABLE `submit` (
-  `taskid` int(20) NOT NULL,
-  `courseid` int(20) NOT NULL,
-  `studentid` int(20) NOT NULL,
-  `submitstatus` varchar(20) NOT NULL,
-  PRIMARY KEY (`taskid`,`courseid`,`studentid`),
-  KEY `submitstudentid` (`studentid`),
-  KEY `submitcourseid` (`courseid`),
-  CONSTRAINT `submitcourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `submitstudentid` FOREIGN KEY (`studentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `submittaskid` FOREIGN KEY (`taskid`) REFERENCES `task` (`taskid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of submit
--- ----------------------------
-
--- ----------------------------
--- Table structure for `task`
+-- Table structure for task
 -- ----------------------------
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
-  `taskid` int(20) NOT NULL AUTO_INCREMENT,
-  `courseid` int(20) NOT NULL,
-  `staffid` int(20) NOT NULL,
-  `taskname` varchar(50) NOT NULL,
-  `taskcontent` text NOT NULL,
+  `taskid` int(11) NOT NULL AUTO_INCREMENT,
+  `taskname` varchar(255) NOT NULL,
+  `teacherid` int(11) NOT NULL,
+  `courseid` int(11) NOT NULL,
+  `taskcontent` varchar(255) NOT NULL,
+  `deadline` datetime NOT NULL,
   PRIMARY KEY (`taskid`),
-  UNIQUE KEY `taskid` (`taskid`),
+  KEY `taskteacherid` (`teacherid`),
   KEY `taskcourseid` (`courseid`),
-  KEY `taskstaffid` (`staffid`),
   CONSTRAINT `taskcourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `taskstaffid` FOREIGN KEY (`staffid`) REFERENCES `task` (`taskid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `taskteacherid` FOREIGN KEY (`teacherid`) REFERENCES `teacher` (`teacherid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=900000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `taskdisplay`
--- ----------------------------
-DROP TABLE IF EXISTS `taskdisplay`;
-CREATE TABLE `taskdisplay` (
-  `studentid` int(20) NOT NULL,
-  `taskid` int(20) NOT NULL,
-  `staffid` int(20) NOT NULL,
-  `correcttime` date NOT NULL,
-  PRIMARY KEY (`studentid`,`taskid`,`staffid`),
-  KEY `displaytaskid` (`taskid`),
-  KEY `displaystaffid` (`staffid`),
-  CONSTRAINT `displaystaffid` FOREIGN KEY (`staffid`) REFERENCES `teacher` (`staffid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `displaystudentid` FOREIGN KEY (`studentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `displaytaskid` FOREIGN KEY (`taskid`) REFERENCES `task` (`taskid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of taskdisplay
--- ----------------------------
-
--- ----------------------------
--- Table structure for `teacher`
+-- Table structure for teacher
 -- ----------------------------
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher` (
-  `staffid` int(20) NOT NULL AUTO_INCREMENT,
-  `userid` int(20) NOT NULL,
-  `teachercall` varchar(20) DEFAULT NULL,
-  `collegeid` int(20) NOT NULL,
-  PRIMARY KEY (`staffid`),
-  UNIQUE KEY `staffid` (`staffid`),
-  KEY `teacheruserid` (`userid`),
-  KEY `teachercollegeid` (`collegeid`),
-  CONSTRAINT `teachercollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `teacheruserid` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `teacherid` int(11) NOT NULL AUTO_INCREMENT,
+  `staffid` int(11) NOT NULL,
+  `schoolid` int(11) NOT NULL,
+  `collegeid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  PRIMARY KEY (`teacherid`),
+  KEY `teaschoolid` (`schoolid`),
+  KEY `teacollegeid` (`collegeid`),
+  KEY `teauserid` (`userid`),
+  CONSTRAINT `teacollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `teaschoolid` FOREIGN KEY (`schoolid`) REFERENCES `school` (`schoolid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `teauserid` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=300000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of teacher
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `user`
+-- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `userid` int(20) NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `idno` varchar(20) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `mail` varchar(20) DEFAULT NULL,
-  `jointime` date DEFAULT NULL,
-  PRIMARY KEY (`userid`),
-  UNIQUE KEY `username` (`username`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `idno` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `mail` varchar(255) NOT NULL,
+  `jointime` datetime NOT NULL,
+  `headicon` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
