@@ -5,9 +5,27 @@ public class Student {
 
     private Integer userid;
 
-    private Integer classid;
+    private Integer schoolid;
+    
+    private Integer collegeid;
 
-    public Integer getStudentid() {
+    public Integer getSchoolid() {
+		return schoolid;
+	}
+
+	public void setSchoolid(Integer schoolid) {
+		this.schoolid = schoolid;
+	}
+
+	public Integer getCollegeid() {
+		return collegeid;
+	}
+
+	public void setCollegeid(Integer collegeid) {
+		this.collegeid = collegeid;
+	}
+
+	public Integer getStudentid() {
         return studentid;
     }
 
@@ -21,13 +39,5 @@ public class Student {
 
     public void setUserid(Integer userid) {
         this.userid = userid;
-    }
-
-    public Integer getClassid() {
-        return classid;
-    }
-
-    public void setClassid(Integer classid) {
-        this.classid = classid;
     }
 }
