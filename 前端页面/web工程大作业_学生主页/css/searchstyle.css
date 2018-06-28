@@ -20,7 +20,7 @@ div.search {
 
 form {
 	position: relative;
-	width: 300px;
+	width:auto;
 	margin: 0 auto;
 }
 
@@ -52,7 +52,7 @@ form {
 }
 
 .d7 input:focus {
-	width: 280px;
+	width:auto;
 }
 
 .d7 button {

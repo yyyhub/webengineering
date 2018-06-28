@@ -10,7 +10,7 @@ body {
 
 .nav1 {
 	width: auto;
-	height: 50px;
+	height: auto;
 	font: bold 0/50px Arial;
 	text-align: start;
 	margin: 40px auto 0;
@@ -45,7 +45,7 @@ body {
 .nav1 li {
 	position: relative;
 	display: inline-block;
-	padding: 0 16px;
+	padding: 0 8px;
 	font-size: 13px;
 	text-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 	list-style: none outside none;
