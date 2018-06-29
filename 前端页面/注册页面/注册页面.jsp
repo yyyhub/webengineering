@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>注册</title>
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+        <title>注册</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/gloab.css" rel="stylesheet">
 		<link href="css/index.css" rel="stylesheet">
@@ -17,10 +18,8 @@
 		<script src="js/register.js"></script>
 		<!--导入密码加密-->
 		<script src="js/jquery.md5.js"></script>
-
-	</head>
-
-	<body class="bgf4">
+    </head>
+    <body class="bgf4">
 		<div class="login-box f-mt10 f-pb50">
 			<div class="main bgf">
 				<div class="reg-box-pan display-inline">

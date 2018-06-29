@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>注册</title>
-		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<title>注册</titlf<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/gloab.css" rel="stylesheet">
 		<link href="css/index.css" rel="stylesheet">
 		<script src="js/jquery-1.11.1.min.js"></script>
@@ -17,7 +18,6 @@
 		<script src="js/register.js"></script>
 		<!--导入密码加密-->
 		<script src="js/jquery.md5.js"></script>
-
 	</head>
 
 	<body class="bgf4">
@@ -309,12 +309,12 @@
 		<script>
 			$(function() {
 				//换一张验证码
-				$("#changeCheckImg").click(function(){
+				$("#changeCheckImg").click(function() {
 					$.ajax({
-						type:"post",
-						url:"",
-						async:true,
-						success:function(result){
+						type: "post",
+						url: "",
+						async: true,
+						success: function(result) {
 							$("#changeCheckImg").html("换两张");
 						}
 					});
@@ -323,14 +323,16 @@
 				$("#btn_part1").click(function() {
 					if(!verifyCheck._click()) return;
 					var checkCodeSign = $.ajax({
-						type:"post",
-						url:"",
-						async:true,
-						data:{"checkCode":$("#randCode").val()},
+						type: "post",
+						url: "",
+						async: true,
+						data: {
+							"checkCode": $("#randCode").val()
+						},
 					});
-					if($("#randCode").val() == "1234"){
+					if($("#randCode").val() == "1234") {
 						checkCodeSign = true;
-					}else{
+					} else {
 						checkCodeSign = false;
 					}
 					if(!checkCodeSign) {
@@ -338,7 +340,7 @@
 						$("#checkCodeMsg").html("验证码错误");
 						$("#randCode").addClass("v_error");
 						return;
-					}else{
+					} else {
 						$("#checkCodeMsg").removeClass("error");
 						$("#checkCodeMsg").html("");
 						$("#randCode").removeClass("v_error");
