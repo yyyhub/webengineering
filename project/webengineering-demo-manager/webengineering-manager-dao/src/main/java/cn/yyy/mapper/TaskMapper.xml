@@ -3,12 +3,11 @@
 <mapper namespace="cn.yyy.mapper.TaskMapper" >
   <resultMap id="BaseResultMap" type="cn.yyy.pojo.Task" >
     <id column="taskid" property="taskid" jdbcType="INTEGER" />
-    <result column="courseid" property="courseid" jdbcType="INTEGER" />
-    <result column="staffid" property="staffid" jdbcType="INTEGER" />
     <result column="taskname" property="taskname" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="cn.yyy.pojo.Task" extends="BaseResultMap" >
-    <result column="taskcontent" property="taskcontent" jdbcType="LONGVARCHAR" />
+    <result column="teacherid" property="teacherid" jdbcType="INTEGER" />
+    <result column="courseid" property="courseid" jdbcType="INTEGER" />
+    <result column="taskcontent" property="taskcontent" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,27 +68,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    taskid, courseid, staffid, taskname
+    taskid, taskname, teacherid, courseid, taskcontent, deadline
   </sql>
-  <sql id="Blob_Column_List" >
-    taskcontent
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.yyy.pojo.TaskExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from task
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.TaskExample" >
     select
     <if test="distinct" >
@@ -104,11 +84,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from task
     where taskid = #{taskid,jdbcType=INTEGER}
   </select>
@@ -123,10 +101,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.yyy.pojo.Task" >
-    insert into task (taskid, courseid, staffid, 
-      taskname, taskcontent)
-    values (#{taskid,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{staffid,jdbcType=INTEGER}, 
-      #{taskname,jdbcType=VARCHAR}, #{taskcontent,jdbcType=LONGVARCHAR})
+    insert into task (taskid, taskname, teacherid, 
+      courseid, taskcontent, deadline
+      )
+    values (#{taskid,jdbcType=INTEGER}, #{taskname,jdbcType=VARCHAR}, #{teacherid,jdbcType=INTEGER}, 
+      #{courseid,jdbcType=INTEGER}, #{taskcontent,jdbcType=VARCHAR}, #{deadline,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.yyy.pojo.Task" >
     insert into task
@@ -134,34 +114,40 @@
       <if test="taskid != null" >
         taskid,
       </if>
-      <if test="courseid != null" >
-        courseid,
-      </if>
-      <if test="staffid != null" >
-        staffid,
-      </if>
       <if test="taskname != null" >
         taskname,
       </if>
+      <if test="teacherid != null" >
+        teacherid,
+      </if>
+      <if test="courseid != null" >
+        courseid,
+      </if>
       <if test="taskcontent != null" >
         taskcontent,
+      </if>
+      <if test="deadline != null" >
+        deadline,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="taskid != null" >
         #{taskid,jdbcType=INTEGER},
       </if>
-      <if test="courseid != null" >
-        #{courseid,jdbcType=INTEGER},
-      </if>
-      <if test="staffid != null" >
-        #{staffid,jdbcType=INTEGER},
-      </if>
       <if test="taskname != null" >
         #{taskname,jdbcType=VARCHAR},
       </if>
+      <if test="teacherid != null" >
+        #{teacherid,jdbcType=INTEGER},
+      </if>
+      <if test="courseid != null" >
+        #{courseid,jdbcType=INTEGER},
+      </if>
       <if test="taskcontent != null" >
-        #{taskcontent,jdbcType=LONGVARCHAR},
+        #{taskcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        #{deadline,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -177,30 +163,22 @@
       <if test="record.taskid != null" >
         taskid = #{record.taskid,jdbcType=INTEGER},
       </if>
-      <if test="record.courseid != null" >
-        courseid = #{record.courseid,jdbcType=INTEGER},
-      </if>
-      <if test="record.staffid != null" >
-        staffid = #{record.staffid,jdbcType=INTEGER},
-      </if>
       <if test="record.taskname != null" >
         taskname = #{record.taskname,jdbcType=VARCHAR},
       </if>
+      <if test="record.teacherid != null" >
+        teacherid = #{record.teacherid,jdbcType=INTEGER},
+      </if>
+      <if test="record.courseid != null" >
+        courseid = #{record.courseid,jdbcType=INTEGER},
+      </if>
       <if test="record.taskcontent != null" >
-        taskcontent = #{record.taskcontent,jdbcType=LONGVARCHAR},
+        taskcontent = #{record.taskcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deadline != null" >
+        deadline = #{record.deadline,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update task
-    set taskid = #{record.taskid,jdbcType=INTEGER},
-      courseid = #{record.courseid,jdbcType=INTEGER},
-      staffid = #{record.staffid,jdbcType=INTEGER},
-      taskname = #{record.taskname,jdbcType=VARCHAR},
-      taskcontent = #{record.taskcontent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -208,9 +186,11 @@
   <update id="updateByExample" parameterType="map" >
     update task
     set taskid = #{record.taskid,jdbcType=INTEGER},
+      taskname = #{record.taskname,jdbcType=VARCHAR},
+      teacherid = #{record.teacherid,jdbcType=INTEGER},
       courseid = #{record.courseid,jdbcType=INTEGER},
-      staffid = #{record.staffid,jdbcType=INTEGER},
-      taskname = #{record.taskname,jdbcType=VARCHAR}
+      taskcontent = #{record.taskcontent,jdbcType=VARCHAR},
+      deadline = #{record.deadline,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -218,34 +198,31 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.yyy.pojo.Task" >
     update task
     <set >
-      <if test="courseid != null" >
-        courseid = #{courseid,jdbcType=INTEGER},
-      </if>
-      <if test="staffid != null" >
-        staffid = #{staffid,jdbcType=INTEGER},
-      </if>
       <if test="taskname != null" >
         taskname = #{taskname,jdbcType=VARCHAR},
       </if>
+      <if test="teacherid != null" >
+        teacherid = #{teacherid,jdbcType=INTEGER},
+      </if>
+      <if test="courseid != null" >
+        courseid = #{courseid,jdbcType=INTEGER},
+      </if>
       <if test="taskcontent != null" >
-        taskcontent = #{taskcontent,jdbcType=LONGVARCHAR},
+        taskcontent = #{taskcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        deadline = #{deadline,jdbcType=TIMESTAMP},
       </if>
     </set>
     where taskid = #{taskid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.yyy.pojo.Task" >
-    update task
-    set courseid = #{courseid,jdbcType=INTEGER},
-      staffid = #{staffid,jdbcType=INTEGER},
-      taskname = #{taskname,jdbcType=VARCHAR},
-      taskcontent = #{taskcontent,jdbcType=LONGVARCHAR}
-    where taskid = #{taskid,jdbcType=INTEGER}
-  </update>
   <update id="updateByPrimaryKey" parameterType="cn.yyy.pojo.Task" >
     update task
-    set courseid = #{courseid,jdbcType=INTEGER},
-      staffid = #{staffid,jdbcType=INTEGER},
-      taskname = #{taskname,jdbcType=VARCHAR}
+    set taskname = #{taskname,jdbcType=VARCHAR},
+      teacherid = #{teacherid,jdbcType=INTEGER},
+      courseid = #{courseid,jdbcType=INTEGER},
+      taskcontent = #{taskcontent,jdbcType=VARCHAR},
+      deadline = #{deadline,jdbcType=TIMESTAMP}
     where taskid = #{taskid,jdbcType=INTEGER}
   </update>
 </mapper>

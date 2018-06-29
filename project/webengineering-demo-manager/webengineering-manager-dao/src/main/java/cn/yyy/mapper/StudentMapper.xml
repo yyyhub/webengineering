@@ -4,7 +4,9 @@
   <resultMap id="BaseResultMap" type="cn.yyy.pojo.Student" >
     <id column="studentid" property="studentid" jdbcType="INTEGER" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
-    <result column="classid" property="classid" jdbcType="INTEGER" />
+    <result column="schoolid" property="schoolid" jdbcType="INTEGER" />
+    <result column="collegeid" property="collegeid" jdbcType="INTEGER" />
+    <result column="sid" property="sid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -65,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    studentid, userid, classid
+    studentid, userid, schoolid, collegeid, sid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.StudentExample" >
     select
@@ -98,10 +100,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.yyy.pojo.Student" >
-    insert into student (studentid, userid, classid
-      )
-    values (#{studentid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{classid,jdbcType=INTEGER}
-      )
+    insert into student (studentid, userid, schoolid, 
+      collegeid, sid)
+    values (#{studentid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{schoolid,jdbcType=INTEGER}, 
+      #{collegeid,jdbcType=INTEGER}, #{sid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.yyy.pojo.Student" >
     insert into student
@@ -112,8 +114,14 @@
       <if test="userid != null" >
         userid,
       </if>
-      <if test="classid != null" >
-        classid,
+      <if test="schoolid != null" >
+        schoolid,
+      </if>
+      <if test="collegeid != null" >
+        collegeid,
+      </if>
+      <if test="sid != null" >
+        sid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -123,8 +131,14 @@
       <if test="userid != null" >
         #{userid,jdbcType=INTEGER},
       </if>
-      <if test="classid != null" >
-        #{classid,jdbcType=INTEGER},
+      <if test="schoolid != null" >
+        #{schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="collegeid != null" >
+        #{collegeid,jdbcType=INTEGER},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -143,8 +157,14 @@
       <if test="record.userid != null" >
         userid = #{record.userid,jdbcType=INTEGER},
       </if>
-      <if test="record.classid != null" >
-        classid = #{record.classid,jdbcType=INTEGER},
+      <if test="record.schoolid != null" >
+        schoolid = #{record.schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="record.collegeid != null" >
+        collegeid = #{record.collegeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sid != null" >
+        sid = #{record.sid,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -155,7 +175,9 @@
     update student
     set studentid = #{record.studentid,jdbcType=INTEGER},
       userid = #{record.userid,jdbcType=INTEGER},
-      classid = #{record.classid,jdbcType=INTEGER}
+      schoolid = #{record.schoolid,jdbcType=INTEGER},
+      collegeid = #{record.collegeid,jdbcType=INTEGER},
+      sid = #{record.sid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -166,8 +188,14 @@
       <if test="userid != null" >
         userid = #{userid,jdbcType=INTEGER},
       </if>
-      <if test="classid != null" >
-        classid = #{classid,jdbcType=INTEGER},
+      <if test="schoolid != null" >
+        schoolid = #{schoolid,jdbcType=INTEGER},
+      </if>
+      <if test="collegeid != null" >
+        collegeid = #{collegeid,jdbcType=INTEGER},
+      </if>
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=INTEGER},
       </if>
     </set>
     where studentid = #{studentid,jdbcType=INTEGER}
@@ -175,7 +203,9 @@
   <update id="updateByPrimaryKey" parameterType="cn.yyy.pojo.Student" >
     update student
     set userid = #{userid,jdbcType=INTEGER},
-      classid = #{classid,jdbcType=INTEGER}
+      schoolid = #{schoolid,jdbcType=INTEGER},
+      collegeid = #{collegeid,jdbcType=INTEGER},
+      sid = #{sid,jdbcType=INTEGER}
     where studentid = #{studentid,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -16,6 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
+<<<<<<< HEAD
 			<id>1530190323311</id>
 			<name></name>
 			<type>26</type>
@@ -26,6 +27,9 @@
 		</filter>
 		<filter>
 			<id>1530234078101</id>
+=======
+			<id>1530097228628</id>
+>>>>>>> 0e644489f218a968ef3ae107b088627e03098e3f
 			<name></name>
 			<type>26</type>
 			<matcher>

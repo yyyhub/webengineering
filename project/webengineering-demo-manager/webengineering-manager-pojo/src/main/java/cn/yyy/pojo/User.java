@@ -3,21 +3,49 @@ package cn.yyy.pojo;
 import java.util.Date;
 
 public class User {
+	//用户编号
     private Integer userid;
 
+    //用户名
     private String username;
 
+    //密码（MD5）
     private String password;
 
+    //真实姓名
     private String name;
 
+    //身份证号
     private String idno;
 
+    //手机号
     private String phone;
 
+    //邮箱
     private String mail;
 
+    //注册时间
     private Date jointime;
+
+    //头像url
+    private String headicon;
+    
+    public User(Integer userid, String username, String password, String name, String idno, String phone, String mail, String headicon, Date jointime) {
+    	this.setUserid(userid);
+    	this.setUsername(username);
+    	this.setPassword(password);
+    	this.setName(name);
+    	this.setIdno(idno);
+    	this.setPhone(phone);
+    	this.setMail(mail);
+    	this.setHeadicon(headicon);
+    	this.setJointime(jointime);
+    }
+    
+    public User() {
+    	
+    }
+    
 
     public Integer getUserid() {
         return userid;
@@ -81,5 +109,13 @@ public class User {
 
     public void setJointime(Date jointime) {
         this.jointime = jointime;
+    }
+
+    public String getHeadicon() {
+        return headicon;
+    }
+
+    public void setHeadicon(String headicon) {
+        this.headicon = headicon == null ? null : headicon.trim();
     }
 }

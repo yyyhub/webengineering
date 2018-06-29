@@ -234,63 +234,123 @@ public class ClassExample {
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidIsNull() {
-            addCriterion("collegeid is null");
+        public Criteria andCourseidIsNull() {
+            addCriterion("courseid is null");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidIsNotNull() {
-            addCriterion("collegeid is not null");
+        public Criteria andCourseidIsNotNull() {
+            addCriterion("courseid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidEqualTo(Integer value) {
-            addCriterion("collegeid =", value, "collegeid");
+        public Criteria andCourseidEqualTo(Integer value) {
+            addCriterion("courseid =", value, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidNotEqualTo(Integer value) {
-            addCriterion("collegeid <>", value, "collegeid");
+        public Criteria andCourseidNotEqualTo(Integer value) {
+            addCriterion("courseid <>", value, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidGreaterThan(Integer value) {
-            addCriterion("collegeid >", value, "collegeid");
+        public Criteria andCourseidGreaterThan(Integer value) {
+            addCriterion("courseid >", value, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("collegeid >=", value, "collegeid");
+        public Criteria andCourseidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("courseid >=", value, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidLessThan(Integer value) {
-            addCriterion("collegeid <", value, "collegeid");
+        public Criteria andCourseidLessThan(Integer value) {
+            addCriterion("courseid <", value, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidLessThanOrEqualTo(Integer value) {
-            addCriterion("collegeid <=", value, "collegeid");
+        public Criteria andCourseidLessThanOrEqualTo(Integer value) {
+            addCriterion("courseid <=", value, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidIn(List<Integer> values) {
-            addCriterion("collegeid in", values, "collegeid");
+        public Criteria andCourseidIn(List<Integer> values) {
+            addCriterion("courseid in", values, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidNotIn(List<Integer> values) {
-            addCriterion("collegeid not in", values, "collegeid");
+        public Criteria andCourseidNotIn(List<Integer> values) {
+            addCriterion("courseid not in", values, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidBetween(Integer value1, Integer value2) {
-            addCriterion("collegeid between", value1, value2, "collegeid");
+        public Criteria andCourseidBetween(Integer value1, Integer value2) {
+            addCriterion("courseid between", value1, value2, "courseid");
             return (Criteria) this;
         }
 
-        public Criteria andCollegeidNotBetween(Integer value1, Integer value2) {
-            addCriterion("collegeid not between", value1, value2, "collegeid");
+        public Criteria andCourseidNotBetween(Integer value1, Integer value2) {
+            addCriterion("courseid not between", value1, value2, "courseid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumIsNull() {
+            addCriterion("personnum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumIsNotNull() {
+            addCriterion("personnum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumEqualTo(Integer value) {
+            addCriterion("personnum =", value, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumNotEqualTo(Integer value) {
+            addCriterion("personnum <>", value, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumGreaterThan(Integer value) {
+            addCriterion("personnum >", value, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("personnum >=", value, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumLessThan(Integer value) {
+            addCriterion("personnum <", value, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumLessThanOrEqualTo(Integer value) {
+            addCriterion("personnum <=", value, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumIn(List<Integer> values) {
+            addCriterion("personnum in", values, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumNotIn(List<Integer> values) {
+            addCriterion("personnum not in", values, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumBetween(Integer value1, Integer value2) {
+            addCriterion("personnum between", value1, value2, "personnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andPersonnumNotBetween(Integer value1, Integer value2) {
+            addCriterion("personnum not between", value1, value2, "personnum");
             return (Criteria) this;
         }
     }

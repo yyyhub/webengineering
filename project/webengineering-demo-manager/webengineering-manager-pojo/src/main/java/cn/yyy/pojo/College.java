@@ -1,11 +1,20 @@
 package cn.yyy.pojo;
 
 public class College {
+	//学院编号
     private Integer collegeid;
 
+    //学院名称
     private String collegename;
-
-    private String schoolname;
+    
+    public College() {
+    	
+    }
+    
+    public College(Integer collegeid, String collegename) {
+    	this.setCollegeid(collegeid);
+    	this.setCollegename(collegename);
+    }
 
     public Integer getCollegeid() {
         return collegeid;
@@ -21,13 +30,5 @@ public class College {
 
     public void setCollegename(String collegename) {
         this.collegename = collegename == null ? null : collegename.trim();
-    }
-
-    public String getSchoolname() {
-        return schoolname;
-    }
-
-    public void setSchoolname(String schoolname) {
-        this.schoolname = schoolname == null ? null : schoolname.trim();
     }
 }

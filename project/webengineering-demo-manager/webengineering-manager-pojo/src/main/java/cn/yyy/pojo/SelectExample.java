@@ -3,14 +3,14 @@ package cn.yyy.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchoolExample {
+public class SelectExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SchoolExample() {
+    public SelectExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -104,133 +104,123 @@ public class SchoolExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andSchoolidIsNull() {
-            addCriterion("schoolid is null");
+        public Criteria andStudentidIsNull() {
+            addCriterion("studentid is null");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidIsNotNull() {
-            addCriterion("schoolid is not null");
+        public Criteria andStudentidIsNotNull() {
+            addCriterion("studentid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidEqualTo(Integer value) {
-            addCriterion("schoolid =", value, "schoolid");
+        public Criteria andStudentidEqualTo(Integer value) {
+            addCriterion("studentid =", value, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidNotEqualTo(Integer value) {
-            addCriterion("schoolid <>", value, "schoolid");
+        public Criteria andStudentidNotEqualTo(Integer value) {
+            addCriterion("studentid <>", value, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidGreaterThan(Integer value) {
-            addCriterion("schoolid >", value, "schoolid");
+        public Criteria andStudentidGreaterThan(Integer value) {
+            addCriterion("studentid >", value, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("schoolid >=", value, "schoolid");
+        public Criteria andStudentidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("studentid >=", value, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidLessThan(Integer value) {
-            addCriterion("schoolid <", value, "schoolid");
+        public Criteria andStudentidLessThan(Integer value) {
+            addCriterion("studentid <", value, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidLessThanOrEqualTo(Integer value) {
-            addCriterion("schoolid <=", value, "schoolid");
+        public Criteria andStudentidLessThanOrEqualTo(Integer value) {
+            addCriterion("studentid <=", value, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidIn(List<Integer> values) {
-            addCriterion("schoolid in", values, "schoolid");
+        public Criteria andStudentidIn(List<Integer> values) {
+            addCriterion("studentid in", values, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidNotIn(List<Integer> values) {
-            addCriterion("schoolid not in", values, "schoolid");
+        public Criteria andStudentidNotIn(List<Integer> values) {
+            addCriterion("studentid not in", values, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidBetween(Integer value1, Integer value2) {
-            addCriterion("schoolid between", value1, value2, "schoolid");
+        public Criteria andStudentidBetween(Integer value1, Integer value2) {
+            addCriterion("studentid between", value1, value2, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolidNotBetween(Integer value1, Integer value2) {
-            addCriterion("schoolid not between", value1, value2, "schoolid");
+        public Criteria andStudentidNotBetween(Integer value1, Integer value2) {
+            addCriterion("studentid not between", value1, value2, "studentid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameIsNull() {
-            addCriterion("schoolname is null");
+        public Criteria andClassidIsNull() {
+            addCriterion("classid is null");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameIsNotNull() {
-            addCriterion("schoolname is not null");
+        public Criteria andClassidIsNotNull() {
+            addCriterion("classid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameEqualTo(String value) {
-            addCriterion("schoolname =", value, "schoolname");
+        public Criteria andClassidEqualTo(Integer value) {
+            addCriterion("classid =", value, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameNotEqualTo(String value) {
-            addCriterion("schoolname <>", value, "schoolname");
+        public Criteria andClassidNotEqualTo(Integer value) {
+            addCriterion("classid <>", value, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameGreaterThan(String value) {
-            addCriterion("schoolname >", value, "schoolname");
+        public Criteria andClassidGreaterThan(Integer value) {
+            addCriterion("classid >", value, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameGreaterThanOrEqualTo(String value) {
-            addCriterion("schoolname >=", value, "schoolname");
+        public Criteria andClassidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("classid >=", value, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameLessThan(String value) {
-            addCriterion("schoolname <", value, "schoolname");
+        public Criteria andClassidLessThan(Integer value) {
+            addCriterion("classid <", value, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameLessThanOrEqualTo(String value) {
-            addCriterion("schoolname <=", value, "schoolname");
+        public Criteria andClassidLessThanOrEqualTo(Integer value) {
+            addCriterion("classid <=", value, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameLike(String value) {
-            addCriterion("schoolname like", value, "schoolname");
+        public Criteria andClassidIn(List<Integer> values) {
+            addCriterion("classid in", values, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameNotLike(String value) {
-            addCriterion("schoolname not like", value, "schoolname");
+        public Criteria andClassidNotIn(List<Integer> values) {
+            addCriterion("classid not in", values, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameIn(List<String> values) {
-            addCriterion("schoolname in", values, "schoolname");
+        public Criteria andClassidBetween(Integer value1, Integer value2) {
+            addCriterion("classid between", value1, value2, "classid");
             return (Criteria) this;
         }
 
-        public Criteria andSchoolnameNotIn(List<String> values) {
-            addCriterion("schoolname not in", values, "schoolname");
-            return (Criteria) this;
-        }
-
-        public Criteria andSchoolnameBetween(String value1, String value2) {
-            addCriterion("schoolname between", value1, value2, "schoolname");
-            return (Criteria) this;
-        }
-
-        public Criteria andSchoolnameNotBetween(String value1, String value2) {
-            addCriterion("schoolname not between", value1, value2, "schoolname");
+        public Criteria andClassidNotBetween(Integer value1, Integer value2) {
+            addCriterion("classid not between", value1, value2, "classid");
             return (Criteria) this;
         }
     }

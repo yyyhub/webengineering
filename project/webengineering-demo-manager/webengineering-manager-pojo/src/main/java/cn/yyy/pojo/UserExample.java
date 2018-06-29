@@ -2,7 +2,6 @@ package cn.yyy.pojo;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class UserExample {
@@ -104,32 +103,6 @@ public class UserExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
-            if (value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
-            if (values == null || values.size() == 0) {
-                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
-            }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
-            Iterator<Date> iter = values.iterator();
-            while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
-            }
-            addCriterion(condition, dateList, property);
-        }
-
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
-            if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andUseridIsNull() {
@@ -623,52 +596,122 @@ public class UserExample {
         }
 
         public Criteria andJointimeEqualTo(Date value) {
-            addCriterionForJDBCDate("jointime =", value, "jointime");
+            addCriterion("jointime =", value, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeNotEqualTo(Date value) {
-            addCriterionForJDBCDate("jointime <>", value, "jointime");
+            addCriterion("jointime <>", value, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeGreaterThan(Date value) {
-            addCriterionForJDBCDate("jointime >", value, "jointime");
+            addCriterion("jointime >", value, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("jointime >=", value, "jointime");
+            addCriterion("jointime >=", value, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeLessThan(Date value) {
-            addCriterionForJDBCDate("jointime <", value, "jointime");
+            addCriterion("jointime <", value, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("jointime <=", value, "jointime");
+            addCriterion("jointime <=", value, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeIn(List<Date> values) {
-            addCriterionForJDBCDate("jointime in", values, "jointime");
+            addCriterion("jointime in", values, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeNotIn(List<Date> values) {
-            addCriterionForJDBCDate("jointime not in", values, "jointime");
+            addCriterion("jointime not in", values, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("jointime between", value1, value2, "jointime");
+            addCriterion("jointime between", value1, value2, "jointime");
             return (Criteria) this;
         }
 
         public Criteria andJointimeNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("jointime not between", value1, value2, "jointime");
+            addCriterion("jointime not between", value1, value2, "jointime");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconIsNull() {
+            addCriterion("headicon is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconIsNotNull() {
+            addCriterion("headicon is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconEqualTo(String value) {
+            addCriterion("headicon =", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconNotEqualTo(String value) {
+            addCriterion("headicon <>", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconGreaterThan(String value) {
+            addCriterion("headicon >", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconGreaterThanOrEqualTo(String value) {
+            addCriterion("headicon >=", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconLessThan(String value) {
+            addCriterion("headicon <", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconLessThanOrEqualTo(String value) {
+            addCriterion("headicon <=", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconLike(String value) {
+            addCriterion("headicon like", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconNotLike(String value) {
+            addCriterion("headicon not like", value, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconIn(List<String> values) {
+            addCriterion("headicon in", values, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconNotIn(List<String> values) {
+            addCriterion("headicon not in", values, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconBetween(String value1, String value2) {
+            addCriterion("headicon between", value1, value2, "headicon");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadiconNotBetween(String value1, String value2) {
+            addCriterion("headicon not between", value1, value2, "headicon");
             return (Criteria) this;
         }
     }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.yyy.mapper.CollegeMapper" >
-  <resultMap id="BaseResultMap" type="cn.yyy.pojo.College" >
-    <id column="collegeid" property="collegeid" jdbcType="INTEGER" />
-    <result column="collegename" property="collegename" jdbcType="VARCHAR" />
+<mapper namespace="cn.yyy.mapper.SelectMapper" >
+  <resultMap id="BaseResultMap" type="cn.yyy.pojo.SelectKey" >
+    <id column="studentid" property="studentid" jdbcType="INTEGER" />
+    <id column="classid" property="classid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -64,15 +64,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    collegeid, collegename
+    studentid, classid
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.CollegeExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.SelectExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from college
+    from select
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -80,59 +80,54 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from college
-    where collegeid = #{collegeid,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from college
-    where collegeid = #{collegeid,jdbcType=INTEGER}
+  <delete id="deleteByPrimaryKey" parameterType="cn.yyy.pojo.SelectKey" >
+    delete from select
+    where studentid = #{studentid,jdbcType=INTEGER}
+      and classid = #{classid,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="cn.yyy.pojo.CollegeExample" >
-    delete from college
+  <delete id="deleteByExample" parameterType="cn.yyy.pojo.SelectExample" >
+    delete from select
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="cn.yyy.pojo.College" >
-    insert into college (collegeid, collegename)
-    values (#{collegeid,jdbcType=INTEGER}, #{collegename,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="cn.yyy.pojo.SelectKey" >
+    insert into select (studentid, classid)
+    values (#{studentid,jdbcType=INTEGER}, #{classid,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="cn.yyy.pojo.College" >
-    insert into college
+  <insert id="insertSelective" parameterType="cn.yyy.pojo.SelectKey" >
+    insert into select
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="collegeid != null" >
-        collegeid,
+      <if test="studentid != null" >
+        studentid,
       </if>
-      <if test="collegename != null" >
-        collegename,
+      <if test="classid != null" >
+        classid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="collegeid != null" >
-        #{collegeid,jdbcType=INTEGER},
+      <if test="studentid != null" >
+        #{studentid,jdbcType=INTEGER},
       </if>
-      <if test="collegename != null" >
-        #{collegename,jdbcType=VARCHAR},
+      <if test="classid != null" >
+        #{classid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="cn.yyy.pojo.CollegeExample" resultType="java.lang.Integer" >
-    select count(*) from college
+  <select id="countByExample" parameterType="cn.yyy.pojo.SelectExample" resultType="java.lang.Integer" >
+    select count(*) from select
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update college
+    update select
     <set >
-      <if test="record.collegeid != null" >
-        collegeid = #{record.collegeid,jdbcType=INTEGER},
+      <if test="record.studentid != null" >
+        studentid = #{record.studentid,jdbcType=INTEGER},
       </if>
-      <if test="record.collegename != null" >
-        collegename = #{record.collegename,jdbcType=VARCHAR},
+      <if test="record.classid != null" >
+        classid = #{record.classid,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -140,25 +135,11 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update college
-    set collegeid = #{record.collegeid,jdbcType=INTEGER},
-      collegename = #{record.collegename,jdbcType=VARCHAR}
+    update select
+    set studentid = #{record.studentid,jdbcType=INTEGER},
+      classid = #{record.classid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.yyy.pojo.College" >
-    update college
-    <set >
-      <if test="collegename != null" >
-        collegename = #{collegename,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where collegeid = #{collegeid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.yyy.pojo.College" >
-    update college
-    set collegename = #{collegename,jdbcType=VARCHAR}
-    where collegeid = #{collegeid,jdbcType=INTEGER}
   </update>
 </mapper>

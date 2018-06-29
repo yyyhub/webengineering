@@ -9,7 +9,8 @@
     <result column="idno" property="idno" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="mail" property="mail" jdbcType="VARCHAR" />
-    <result column="jointime" property="jointime" jdbcType="DATE" />
+    <result column="jointime" property="jointime" jdbcType="TIMESTAMP" />
+    <result column="headicon" property="headicon" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    userid, username, password, name, idno, phone, mail, jointime
+    userid, username, password, name, idno, phone, mail, jointime, headicon
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.UserExample" >
     select
@@ -105,10 +106,12 @@
   <insert id="insert" parameterType="cn.yyy.pojo.User" >
     insert into user (userid, username, password, 
       name, idno, phone, 
-      mail, jointime)
+      mail, jointime, headicon
+      )
     values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{idno,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{mail,jdbcType=VARCHAR}, #{jointime,jdbcType=DATE})
+      #{mail,jdbcType=VARCHAR}, #{jointime,jdbcType=TIMESTAMP}, #{headicon,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="cn.yyy.pojo.User" >
     insert into user
@@ -137,6 +140,9 @@
       <if test="jointime != null" >
         jointime,
       </if>
+      <if test="headicon != null" >
+        headicon,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userid != null" >
@@ -161,7 +167,10 @@
         #{mail,jdbcType=VARCHAR},
       </if>
       <if test="jointime != null" >
-        #{jointime,jdbcType=DATE},
+        #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="headicon != null" >
+        #{headicon,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -196,7 +205,10 @@
         mail = #{record.mail,jdbcType=VARCHAR},
       </if>
       <if test="record.jointime != null" >
-        jointime = #{record.jointime,jdbcType=DATE},
+        jointime = #{record.jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.headicon != null" >
+        headicon = #{record.headicon,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -212,7 +224,8 @@
       idno = #{record.idno,jdbcType=VARCHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
       mail = #{record.mail,jdbcType=VARCHAR},
-      jointime = #{record.jointime,jdbcType=DATE}
+      jointime = #{record.jointime,jdbcType=TIMESTAMP},
+      headicon = #{record.headicon,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -239,7 +252,10 @@
         mail = #{mail,jdbcType=VARCHAR},
       </if>
       <if test="jointime != null" >
-        jointime = #{jointime,jdbcType=DATE},
+        jointime = #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="headicon != null" >
+        headicon = #{headicon,jdbcType=VARCHAR},
       </if>
     </set>
     where userid = #{userid,jdbcType=INTEGER}
@@ -252,7 +268,8 @@
       idno = #{idno,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       mail = #{mail,jdbcType=VARCHAR},
-      jointime = #{jointime,jdbcType=DATE}
+      jointime = #{jointime,jdbcType=TIMESTAMP},
+      headicon = #{headicon,jdbcType=VARCHAR}
     where userid = #{userid,jdbcType=INTEGER}
   </update>
 </mapper>

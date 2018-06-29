@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.yyy.mapper.SchoolMapper" >
   <resultMap id="BaseResultMap" type="cn.yyy.pojo.School" >
-    <id column="schoolname" property="schoolname" jdbcType="VARCHAR" />
-    <result column="schoolplace" property="schoolplace" jdbcType="VARCHAR" />
+    <id column="schoolid" property="schoolid" jdbcType="INTEGER" />
+    <result column="schoolname" property="schoolname" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -64,7 +64,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    schoolname, schoolplace
+    schoolid, schoolname
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.SchoolExample" >
     select
@@ -80,15 +80,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from school
-    where schoolname = #{schoolname,jdbcType=VARCHAR}
+    where schoolid = #{schoolid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from school
-    where schoolname = #{schoolname,jdbcType=VARCHAR}
+    where schoolid = #{schoolid,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="cn.yyy.pojo.SchoolExample" >
     delete from school
@@ -97,25 +97,25 @@
     </if>
   </delete>
   <insert id="insert" parameterType="cn.yyy.pojo.School" >
-    insert into school (schoolname, schoolplace)
-    values (#{schoolname,jdbcType=VARCHAR}, #{schoolplace,jdbcType=VARCHAR})
+    insert into school (schoolid, schoolname)
+    values (#{schoolid,jdbcType=INTEGER}, #{schoolname,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.yyy.pojo.School" >
     insert into school
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="schoolid != null" >
+        schoolid,
+      </if>
       <if test="schoolname != null" >
         schoolname,
       </if>
-      <if test="schoolplace != null" >
-        schoolplace,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="schoolid != null" >
+        #{schoolid,jdbcType=INTEGER},
+      </if>
       <if test="schoolname != null" >
         #{schoolname,jdbcType=VARCHAR},
-      </if>
-      <if test="schoolplace != null" >
-        #{schoolplace,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -128,11 +128,11 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update school
     <set >
+      <if test="record.schoolid != null" >
+        schoolid = #{record.schoolid,jdbcType=INTEGER},
+      </if>
       <if test="record.schoolname != null" >
         schoolname = #{record.schoolname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.schoolplace != null" >
-        schoolplace = #{record.schoolplace,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -141,8 +141,8 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update school
-    set schoolname = #{record.schoolname,jdbcType=VARCHAR},
-      schoolplace = #{record.schoolplace,jdbcType=VARCHAR}
+    set schoolid = #{record.schoolid,jdbcType=INTEGER},
+      schoolname = #{record.schoolname,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -150,15 +150,15 @@
   <update id="updateByPrimaryKeySelective" parameterType="cn.yyy.pojo.School" >
     update school
     <set >
-      <if test="schoolplace != null" >
-        schoolplace = #{schoolplace,jdbcType=VARCHAR},
+      <if test="schoolname != null" >
+        schoolname = #{schoolname,jdbcType=VARCHAR},
       </if>
     </set>
-    where schoolname = #{schoolname,jdbcType=VARCHAR}
+    where schoolid = #{schoolid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.yyy.pojo.School" >
     update school
-    set schoolplace = #{schoolplace,jdbcType=VARCHAR}
-    where schoolname = #{schoolname,jdbcType=VARCHAR}
+    set schoolname = #{schoolname,jdbcType=VARCHAR}
+    where schoolid = #{schoolid,jdbcType=INTEGER}
   </update>
 </mapper>
