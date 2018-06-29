@@ -1,8 +1,10 @@
 package cn.yyy.pojo;
 
 public class SelectKey {
+	//学生编号
     private Integer studentid;
 
+    //班级编号
     private Integer classid;
     
     public SelectKey() {

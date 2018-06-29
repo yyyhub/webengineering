@@ -3,20 +3,28 @@ package cn.yyy.pojo;
 import java.util.Date;
 
 public class Job {
+	//学生作业编号
     private Integer jobid;
 
+    //学生编号
     private Integer studentid;
 
+    //批改状态
     private String state;
 
+    //成绩
     private Integer grade;
 
+    //作业编号
     private Integer taskid;
 
+    //提交的作业内容url
     private String content;
 
+    //作业标题
     private String jobname;
 
+    //提交时间
     private Date submittime;
     
     public Job(Integer jobid, Integer studentid, String state, Integer grade, Integer taskid, String content,String jobname, Date submittime) {

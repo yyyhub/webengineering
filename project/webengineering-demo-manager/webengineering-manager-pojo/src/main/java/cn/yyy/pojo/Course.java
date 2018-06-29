@@ -1,12 +1,16 @@
 package cn.yyy.pojo;
 
 public class Course {
+	//课程编号
     private Integer courseid;
 
+    //课程名称
     private String coursename;
 
+    //老师编号
     private Integer teacherid;
 
+    //学院编号
     private Integer collegeid;
     
     public Course() {

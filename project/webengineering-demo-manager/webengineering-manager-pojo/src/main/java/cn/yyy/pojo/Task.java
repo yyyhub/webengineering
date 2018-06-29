@@ -3,16 +3,22 @@ package cn.yyy.pojo;
 import java.util.Date;
 
 public class Task {
+	//教师布置的作业编号
     private Integer taskid;
 
+    //作业名称
     private String taskname;
 
+    //教师编号
     private Integer teacherid;
 
+    //课程编号
     private Integer courseid;
 
+    //作业内容
     private String taskcontent;
 
+    //截至日期
     private Date deadline;
     
     public Task(Integer taskid, String taskname, Integer teacherid, Integer courseid, String taskcontent, Date deadline){

@@ -1,14 +1,19 @@
 package cn.yyy.pojo;
 
 public class Student {
+	//学生编号
     private Integer studentid;
 
+    //用户编号
     private Integer userid;
 
+    //学校编号
     private Integer schoolid;
 
+    //学院编号
     private Integer collegeid;
 
+    //学号
     private Integer sid;
     
     public Student(Integer studentid, Integer userid, Integer schoolid, Integer collegeid, Integer sid) {

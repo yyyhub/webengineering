@@ -1,8 +1,10 @@
 package cn.yyy.pojo;
 
 public class School {
+	//学校编号
     private Integer schoolid;
 
+    //学校名称
     private String schoolname;
     
     public School() {

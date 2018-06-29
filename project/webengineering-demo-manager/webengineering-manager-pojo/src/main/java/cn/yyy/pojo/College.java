@@ -1,8 +1,10 @@
 package cn.yyy.pojo;
 
 public class College {
+	//学院编号
     private Integer collegeid;
 
+    //学院名称
     private String collegename;
     
     public College() {
