@@ -1,0 +1,22 @@
+.courseMessage p{
+	margin-bottom: 5px;
+	
+}
+.courseMessage{
+	border: 2px solid #324b4e;
+	border-radius: 8px;
+	background: white;
+}
+img{
+	border-radius: 8px;
+}
+.course{
+	background-image: url(../img/背景1.jpg);
+}
+.mypage{
+	background-image: url(../img/背景1.jpg);
+}
+.courses{
+	margin-top: 20px;
+	padding-left: 15px;
+}
