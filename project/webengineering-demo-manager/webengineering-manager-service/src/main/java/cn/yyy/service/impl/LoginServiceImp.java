@@ -39,7 +39,7 @@ public class LoginServiceImp {
 			}
 		}
 		
-		int x = 10;
+		int x = 5;
 		for (int i = 0;i < word.length();i++) {
 			graphics2d.setColor(new Color(20 + random.nextInt(110),20 + random.nextInt(110), 20 + random.nextInt(110)));
 			int jiaodu = random.nextInt(60) - 30;
@@ -47,10 +47,10 @@ public class LoginServiceImp {
 			
 			char c = word.charAt(i);
 			
-			graphics2d.rotate(theta,x,20);
-			graphics2d.drawString(String.valueOf(c), x, 20);
-			graphics2d.rotate(theta, x, 20);
-			x += 30;
+			graphics2d.rotate(theta,x,25);
+			graphics2d.drawString(String.valueOf(c), x, 25);
+			graphics2d.rotate(-theta, x, 25);
+			x += 15;
 		}
 		ImgCheckCode imgCheckCode = new ImgCheckCode();
 		imgCheckCode.setCheckCode(word);
@@ -68,7 +68,7 @@ public class LoginServiceImp {
 			y2 = random.nextInt(12);
 			graphics.drawLine(x1, y1, x1 + x2, y1 + y2);
 		}
-		imgCheckCode.setCheckCodeImg(graphics);
+		imgCheckCode.setCheckCodeImg(bufferedImage);
 		return imgCheckCode;
 	}
 	

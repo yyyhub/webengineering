@@ -58,14 +58,14 @@ form {
 .d7 button {
 	padding-top: 15px;
 	padding-right: 20px;
-	width: 42px;
-	height: 40px;
+
 	background: none;
 	border: none;
 	position: absolute;
 	top: -2px;
 	right: 0;
 }
+
 
 .d7 button:before {
 	content: '\f002';

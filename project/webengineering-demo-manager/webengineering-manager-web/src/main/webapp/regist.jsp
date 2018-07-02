@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>注册</titlf<link href="css/bootstrap.min.css" rel="stylesheet">
+<%
+  String path = request.getContextPath();
+  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+<html>
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+		<link href="<%=basePath%>css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/gloab.css" rel="stylesheet">
 		<link href="css/index.css" rel="stylesheet">
 		<script src="js/jquery-1.11.1.min.js"></script>
@@ -18,9 +22,8 @@
 		<script src="js/register.js"></script>
 		<!--导入密码加密-->
 		<script src="js/jquery.md5.js"></script>
-	</head>
-
-	<body class="bgf4">
+    </head>
+    <body class="bgf4">
 		<div class="login-box f-mt10 f-pb50">
 			<div class="main bgf">
 				<div class="reg-box-pan display-inline">
@@ -57,7 +60,7 @@
 					<!--开始注册信息-->
 
 					<div class="reg-box" id="verifyCheck" style="margin-top:20px;">
-						<form action="http://www.baidu.com" method="get" id="Form" onsubmit="return beforeSubmit()">
+						<form action="javascript:;" method="post" id="Form" onsubmit="return beforeSubmit()">
 							<!--第一步，填写账户信息-->
 							<div class="part1">
 								<!--用户姓名-->
@@ -71,7 +74,7 @@
 										<label class="focus">
                                     <span>3-20位，中文、字母、数字、下划线的组合，以中文或字母开头</span>
                                 </label>
-										<label class="focus valid"></label>
+										<label class="focus valid" id="usernameerror"></label>
 									</div>
 								</div>
 								<!--手机号-->
@@ -83,7 +86,7 @@
 										<span class="ie8 icon-close close hide"></span>
 										<label class="icon-sucessfill blank hide"></label>
 										<label class="focus">请填写11位有效的手机号码</label>
-										<label class="focus valid"></label>
+										<label class="focus valid" id="phoneerror"></label>
 									</div>
 								</div>
 								<!--密码-->
@@ -130,7 +133,7 @@
 										<input type="text" maxlength="4" class="txt03 f-r3 f-fl" tabindex="4" style="width:167px" id="randCode" name="checkcode" />
 										<span class="ie8 icon-close close hide"></span>
 										<label class="f-size12 c-999 f-fl f-pl10">
-                                    <img src="images/yzm.jpg" id="checkCodeImg"/>
+                                    <img src="${pageContext.request.contextPath}/getcheckcode.action" id="checkCodeImg"/>
                                 </label>
 										<label class="icon-sucessfill blank hide" style="left:380px"></label>
 										<label class="focusa">看不清？
@@ -307,49 +310,103 @@
 			</center>
 		</div>
 		<script>
-			$(function() {
-				//换一张验证码
-				$("#changeCheckImg").click(function() {
+			//用户名判重
+				$("#adminNo").change(function(){
 					$.ajax({
-						type: "post",
-						url: "",
-						async: true,
-						success: function(result) {
-							$("#changeCheckImg").html("换两张");
+						type:"post",
+						url:"${pageContext.request.contextPath}/checkusername.action",
+						async:true,
+						dataType:"json",
+						data:{"username":$("#adminNo").val()},
+						success:function(result){
+							if(result.isnameexist==true){
+								$("#adminNo").addClass("v_error");
+								$("#usernameerror").addClass("error");
+								$("#usernameerror").html("用户名已经存在");
+							}
+						},
+						error:function(result){
+							alert("错误");
 						}
 					});
 				});
+				
+				//手机号判重
+				$("#phone").change(function(){
+					$.ajax({
+						type:"post",
+						url:"${pageContext.request.contextPath}/checkphonenumber.action",
+						async:true,
+						dataType:"json",
+						data:{"phonenumber":$("#phone").val()},
+						success:function(result){
+							if(result.isphoneexist){
+								$("#phone").addClass("v_error");
+								$("#phoneerror").addClass("error");
+								$("#phoneerror").html("电话号码已经存在");
+							}
+						},
+						error:function(result){
+							alert("错误");
+						}
+					});
+				});
+				
+				//换一张验证码
+				$("#changeCheckImg").click(function(){
+					$.ajax({
+						type:"post",
+						url:"${pageContext.request.contextPath}/getcheckcode.action",
+						async:true,
+						success:function(result){
+							$("#checkCodeImg").attr("src","${pageContext.request.contextPath}/getcheckcode.action");
+						}
+					
+					});
+					
+					//alert("haha");
+				});
+
+			$(function() {
+				
 				//第一页的确定按钮
 				$("#btn_part1").click(function() {
 					if(!verifyCheck._click()) return;
-					var checkCodeSign = $.ajax({
-						type: "post",
-						url: "",
-						async: true,
-						data: {
-							"checkCode": $("#randCode").val()
+					var checkCodeSign=false;
+					$.ajax({
+						type:"post",
+						url:"${pageContext.request.contextPath}/checkccode.action",
+						async:false,
+						dataType:"json",
+						data:{"checkcode":$("#randCode").val()},
+						success:function(result){
+							if(result.ischeckcoderight){
+								checkCodeSign=true;
+								
+							}
+							else{
+								$("#randCode").addClass("v_error");
+								$("#checkCodeMsg").addClass("error");
+								$("#checkCodeMsg").html("验证码错误");	
+							}
 						},
+						error:function(result){
+							alert("错误");
+						}
+					
 					});
-					if($("#randCode").val() == "1234") {
-						checkCodeSign = true;
-					} else {
-						checkCodeSign = false;
-					}
-					if(!checkCodeSign) {
-						$("#checkCodeMsg").addClass("error");
-						$("#checkCodeMsg").html("验证码错误");
-						$("#randCode").addClass("v_error");
+					//alert(checkCodeSign);
+					
+					if(!checkCodeSign){
 						return;
-					} else {
-						$("#checkCodeMsg").removeClass("error");
-						$("#checkCodeMsg").html("");
-						$("#randCode").removeClass("v_error");
 					}
+					
 					$(".part1").hide();
 					$("#password").val($.md5($("#password").val())); //密码md5加密
 					getPhone();
 					$(".part2").show();
 					$(".step li").eq(1).addClass("on");
+					
 				});
 				//第二页的确定按钮
 				$("#btn_part2").click(function() {
