@@ -11,12 +11,7 @@
 		<link rel="stylesheet" href="css/demo.css" />
 		<link rel="stylesheet" href="css/normalize.css" />
 		<link rel="stylesheet" href="css/searchstyle.css" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/导航栏样式.css" />
-		<link rel="stylesheet" href="css/component.css" />
-		<script type="text/javascript" src="js/classie.js"></script>
-		<script type="text/javascript" src="js/modalEffects.js"></script>
-		<link rel="stylesheet" href="css/学生课程页面（总览）.css" />
 
 		<link rel="stylesheet" href="css/消息组件.css" />
 	</head>
@@ -53,40 +48,25 @@
 					<div class="collapse navbar-collapse" id="ToBeHidden">
 						<ul class="nav navbar-nav">
 							<li>
-								<a href="#" style="color: white;font-size: 20px;">我的课程 <span class="sr-only">(current)</span></a>
+								<a href="#" style="color: white;font-size: 20px;">管理课程 <span class="sr-only">(current)</span></a>
 							</li>
 							<li>
-								<a href="#" style="color: white;font-size: 20px;">我的作业</a>
+								<a href="#" style="color: white;font-size: 20px;">学生问题</a>
+							</li>
+							<li>
+								<a href="#" style="color: white;font-size: 20px;">批改作业</a>
 							</li>
 							<li>
 								<a href="#" style="color: white;font-size: 20px;">我的讨论</a>
 							</li>
+
 						</ul>
-						<script>
-							function submitsearch() {
-								$.ajax({
-									type: "GET",
-									url: "",
-									data: {
-										"searchclass": $("#searchcourse").val()
-									},
-									async: true,
-									success: function() {
-										/*showResult();*/
-										/*alert("success");*/
-										$("#SearchResult").show();
-									},
-									error: function() {
-										alert("error");
-									}
-								});
-							}
-						</script>
-						<form class="navbar-form navbar-right" role="search" id="searchcourse" style="margin-top: 5px;margin-bottom: 5px;">
+
+						<form class="navbar-form navbar-right" role="search" style="margin-top: 5px;margin-bottom: 5px;">
 							<div class="form-group">
-								<input type="text" class="form-control" name="searchclass" placeholder="搜索您想要的内容" style="border: 2px solid #324b4e;background: #F9F0DA;border-radius: 24px;">
+								<input type="text" class="form-control" placeholder="搜索您想要的内容" style="border: 2px solid #324b4e;background: #F9F0DA;border-radius: 24px;">
 							</div>
-							<button type="button" class="btn btn-default" onclick="submitsearch()" style="border: 1px solid #324b4e;margin-left: 5px;">搜索</button>
+							<button type="submit" class="btn btn-default" style="border: 1px solid #324b4e;margin-left: 5px;">搜索</button>
 						</form>
 					</div>
 				</div>
@@ -206,7 +186,7 @@
 						<p>账户名称：<span>xxx</span></p>
 						<p>姓名：<span>xxx</span></p>
 						<p>所在院校：<span>xxx</span></p>
-						<p>所在专业：<span>xxx</span></p>
+						<!--<p>所在专业：<span>xxx</span></p>-->
 						<a type="button" class="btn btn-default" href="#">我的课程</a>
 					</div>
 				</div>
@@ -218,41 +198,7 @@
 		<div class="row text-center" id="below" style="margin-left: 0px;margin-right: 0px;border-radius: 8px;height: 50px;">
 			<p>版权声明</p>
 		</div>
-		<!--搜索结果（浮动）-->
-		<script>
-			function hiddenResult() {
-				$("#SearchResult").hide();
 
-			}
-
-		</script>
-		<div id="SearchResult" style="display: none; width: 400px;height: 336px; background-color: white;float: left;position: absolute;left: 30%;right: 50%;top: 30%;bottom: 50%; z-index: 1;">
-			<div class="courseMessage" style="width: 400px;margin-top: 0px;background-image: url(img/背景1.jpg);">
-				<div style="text-align: center;font-size: 20px;">
-					<p>您查找的课程是否为：<span>课程名</span>？</p>
-				</div>
-
-				<div style="text-align: center;">
-					<!--img-->
-					<a href="#">
-						<img src="img/课程.jpg" style="width: 240px; height: 150px;" />
-					</a>
-				</div>
-				<div style="text-align: center;">
-					<!--text-->
-					<p>课程名称：<span>xxx</span></p>
-					<p>任课教师：<span>xxx</span></p>
-					<p>所选课程所在学校：<span>xxx</span></p>
-					<p>班级人数：<span>xxx</span></p>
-				</div>
-				<div style="text-align: center;padding-bottom: 5px;">
-					<p style="font-size: 18px;">您确定要选择加入该课程吗？</p>
-					<button type="button" class="btn btn-default" style="margin-right: 100px;" onclick="hiddenResult()" >确定</button>
-					<button type="button" class="btn btn-default" onclick="hiddenResult()">取消</button>
-				</div>
-
-			</div>
-		</div>
 	</body>
 
 </html>
