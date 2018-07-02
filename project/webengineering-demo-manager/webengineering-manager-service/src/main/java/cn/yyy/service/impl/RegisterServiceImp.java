@@ -6,25 +6,31 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.yyy.pojo.ImgCheckCode;
 import cn.yyy.pojo.User;
+import cn.yyy.service.RegisterService;
+import cn.yyy.service.UserService;
 
 @Service
-public class RegisterServiceImp {
+public class RegisterServiceImp implements RegisterService{
 
+	@Autowired
+	private UserService userService;
+	
+	
 	public boolean isExistUsername(String username) {
-		UserServiceImp userServiceImp = new UserServiceImp();
-		User user = userServiceImp.getUserByUsername(username);
+		User user = userService.getUserByUsername(username);
 		if (user != null)
 			return true;
 		return false;
 	}
 
 	public boolean isExistPhoneNumber(String phone) {
-		UserServiceImp userServiceImp = new UserServiceImp();
-		User user = userServiceImp.getUserByPhoneNumber(phone);
+		User user = userService.getUserByPhoneNumber(phone);
 		if (user != null)
 			return true;
 		return false;

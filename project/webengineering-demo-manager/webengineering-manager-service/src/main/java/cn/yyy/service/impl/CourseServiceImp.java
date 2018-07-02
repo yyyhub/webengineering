@@ -1,13 +1,19 @@
 package cn.yyy.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.yyy.mapper.CourseMapper;
 import cn.yyy.pojo.Course;
+import cn.yyy.service.ClassService;
+import cn.yyy.service.CourseService;
 
-public class CourseServiceImp {
+@Service
+public class CourseServiceImp implements CourseService{
 	@Autowired
 	private CourseMapper courseMapper;
+	@Autowired
+	private ClassService classService;
 	
 	public Course getCourseByCourseId(Integer courseid) {
 		Course course = courseMapper.selectByPrimaryKey(courseid);
@@ -17,8 +23,7 @@ public class CourseServiceImp {
 	}
 	
 	public Course getCourseByClassId(Integer classid) {
-		ClassServiceImp classServiceImp = new ClassServiceImp();
-		Course course = getCourseByCourseId(classServiceImp.getClassByClassId(classid).getCourseid());
+		Course course = getCourseByCourseId(classService.getClassByClassId(classid).getCourseid());
 		return course;
 	}
 }

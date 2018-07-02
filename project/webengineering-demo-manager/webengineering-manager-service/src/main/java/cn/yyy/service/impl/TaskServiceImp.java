@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.yyy.mapper.TaskMapper;
 import cn.yyy.pojo.Class;
@@ -13,10 +14,21 @@ import cn.yyy.pojo.StudentInfo;
 import cn.yyy.pojo.Task;
 import cn.yyy.pojo.TaskExample;
 import cn.yyy.pojo.TaskExample.Criteria;
+import cn.yyy.service.CourseService;
+import cn.yyy.service.MessageService;
+import cn.yyy.service.StudentService;
+import cn.yyy.service.TaskService;
 
-public class TaskServiceImp {
+@Service
+public class TaskServiceImp implements TaskService{
 	@Autowired
 	private TaskMapper taskMapper;
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private MessageService messageService;
+	@Autowired
+	private CourseService courseService;
 	
 	public void assginTask(String taskName,String taskContent,Integer teacherid,Integer courseid,Date deadline) {
 		Task task = new Task();
@@ -27,11 +39,9 @@ public class TaskServiceImp {
 		task.setTaskname(taskName);
 		task.setTeacherid(teacherid);
 		taskMapper.insert(task);
-		StudentServiceImp studentServiceImp = new StudentServiceImp();
-		List<StudentInfo> studentInfos = studentServiceImp.getCourseStudentsInfoByCourseId(courseid);
-		MessageServiceImp messageServiceImp = new MessageServiceImp();
+		List<StudentInfo> studentInfos = studentService.getCourseStudentsInfoByCourseId(courseid);
 		for (StudentInfo studentInfo:studentInfos) {
-			messageServiceImp.addMessage(taskContent, teacherid, studentInfo.getUserid());
+			messageService.addMessage(taskContent, teacherid, studentInfo.getUserid());
 		}
 	}
 	
@@ -44,15 +54,13 @@ public class TaskServiceImp {
 	}
 	
 	public List<Task> getAllTaskByClassId(Integer classid){
-		CourseServiceImp courseServiceImp = new CourseServiceImp();
-		Course course = courseServiceImp.getCourseByClassId(classid);
+		Course course = courseService.getCourseByClassId(classid);
 		List<Task> tasks = getAllTaskByCourseId(course.getCourseid());
 		return tasks;
 	}
 	
 	public List<Task> getAllTaskByStudentId(Integer studentid){
-		StudentServiceImp studentServiceImp = new StudentServiceImp();
-		List<Class> classes = studentServiceImp.getAllClassByStudentid(studentid);
+		List<Class> classes = studentService.getAllClassByStudentid(studentid);
 		List<Task> tasks = new ArrayList<>();
 		for (Class clazz:classes) {
 			List<Task> clazztasks = getAllTaskByClassId(clazz.getClassid());

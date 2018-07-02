@@ -3,20 +3,23 @@ package cn.yyy.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.yyy.mapper.CollegeMapper;
 import cn.yyy.pojo.College;
 import cn.yyy.pojo.CollegeExample;
 import cn.yyy.pojo.CollegeExample.Criteria;
+import cn.yyy.service.CollegeService;
 
-public class CollegeService {
+@Service
+public class CollegeServiceImp implements CollegeService{
 	@Autowired
 	private static CollegeMapper collegeMapper;
 	
 	public College getCollegeByCollegeId(Integer collegeid) {
 		College college = collegeMapper.selectByPrimaryKey(collegeid);
 		if (college==null)
-			throw new RuntimeException("无此学院");
+			return null;
 		return college;
 	}
 	

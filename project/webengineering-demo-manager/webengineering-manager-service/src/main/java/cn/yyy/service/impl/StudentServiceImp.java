@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.yyy.mapper.StudentMapper;
 import cn.yyy.pojo.Class;
@@ -16,19 +17,34 @@ import cn.yyy.pojo.StudentExample;
 import cn.yyy.pojo.StudentExample.Criteria;
 import cn.yyy.pojo.StudentInfo;
 import cn.yyy.pojo.User;
+import cn.yyy.service.ClassService;
+import cn.yyy.service.CollegeService;
+import cn.yyy.service.SchoolService;
+import cn.yyy.service.SelectService;
+import cn.yyy.service.StudentService;
+import cn.yyy.service.UserService;
 
-public class StudentServiceImp {
+@Service
+public class StudentServiceImp implements StudentService{
 	@Autowired
 	private StudentMapper studentMapper;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private CollegeService collegeService;
+	@Autowired
+	private SchoolService schoolService;
+	@Autowired
+	private SelectService selectService;
+	@Autowired
+	private ClassService classService;
 	
 	public StudentInfo getStudentInfoByStudentId(Integer studentid) {
 		Student student = studentMapper.selectByPrimaryKey(studentid);
 		if (student == null)
 			return null;
-		UserServiceImp userServiceImp = new UserServiceImp();
-		User user = userServiceImp.getUserInfoByUid(student.getUserid());
+		User user = userService.getUserInfoByUid(student.getUserid());
 		StudentInfo studentInfo = new StudentInfo();
-		CollegeService collegeService = new CollegeService();
 		studentInfo.setCollegename(collegeService.getCollegeNameByCollegeId(student.getCollegeid()));
 		studentInfo.setHeadicon(user.getHeadicon());
 		studentInfo.setIdno(user.getIdno());
@@ -36,7 +52,6 @@ public class StudentServiceImp {
 		studentInfo.setName(user.getName());
 		studentInfo.setPassword(user.getPassword());
 		studentInfo.setPhone(user.getPhone());
-		SchoolService schoolService = new SchoolService();
 		studentInfo.setSchoolname(schoolService.getSchoolNameBySchoolId(student.getSchoolid()));
 		studentInfo.setSid(student.getSid());
 		studentInfo.setStudentid(student.getStudentid());
@@ -57,12 +72,10 @@ public class StudentServiceImp {
 	}
 	
 	public List<Class> getAllClassByStudentid(Integer studentid){
-		SelectServiceImp selectServiceImp = new SelectServiceImp();
-		List<SelectKey> selectKeys = selectServiceImp.getSelectsIdByStudentid(studentid);
+		List<SelectKey> selectKeys = selectService.getSelectsIdByStudentid(studentid);
 		List<Class> classes = new ArrayList<>();
-		ClassServiceImp classServiceImp = new ClassServiceImp();
 		for (SelectKey selectKey:selectKeys) {
-			Class clazz = classServiceImp.getClassByClassId(selectKey.getClassid());
+			Class clazz = classService.getClassByClassId(selectKey.getClassid());
 			if (!classes.contains(clazz))
 				classes.add(clazz);
 		}
@@ -70,12 +83,10 @@ public class StudentServiceImp {
 	}
 	
 	public List<StudentInfo> getCourseStudentsInfoByCourseId(Integer courseid){
-		ClassServiceImp classServiceImp = new ClassServiceImp();
-		List<Class> classes = classServiceImp.getAllClassByCourseid(courseid);
+		List<Class> classes = classService.getAllClassByCourseid(courseid);
 		List<SelectKey> studentselects = new ArrayList<>();
 		for (Class clazz:classes) {
-			SelectServiceImp selectServiceImp = new SelectServiceImp();
-			List<SelectKey> selectKeys = selectServiceImp.getSelectsByClassId(clazz.getClassid());
+			List<SelectKey> selectKeys = selectService.getSelectsByClassId(clazz.getClassid());
 			for (SelectKey selectKey:selectKeys) {
 				if (!studentselects.contains(selectKey))
 					studentselects.add(selectKey);
@@ -100,21 +111,18 @@ public class StudentServiceImp {
 		user.setUsername(studentInfo.getUsername());
 		user.setHeadicon(studentInfo.getHeadicon());
 		user.setJointime(new Date());
-		UserServiceImp userServiceImp = new UserServiceImp();
-		userServiceImp.addUser(user);
-		User user2 = userServiceImp.getUserByUsername(studentInfo.getUsername());
+		userService.addUser(user);
+		User user2 = userService.getUserByUsername(studentInfo.getUsername());
 		Student student = new Student();
 		student.setUserid(user2.getUserid());
 		student.setStudentid(null);
 		SchoolExample schoolExample = new SchoolExample();
 		cn.yyy.pojo.SchoolExample.Criteria criteria2 = schoolExample.createCriteria();
 		criteria2.andSchoolnameEqualTo(studentInfo.getSchoolname());
-		SchoolService schoolService = new SchoolService();
 		Integer schoolid = schoolService.getSchoolIdBySchoolName(studentInfo.getSchoolname());
 		if (schoolid == null)
 			throw new RuntimeException("无此学校");
 		student.setSchoolid(schoolid);
-		CollegeService collegeService = new CollegeService();
 		College college = collegeService.getCollegeByCollegeName(studentInfo.getCollegename());
 		if (college == null) {
 			college = new College();

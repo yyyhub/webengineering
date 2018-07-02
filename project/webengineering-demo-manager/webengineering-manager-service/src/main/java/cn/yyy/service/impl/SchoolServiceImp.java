@@ -3,13 +3,16 @@ package cn.yyy.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.yyy.mapper.SchoolMapper;
 import cn.yyy.pojo.School;
 import cn.yyy.pojo.SchoolExample;
 import cn.yyy.pojo.SchoolExample.Criteria;
+import cn.yyy.service.SchoolService;
 
-public class SchoolService {
+@Service
+public class SchoolServiceImp implements SchoolService{
 
 	@Autowired
 	private static SchoolMapper schoolMapper;

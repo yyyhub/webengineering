@@ -6,9 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import org.springframework.stereotype.Service;
 import cn.yyy.pojo.ImgCheckCode;
+import cn.yyy.service.LoginService;
 
-public class LoginServiceImp {
+@Service
+public class LoginServiceImp implements LoginService{
 
 	public ImgCheckCode getImgCheckCode(int width, int height) {
 		BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);

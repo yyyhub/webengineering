@@ -4,11 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import cn.yyy.mapper.MessageMapper;
 import cn.yyy.pojo.Message;
 import cn.yyy.pojo.PageBean;
+import cn.yyy.service.MessageService;
 
-public class MessageServiceImp {
+@Service
+public class MessageServiceImp implements MessageService{
 	@Autowired
 	private MessageMapper messageMapper;
 
