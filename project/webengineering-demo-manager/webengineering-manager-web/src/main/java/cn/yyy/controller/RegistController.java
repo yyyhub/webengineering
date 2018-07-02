@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import cn.yyy.pojo.ImgCheckCode;
-import cn.yyy.service.impl.RegisterServiceImp;
+import cn.yyy.service.RegisterService;
 import common.utils.JsonUtil;
 
 @Controller
 public class RegistController {
+	@Autowired
+	private RegisterService registerService;
 
 	@RequestMapping("/getcheckcode")
 	@ResponseBody
@@ -27,8 +31,7 @@ public class RegistController {
 		ImgCheckCode imgCheckCode=new ImgCheckCode();
 		final int width=80;
 		final int height=35;
-		RegisterServiceImp registerservice=new RegisterServiceImp();
-		imgCheckCode=registerservice.getImgCheckCode(width, height);
+		imgCheckCode=registerService.getImgCheckCode(width, height);
 		System.out.println(imgCheckCode.getCheckCode());
 		session.setAttribute("checkcodestr",imgCheckCode.getCheckCode());
 		try {
@@ -44,11 +47,7 @@ public class RegistController {
 	public String checkUserName(String username,HttpSession session,HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> result=new HashMap<String, Object>();
 		System.out.println(username);
-		//RegisterServiceImp registerservice=new RegisterServiceImp();
-		boolean sign=false;
-		if(username.equals("zhengyuming")) {
-			sign=true;
-		}
+		boolean sign=registerService.isExistUsername(username);
 		
 		result.put("isnameexist", sign);
 		session.setAttribute("isusernameexist", sign);
@@ -68,12 +67,7 @@ public class RegistController {
 	public String checkPhoneNumber(String phonenumber,HttpSession session,HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> result=new HashMap<String, Object>();
 		System.out.println(phonenumber);
-		//RegisterServiceImp registerservice=new RegisterServiceImp();
-		boolean sign=false;
-		if(phonenumber.equals("13072904943")) {
-			sign=true;
-		}
-		
+		boolean sign=registerService.isExistPhoneNumber(phonenumber);
 		result.put("isphoneexist", sign);
 		String json = null;
 		try {
@@ -90,7 +84,6 @@ public class RegistController {
 	public String checkCCode(String checkcode,HttpSession session) {
 		Map<String, Object> result=new HashMap<String, Object>();
 		System.out.println("client:"+checkcode);
-		//RegisterServiceImp registerservice=new RegisterServiceImp();
 		String sessioncheckcode=(String) session.getAttribute("checkcodestr");
 		boolean sign=false;
 		if(sessioncheckcode.equals(checkcode)) {
