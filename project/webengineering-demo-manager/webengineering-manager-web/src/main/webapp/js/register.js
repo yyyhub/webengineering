@@ -125,8 +125,26 @@
 			var d = this;
 			if (b.code) {
 				$("#verifyYz").click(function() {
-					$("#time_box").text("60 s后可重发");
-					d._sendVerify()
+					var isSuccess = false;
+					$.ajax({
+						type:"post",
+						url:"/sendPhoneCheckCode.action",
+						async:false,
+						dataType:"json",
+						data:{"phone":$("#phone").val()},
+						success:function(data){
+							isSuccess = true;
+						},
+						error:function(){
+							alert("手机验证码发送失败");
+							isSucess = false;
+						}
+					});
+					if (isSuccess){
+						$("#time_box").text("60 s后可重发");
+						d._sendVerify()
+					}
+					
 				})
 			}
 			$('body').on({

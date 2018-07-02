@@ -14,7 +14,7 @@ import cn.yyy.service.CollegeService;
 @Service
 public class CollegeServiceImp implements CollegeService{
 	@Autowired
-	private static CollegeMapper collegeMapper;
+	private CollegeMapper collegeMapper;
 	
 	public College getCollegeByCollegeId(Integer collegeid) {
 		College college = collegeMapper.selectByPrimaryKey(collegeid);

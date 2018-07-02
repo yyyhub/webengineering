@@ -171,15 +171,15 @@
 									<span class="intelligent-label f-fl">
                                 <b class="ftx04">*</b>验证码：</span>
 									<div class="f-fl item-ifo">
-										<input type="text" maxlength="6" id="verifyNo" class="txt03 f-r3 f-fl required" tabindex="4" style="width:167px" data-valid="isNonEmpty||isInt" data-error="验证码不能为空||请输入6位数字验证码" name="phoneCheckCode" />
+										<input type="text" maxlength="6" id="verifyNo" class="txt03 f-r3 f-fl" tabindex="4" style="width:167px" name="phoneCheckCode" />
 										<span class="btn btn-gray f-r3 f-ml5 f-size13" id="time_box" disabled style="width:97px;display:none;">发送验证码</span>
 										<span class="btn btn-gray f-r3 f-ml5 f-size13" id="verifyYz" style="width:97px;">发送验证码</span>
 										<span class="ie8 icon-close close hide" style="right:130px"></span>
-										<label class="icon-sucessfill blank hide"></label>
-										<label class="focus">
+										<label class="icon-sucessfill blank hide" id="phonecodesuccess"></label>
+										<label class="focus" id="phonecodetip">
                                     <span>请查收手机短信，并填写短信中的验证码（此验证码3分钟内有效）</span>
                                 </label>
-										<label class="focus valid"></label>
+										<label class="focus valid" id="phonecodeerror"></label>
 									</div>
 								</div>
 								<div class="item col-xs-12">
@@ -196,7 +196,7 @@
 									<span class="intelligent-label f-fl">
                                 <b class="ftx04">*</b>真实姓名：</span>
 									<div class="f-fl item-ifo">
-										<input type="text" maxlength="10" class="txt03 f-r3 required" tabindex="1" data-valid="isNonEmpty||between:2-10||isZh" data-error="真实姓名不能为空||真实姓名长度2-10位||只能输入中文" id="adminNo" name="realname" />
+										<input type="text" maxlength="10" class="txt03 f-r3 required" tabindex="1" data-valid="isNonEmpty||between:2-10||isZh" data-error="真实姓名不能为空||真实姓名长度2-10位||只能输入中文" id="realname" name="realname" />
 										<span class="ie8 icon-close close hide"></span>
 										<label class="icon-sucessfill blank hide"></label>
 										<label class="focus">2-10位，中文真实姓名</label>
@@ -209,7 +209,7 @@
 									<span class="intelligent-label f-fl">
                                 <b class="ftx04">*</b>工号：</span>
 									<div class="f-fl item-ifo">
-										<input type="text" class="txt03 f-r3 required" tabindex="2" data-valid="isNonEmpty||isInt" data-error="工号不能为空||工号格式只能为数字" maxlength="11" id="teacher_id" name="teacher_id" />
+										<input type="text" class="txt03 f-r3 required" tabindex="2" data-valid="isNonEmpty||isInt" data-error="工号不能为空||工号格式只能为数字" maxlength="11" id="staffid" name="teacher_id" />
 										<span class="ie8 icon-close close hide"></span>
 										<label class="icon-sucessfill blank hide"></label>
 										<label class="focus">请填写有效的工号(最多11位)</label>
@@ -409,19 +409,74 @@
 					
 				});
 				//第二页的确定按钮
+				$("#verifyNo").click(function(){
+					$("#phonecodesccess").hide();
+					$("#verifyNo").removeClass("v_error");
+					$("#phonecodeerror").removeClass("error");
+					$("#phonecodeerror").html("");
+					$("#phonecodetip span").show();
+				});
 				$("#btn_part2").click(function() {
 					if(!verifyCheck._click()) return;
+					var isRight = false;
+					$.ajax({
+						type:"post",
+						url:"${pageContext.request.contextPath}/checkPhoneCode.action",
+						async:false,
+						dataType:"json",
+						data:{"phoneCode":$("#verifyNo").val()},
+						success:function(data){
+							if (data.isRight){
+								isRight = true;
+							}else{
+								isRight = false;
+								$("#phonecodesccess").hide();
+								$("#phonecodetip span").hide();
+								$("#phonecodesccess").html("");
+								$("#verifyNo").addClass("v_error");
+								$("#phonecodeerror").addClass("error");
+								$("#phonecodeerror").html("验证码错误");
+							}
+						},
+						error:function(){
+							isRight = false;
+							alert("验证码发送失败");
+						}
+					});
+					if (!isRight){
+						return;
+					}
+					$("#verifyNo").removeClass("v_error");
+					$("#phonecodeerror").removeClass("error");
+					$("#phonecodeerror").html("");
+					$("#phonecodesccess").show();
+					$("#phonecodesccess").html("::befor ::after");
+					$("#phonecodetip span").hide();
 					$(".part2").hide();
 					$(".part3").show();
 				});
 				//第三页的确定按钮
 				$("#btn_part3").click(function() {
 					if(!verifyCheck._click()) return;
+					$.ajax({
+						type:"post",
+						url:"${pageContext.request.contextPath}/addNewTeacher.action",
+						async:false,
+						dataType:"json",
+						data:{"username":$("#adminNo").val(),"password":$("#password").val(),"phone":$("#phone").val(),"name":$("#realname").val(),"staffid":$("#staffid").val(),
+						"mail":$("#email").val(),"schoolName":$("#school").val(),"collegeName":$("#college_id").val()},
+						success:function(){
+							alert("成功")
+						},
+						error:function(){
+							alert("添加失败");
+						}
+					});
 					$(".part3").hide();
 					$(".part4").show();
 					$(".step li").eq(2).addClass("on");
 					countdown({
-						maxTime: 100,
+						maxTime: 99,
 						ing: function(c) {
 							$("#times").text(c);
 						},
