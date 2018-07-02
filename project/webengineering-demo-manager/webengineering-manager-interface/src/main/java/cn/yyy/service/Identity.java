@@ -1,4 +1,4 @@
-package cn.yyy.service.impl;
+package cn.yyy.service;
 
 public interface Identity {
 	public static String TEACHER = "teacher";
