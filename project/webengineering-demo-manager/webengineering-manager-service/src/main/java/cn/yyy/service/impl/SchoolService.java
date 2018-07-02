@@ -14,13 +14,24 @@ public class SchoolService {
 	@Autowired
 	private static SchoolMapper schoolMapper;
 	
-	public static String getSchoolNameBySchoolId(Integer schoolid) {
+	public School getSchoolBySchoolId(Integer schoolid) {
+		School school = schoolMapper.selectByPrimaryKey(schoolid);
+		if (school == null)
+			throw new RuntimeException("无此学校");
+		return school;
+	}
+	public String getSchoolNameBySchoolId(Integer schoolid) {
+		School school = getSchoolBySchoolId(schoolid);
+		return school.getSchoolname();
+	}
+	
+	public Integer getSchoolIdBySchoolName(String schoolName) {
 		SchoolExample schoolExample = new SchoolExample();
 		Criteria criteria = schoolExample.createCriteria();
-		criteria.andSchoolidEqualTo(schoolid);
+		criteria.andSchoolnameEqualTo(schoolName);
 		List<School> schools = schoolMapper.selectByExample(schoolExample);
-		if (schools != null)
-			return schools.get(0).getSchoolname();
-		return "";
+		if (schools == null || schools.size() <= 0)
+			return null;
+		return schools.get(0).getSchoolid();
 	}
 }
