@@ -44,11 +44,8 @@ public class RegistController {
 	public String checkUserName(String username,HttpSession session,HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> result=new HashMap<String, Object>();
 		System.out.println(username);
-		//RegisterServiceImp registerservice=new RegisterServiceImp();
-		boolean sign=false;
-		if(username.equals("zhengyuming")) {
-			sign=true;
-		}
+		RegisterServiceImp registerservice=new RegisterServiceImp();
+		boolean sign=registerservice.isExistUsername(username);
 		
 		result.put("isnameexist", sign);
 		session.setAttribute("isusernameexist", sign);
@@ -68,12 +65,8 @@ public class RegistController {
 	public String checkPhoneNumber(String phonenumber,HttpSession session,HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> result=new HashMap<String, Object>();
 		System.out.println(phonenumber);
-		//RegisterServiceImp registerservice=new RegisterServiceImp();
-		boolean sign=false;
-		if(phonenumber.equals("13072904943")) {
-			sign=true;
-		}
-		
+		RegisterServiceImp registerservice=new RegisterServiceImp();
+		boolean sign=registerservice.isExistPhoneNumber(phonenumber);
 		result.put("isphoneexist", sign);
 		String json = null;
 		try {
