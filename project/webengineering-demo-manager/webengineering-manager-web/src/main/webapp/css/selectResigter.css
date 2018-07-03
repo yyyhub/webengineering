@@ -1,0 +1,25 @@
+/*页面居中*/
+.center-in-center{
+	
+	width: 200px;
+	height: 200px;
+	background-color:gray;
+	
+	 position: absolute;
+     top: 30%;
+     left: 40%;
+}
+/*选择自动登陆和记住密码*/
+.check_login_remember{
+	vertical-align:middle;
+	display: inline-block;
+	color: grey;
+}
+/*input复选框*/
+.check_input{
+	vertical-align:middle;
+	display: inline-block;
+	position: static;
+	top: 0px;
+	width: 0px;
+}
