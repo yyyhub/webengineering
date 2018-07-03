@@ -286,7 +286,7 @@
 								<h3>您已注册成功！</h3>
 								<p class="c-666 f-mt30 f-mb50">页面将在
 									<strong id="times" class="f-size18">10</strong> 秒钟后，跳转到
-									<a href="http://www.17sucai.com/" class="c-blue">用户中心</a>
+									<a href="/jumpToTeacherIndex.action" class="c-blue">用户中心</a>
 								</p>
 							</div>
 						</form>
@@ -481,7 +481,7 @@
 							$("#times").text(c);
 						},
 						after: function() {
-							window.location.href = "my.html";
+							window.location.href = "/jumpToTeacherIndex.action";
 						}
 					});
 				});
