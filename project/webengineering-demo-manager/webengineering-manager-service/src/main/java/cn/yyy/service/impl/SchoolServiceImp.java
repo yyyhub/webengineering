@@ -15,7 +15,7 @@ import cn.yyy.service.SchoolService;
 public class SchoolServiceImp implements SchoolService{
 
 	@Autowired
-	private static SchoolMapper schoolMapper;
+	private SchoolMapper schoolMapper;
 	
 	public School getSchoolBySchoolId(Integer schoolid) {
 		School school = schoolMapper.selectByPrimaryKey(schoolid);

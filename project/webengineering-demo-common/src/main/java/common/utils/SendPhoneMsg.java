@@ -17,7 +17,7 @@ public class SendPhoneMsg {
 	static final String accessKeyId = "";
 	static final String accessKeySecret = "";
 	
-	private static SendSmsResponse sendSms(String phone) throws ClientException{
+	private static SendSmsResponse sendSms(String phone,String code) throws ClientException{
 		
 
         //可自助调整超时时间
@@ -34,15 +34,6 @@ public class SendPhoneMsg {
         request.setPhoneNumbers(phone);
         request.setSignName("课下交流系统");
         request.setTemplateCode("SMS_138067573");
-        Random random = new Random();
-        int f1 = random.nextInt(100000);
-        int f2 = random.nextInt(100001);
-        Random random2 = new Random(f1*f2);
-        String code = "";
-        for (int i = 0;i < 6;i++) {
-        	int num = random2.nextInt(10);
-        	code += Integer.toString(num);
-        }
         request.setTemplateParam("{\"code\":"+code+"}");
         
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
@@ -52,14 +43,23 @@ public class SendPhoneMsg {
 	
 	
 	public static String sendPhoneMsg(String phone) {
-		SendSmsResponse response;
+		SendSmsResponse response = null;
+		Random random = new Random();
+        int f1 = random.nextInt(100000);
+        int f2 = random.nextInt(100001);
+        Random random2 = new Random(f1*f2);
+        String code = "";
+        for (int i = 0;i < 6;i++) {
+        	int num = random2.nextInt(10);
+        	code += Integer.toString(num);
+        }
 		try {
-			response = sendSms(phone);
-			return response.getCode();
+			response = sendSms(phone,code);
+			return code;
 		} catch (ClientException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "";
+		return null;
 	}
 }
