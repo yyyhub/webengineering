@@ -3,36 +3,21 @@ package cn.yyy.pojo;
 import java.util.Date;
 
 public class Message {
-	//信息编号
     private Integer messageid;
 
-    //发送方编号
     private Integer senduid;
 
-    //接收方编号
     private Integer receiveuid;
 
-    //消息内容
     private String messagecontent;
 
-    //消息状态（已读/未读）
     private String state;
 
-    //发送时间
     private Date sendtime;
-    
-    public Message(Integer messageid, Integer senduid, Integer receiveuid, String messagecontent, String state, Date sendtime) {
-    	this.setMessageid(messageid);
-    	this.setMessagecontent(messagecontent);
-    	this.setSenduid(senduid);
-    	this.setReceiveuid(receiveuid);
-    	this.setState(state);
-    	this.setSendtime(sendtime);
-    }
-    
-    public Message() {
-    	
-    }
+
+    private String title;
+
+    private String subject;
 
     public Integer getMessageid() {
         return messageid;
@@ -80,5 +65,21 @@ public class Message {
 
     public void setSendtime(Date sendtime) {
         this.sendtime = sendtime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject == null ? null : subject.trim();
     }
 }

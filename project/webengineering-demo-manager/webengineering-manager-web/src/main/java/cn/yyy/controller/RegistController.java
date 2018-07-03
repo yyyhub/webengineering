@@ -1,7 +1,9 @@
 package cn.yyy.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -19,9 +21,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import cn.yyy.pojo.ImgCheckCode;
+import cn.yyy.pojo.Message;
+import cn.yyy.pojo.MessageInfo;
+import cn.yyy.pojo.PageBean;
 import cn.yyy.pojo.TeacherInfo;
+import cn.yyy.pojo.User;
+import cn.yyy.service.MessageInfoService;
+import cn.yyy.service.MessageService;
 import cn.yyy.service.RegisterService;
 import cn.yyy.service.TeacherService;
+import cn.yyy.service.UserService;
 import common.utils.JsonUtil;
 import common.utils.SendPhoneMsg;
 
@@ -31,6 +40,12 @@ public class RegistController {
 	private RegisterService registerService;
 	@Autowired
 	private TeacherService teacherService;
+	@Autowired
+	private MessageService messageService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private MessageInfoService messageInfoService;
 
 	@RequestMapping("/getcheckcode")
 	@ResponseBody
@@ -141,7 +156,7 @@ public class RegistController {
 	
 	@RequestMapping("/addNewTeacher")
 	@ResponseBody
-	public String addNewTeacher(String username,String password,String phone,String name,String staffid,String mail,String schoolName,String collegeName) {
+	public String addNewTeacher(String username,String password,String phone,String name,String staffid,String mail,String schoolName,String collegeName,HttpSession session) {
 		TeacherInfo teacherInfo = new TeacherInfo();
 		teacherInfo.setCollegeName(collegeName);
 		teacherInfo.setHeadicon("");
@@ -164,6 +179,32 @@ public class RegistController {
 		System.out.println("staffid:"+ staffid);
 		System.out.println("username:"+ username);
 		teacherService.addNewTeacher(teacherInfo);
+		User user = userService.getUserByUsername(username);
+		teacherInfo = teacherService.getTeacherInfoByUid(user.getUserid());
+		session.setAttribute("user", teacherInfo);
 		return "";
+	}
+	
+	@RequestMapping("/jumpToTeacherIndex")
+	public String jumpToUserIndex(HttpSession session) {
+		Object user = session.getAttribute("user");
+		if (user == null)
+			return "index";
+		
+		getMessageInfosByUid(((TeacherInfo)user).getUserid(),1,3,session);
+		return "teacherindex";
+	}
+	
+	private void getMessageInfosByUid(Integer userid,int pageIndex,int pageSize,HttpSession session) {
+		PageBean<Message> messagesbean = messageService.getMessageByReceiveId(userid, pageIndex, pageSize);
+		session.setAttribute("messagebean", messagesbean);
+		List<MessageInfo> messages = new ArrayList<>();
+		for (Message message : messagesbean.getPageDatas()) {
+			MessageInfo messageInfo = messageInfoService.getMessageInfoByMessage(message);
+			if (!messages.contains(messageInfo))
+				messages.add(messageInfo);
+		}
+		session.setAttribute("messages", messages);
+		
 	}
 }
