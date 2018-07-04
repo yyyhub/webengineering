@@ -11,6 +11,10 @@ public class IndexPageControll {
 	@RequestMapping("/logoutUser.action")
 	public String logoutUser(HttpSession session) {
 		session.removeAttribute("user");
-		return "index";
+		return "logout";
+	}
+	@RequestMapping("/unlogin.action")
+	public String unLoginUser(HttpSession session) {
+		return "unlogin";
 	}
 }

@@ -24,11 +24,13 @@ import cn.yyy.pojo.ImgCheckCode;
 import cn.yyy.pojo.Message;
 import cn.yyy.pojo.MessageInfo;
 import cn.yyy.pojo.PageBean;
+import cn.yyy.pojo.StudentInfo;
 import cn.yyy.pojo.TeacherInfo;
 import cn.yyy.pojo.User;
 import cn.yyy.service.MessageInfoService;
 import cn.yyy.service.MessageService;
 import cn.yyy.service.RegisterService;
+import cn.yyy.service.StudentService;
 import cn.yyy.service.TeacherService;
 import cn.yyy.service.UserService;
 import common.utils.JsonUtil;
@@ -46,6 +48,8 @@ public class RegistController {
 	private UserService userService;
 	@Autowired
 	private MessageInfoService messageInfoService;
+	@Autowired
+	private StudentService studentService;
 
 	@RequestMapping("/getcheckcode")
 	@ResponseBody
@@ -66,7 +70,7 @@ public class RegistController {
 
 	@RequestMapping("/sendPhoneCheckCode")
 	@ResponseBody
-	public String sengPhoneCheckCode(String phone,HttpSession session) {
+	public String sendPhoneCheckCode(String phone,HttpSession session) {
 		String code = "123456";
 		boolean isSuccess = false;
 		System.out.println(phone);
@@ -148,6 +152,7 @@ public class RegistController {
 			if (phoneCode.equals(code)) {
 				isRight = true;
 				System.out.println(code);
+				session.removeAttribute("phoneCode");
 			}
 		}
 		String result = "{\"isRight\":"+isRight+"}";
@@ -182,17 +187,65 @@ public class RegistController {
 		User user = userService.getUserByUsername(username);
 		teacherInfo = teacherService.getTeacherInfoByUid(user.getUserid());
 		session.setAttribute("user", teacherInfo);
+		session.setAttribute("identity", "teacher");
 		return "";
 	}
 	
-	@RequestMapping("/jumpToTeacherIndex")
+	@RequestMapping("/addNewStudent")
+	@ResponseBody
+	public String addNewStudent(String username,String password,String phone,String name,String staffid,String mail,String schoolName,String collegeName,HttpSession session) {
+		StudentInfo studentInfo = new StudentInfo();
+		studentInfo.setCollegename(collegeName);
+		studentInfo.setHeadicon("");
+		studentInfo.setIdno("");
+		studentInfo.setMail(mail);
+		studentInfo.setName(name);
+		studentInfo.setPassword(password);
+		studentInfo.setPhone(phone);
+		studentInfo.setSchoolname("\""+schoolName+"\"");
+		studentInfo.setSid(Integer.parseInt(staffid));
+		studentInfo.setStudentid(null);
+		studentInfo.setUserid(null);
+		studentInfo.setUsername(username);
+		System.out.println("collegeName:"+ collegeName);
+		System.out.println("mail:"+ mail);
+		System.out.println("name:"+ name);
+		System.out.println("password:"+ password);
+		System.out.println("phone:"+ phone);
+		System.out.println("schoolName:"+ schoolName);
+		System.out.println("staffid:"+ staffid);
+		System.out.println("username:"+ username);
+		studentService.addNewStudent(studentInfo);
+		User user = userService.getUserByUsername(username);
+		studentInfo = studentService.getStudentInfoByUid(user.getUserid());
+		session.setAttribute("user", studentInfo);
+		session.setAttribute("identity", "student");
+		return "";
+	}
+	
+	@RequestMapping("/jumpToUserIndex")
 	public String jumpToUserIndex(HttpSession session) {
+		System.out.println("跳转至主页");
 		Object user = session.getAttribute("user");
 		if (user == null)
 			return "index";
+		Object identity = session.getAttribute("identity");
+		if (identity == null)
+			return "index";
+		else {
+			String identitystr = (String)identity;
+			if (identitystr.equals("teacher")) {
+				getMessageInfosByUid(((TeacherInfo)user).getUserid(),1,3,session);
+				return "teacherindex";
+			}else if (identitystr.equals("student")) {
+				getMessageInfosByUid(((StudentInfo)user).getUserid(),1,3,session);
+				return "studentindex";
+			}else {
+				return "index";
+			}
+		}
 		
-		getMessageInfosByUid(((TeacherInfo)user).getUserid(),1,3,session);
-		return "teacherindex";
+		
 	}
 	
 	private void getMessageInfosByUid(Integer userid,int pageIndex,int pageSize,HttpSession session) {
