@@ -8,6 +8,8 @@
     <result column="messagecontent" property="messagecontent" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="sendtime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    messageid, senduid, receiveuid, messagecontent, state, sendtime
+    messageid, senduid, receiveuid, messagecontent, state, sendtime, title, subject
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.MessageExample" >
     select
@@ -103,7 +105,6 @@
   	select count(*) from message where receiveuid = #{receiveuid}
   </select>
   
-  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from message
     where messageid = #{messageid,jdbcType=INTEGER}
@@ -116,11 +117,11 @@
   </delete>
   <insert id="insert" parameterType="cn.yyy.pojo.Message" >
     insert into message (messageid, senduid, receiveuid, 
-      messagecontent, state, sendtime
-      )
+      messagecontent, state, sendtime, 
+      title, subject)
     values (#{messageid,jdbcType=INTEGER}, #{senduid,jdbcType=INTEGER}, #{receiveuid,jdbcType=INTEGER}, 
-      #{messagecontent,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{sendtime,jdbcType=TIMESTAMP}
-      )
+      #{messagecontent,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{sendtime,jdbcType=TIMESTAMP}, 
+      #{title,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.yyy.pojo.Message" >
     insert into message
@@ -143,6 +144,12 @@
       <if test="sendtime != null" >
         sendtime,
       </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="subject != null" >
+        subject,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="messageid != null" >
@@ -162,6 +169,12 @@
       </if>
       <if test="sendtime != null" >
         #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -192,6 +205,12 @@
       <if test="record.sendtime != null" >
         sendtime = #{record.sendtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subject != null" >
+        subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -204,7 +223,9 @@
       receiveuid = #{record.receiveuid,jdbcType=INTEGER},
       messagecontent = #{record.messagecontent,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=VARCHAR},
-      sendtime = #{record.sendtime,jdbcType=TIMESTAMP}
+      sendtime = #{record.sendtime,jdbcType=TIMESTAMP},
+      title = #{record.title,jdbcType=VARCHAR},
+      subject = #{record.subject,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -227,6 +248,12 @@
       <if test="sendtime != null" >
         sendtime = #{sendtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
     </set>
     where messageid = #{messageid,jdbcType=INTEGER}
   </update>
@@ -236,7 +263,9 @@
       receiveuid = #{receiveuid,jdbcType=INTEGER},
       messagecontent = #{messagecontent,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
-      sendtime = #{sendtime,jdbcType=TIMESTAMP}
+      sendtime = #{sendtime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR}
     where messageid = #{messageid,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -16,6 +16,7 @@ import cn.yyy.pojo.TaskExample;
 import cn.yyy.pojo.TaskExample.Criteria;
 import cn.yyy.service.CourseService;
 import cn.yyy.service.MessageService;
+import cn.yyy.service.MessageSubject;
 import cn.yyy.service.StudentService;
 import cn.yyy.service.TaskService;
 
@@ -41,7 +42,7 @@ public class TaskServiceImp implements TaskService{
 		taskMapper.insert(task);
 		List<StudentInfo> studentInfos = studentService.getCourseStudentsInfoByCourseId(courseid);
 		for (StudentInfo studentInfo:studentInfos) {
-			messageService.addMessage(taskContent, teacherid, studentInfo.getUserid());
+			messageService.addMessage(taskContent, teacherid, studentInfo.getUserid(),"亲爱的"+studentInfo+"同学，您有一项新的作业",MessageSubject.JOB);
 		}
 	}
 	

@@ -25,9 +25,20 @@ public class MessageInfoServiceImp implements MessageInfoService{
 		MessageInfo messageInfo = new MessageInfo();
 		if (message != null) {
 			String urlString = message.getMessagecontent();
-			String fullMsg = FileUtil.getDocumentByURL(urlString);
+			String fullMsg = "";
+			if (message.getMessagecontent().substring(0, 1).equals("[")) {
+				fullMsg = message.getMessagecontent();
+			}else {
+				fullMsg = FileUtil.getDocumentByURL(urlString);
+			}
 			messageInfo.setFullMsg(fullMsg);
-			String shortMsg = fullMsg.substring(0, 70);
+			String shortMsg = null;
+			if (fullMsg.length()>70) {
+				shortMsg = fullMsg.substring(0, 70);
+			}else {
+				shortMsg = fullMsg;
+			}
+			
 			messageInfo.setMessagecontent(message.getMessagecontent());
 			messageInfo.setMessageid(message.getMessageid());
 			messageInfo.setReceiveuid(message.getReceiveuid());

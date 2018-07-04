@@ -13,13 +13,15 @@
 			<title>我的主页</title>
 			<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 			<script type="text/javascript" src="js/bootstrap.min.js"></script>
+			<script type="text/javascript" src="js/上传图片.js"></script>
+			<script type="text/javascript" src="js/svg.js"></script>
 			<link rel="stylesheet" href="css/bootstrap2.min.css" />
 			<link rel="stylesheet" href="css/学生主页.css" />
 			<link rel="stylesheet" href="css/demo.css" />
 			<link rel="stylesheet" href="css/normalize.css" />
 			<link rel="stylesheet" href="css/searchstyle.css" />
 			<link rel="stylesheet" href="css/导航栏样式.css" />
-
+			<link rel="stylesheet" href="css/上传图片.css" />
 			<link rel="stylesheet" href="css/消息组件.css" />
 		</head>
 
@@ -57,7 +59,11 @@
 				</button>
 								<a class="navbar-brand" href="#" style="color: white; font-size: 25px;">首页</a>
 							</div>
-
+							<script>
+								function CreateCrouse() {
+									$("#SearchResult").show();
+								}
+							</script>
 							<div class="collapse navbar-collapse" id="ToBeHidden">
 								<ul class="nav navbar-nav">
 									<li>
@@ -73,6 +79,9 @@
 									</li>
 									<li>
 										<a href="#" style="color: white; font-size: 20px;">我的讨论</a>
+									</li>
+									<li>
+										<a href="#" onclick="CreateCrouse()" style="color: white;font-size: 20px;">创建课堂</a>
 									</li>
 
 								</ul>
@@ -199,7 +208,7 @@
 											</li>
 										</ul>
 										<p style="text-align: center; font-family: '微软雅黑'; margin-top: 0px;">
-											共<span>几</span>页&nbsp;&nbsp;&nbsp;共<span>几</span>条
+											共<span> ${messagebean.totalPages }</span>页&nbsp;&nbsp;&nbsp;共<span>${messagebean.totalRecords }</span>条
 										</p>
 									</div>
 								</div>
@@ -234,7 +243,83 @@
 					</div>
 
 				</div>
+				<!--搜索结果（浮动）-->
+		<script>
+			function hiddenResult() {
+				$("#SearchResult").hide();
 
+			}
+		</script>
+		<script>
+			function CreateClass() {
+				
+				var formData = new FormData();
+				var img_file=document.getElementById("CoursePicture").files[0];
+				var coursename = document.getElementById("courseName").value;
+				
+				formData.append("coursepicture",img_file);
+				formData.append("coursename",coursename);
+				
+				$.ajax({
+					type: "POST",
+					url: "/createCourse.action",
+					data:formData,
+					async: false,
+					processData : false,
+					contentType : false,
+					dataType:"json",
+					success: function(data) {
+						alert(data.clssPicsrc);
+						$("#SearchResult").hide();
+						/*showResult();*/
+						/*alert("success");*/
+						/*$("#SearchResult").show();*/
+					},
+					error: function(XMLHttpRequest) {
+						alert(XMLHttpRequest.status);
+						alert(XMLHttpRequest.responseText);
+						alert("创建成功");
+						$("#SearchResult").hide();
+					}
+				});
+			}
+		</script>
+		<div id="SearchResult" style="display: none; width: 400px;height: 336px; background-color: white;float: left;position: absolute;left: 30%;right: 50%;top: 30%;bottom: 50%; z-index: 1;">
+			<div class="courseMessage" style="width: 400px;margin-top: 0px;background-image: url(images/背景1.jpg);">
+				<div style="text-align: center;font-size: 20px;">
+					<p>创建课堂</p>
+				</div>
+
+				<div style="text-align: center;">
+					<div class="item" style="text-align: center;margin-left: 100px;margin-top: 0px;">
+						<svg class="icon addImg" aria-hidden="true">
+							<use xlink:href="#icon-tianjiatupian"></use>
+						</svg>
+						
+							<input style="display: none;" type="file" class="upload_input" name="CoursePicture" id="CoursePicture" onChange="preview(this)" />
+							<form> 课程名称：
+							<input type="text" name="courseName" id="courseName" style="border-radius: 8px;margin-bottom: 5px;" /><br /> 
+						</form>
+
+						<div class="preview"></div>
+						<div class="click" onClick="loadImg(this)"></div>
+						<div class="delete" onClick="deleteImg(this)">
+							<svg class="icon" aria-hidden="true">
+								<use xlink:href="#icon-shanchu4"></use>
+							</svg>
+						</div>
+					</div>
+					<div style="clear: left;"></div>
+
+				</div>
+				<div style="text-align: center;padding-bottom: 5px;">
+					<p style="font-size: 18px;">您确定要选择加入该课程吗？</p>
+					<button type="button" class="btn btn-default" style="margin-right: 100px;" onclick="CreateClass()">确定</button>
+					<button type="button" class="btn btn-default" onclick="hiddenResult()">取消</button>
+				</div>
+
+			</div>
+		</div>
 				<div class="row text-center" id="below" style="margin-left: 0px; margin-right: 0px; border-radius: 8px; height: 50px;">
 					<p>版权声明</p>
 				</div>

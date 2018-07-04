@@ -44,7 +44,7 @@ public class MessageServiceImp implements MessageService{
 		return pageBean;
 	}
 	
-	public void addMessage(String messagecontent,Integer senduid,Integer receiveuid) {
+	public void addMessage(String messagecontent,Integer senduid,Integer receiveuid,String title,String subject) {
 		Message message = new Message();
 		message.setMessageid(null);
 		message.setMessagecontent(messagecontent);
@@ -53,6 +53,8 @@ public class MessageServiceImp implements MessageService{
 		message.setSenduid(senduid);
 		message.setReceiveuid(receiveuid);
 		message.setState("未读");
+		message.setTitle(title);
+		message.setSubject(subject);
 		messageMapper.insert(message);
 	}
 }

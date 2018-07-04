@@ -15,19 +15,19 @@ public interface MessageMapper {
     int insert(Message record);
 
     int insertSelective(Message record);
-
-    //查询其实位置为i，数量为m条数据,i下标为零开始
+    
+  //锟斤拷询锟斤拷实位锟斤拷为i锟斤拷锟斤拷锟斤拷为m锟斤拷锟斤拷锟斤拷,i锟铰憋拷为锟姐开始
     List<Message> selectBysenduidLimit(@Param("senduid")int senduid, @Param("i")int i, @Param("m")int m);
     
-    //同上
+    //同锟斤拷
     List<Message> selectByreceiveuidLimit(@Param("receiveuid")int receiveuid, @Param("i")int i, @Param("m")int m);
     
-    //选择给定senduid的message数量
+    //选锟斤拷锟斤拷锟絪enduid锟斤拷message锟斤拷锟斤拷
     int selectBysenduidcount(@Param("senduid")int senduid);
     
-    //选择给定receiveuid的message数量
+  //选锟斤拷锟斤拷锟絩eceiveuid锟斤拷message锟斤拷锟斤拷
     int selectByreceiveuidcount(@Param("receiveuid")int receiveuid);
-    
+
     List<Message> selectByExample(MessageExample example);
 
     Message selectByPrimaryKey(Integer messageid);

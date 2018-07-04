@@ -8,7 +8,7 @@ public interface MessageService {
 	
 	public PageBean<Message> getMessageBySendId(Integer sendid,int pageIndex,int pageSize);
 	
-	public void addMessage(String messagecontent,Integer senduid,Integer receiveuid);
+	public void addMessage(String messagecontent,Integer senduid,Integer receiveuid,String title,String subject);
 	
 	
 }

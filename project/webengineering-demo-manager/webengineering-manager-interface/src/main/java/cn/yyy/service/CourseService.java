@@ -17,5 +17,6 @@ public interface CourseService {
 	 */
 	public Course getCourseByClassId(Integer classid);
 	
+	public Integer addNewCourse(String coursename,Integer teacherid,Integer collegeid);
 	
 }

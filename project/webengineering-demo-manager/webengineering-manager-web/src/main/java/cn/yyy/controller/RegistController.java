@@ -235,10 +235,10 @@ public class RegistController {
 		else {
 			String identitystr = (String)identity;
 			if (identitystr.equals("teacher")) {
-				getMessageInfosByUid(((TeacherInfo)user).getUserid(),1,3,session);
+				getMessageInfosByUid(((TeacherInfo)user).getUserid(),0,3,session);
 				return "teacherindex";
 			}else if (identitystr.equals("student")) {
-				getMessageInfosByUid(((StudentInfo)user).getUserid(),1,3,session);
+				getMessageInfosByUid(((StudentInfo)user).getUserid(),0,3,session);
 				return "studentindex";
 			}else {
 				return "index";
@@ -253,7 +253,9 @@ public class RegistController {
 		session.setAttribute("messagebean", messagesbean);
 		List<MessageInfo> messages = new ArrayList<>();
 		for (Message message : messagesbean.getPageDatas()) {
+			System.out.println(message.getTitle());
 			MessageInfo messageInfo = messageInfoService.getMessageInfoByMessage(message);
+			System.out.println(messageInfo.getShortMsg());
 			if (!messages.contains(messageInfo))
 				messages.add(messageInfo);
 		}
