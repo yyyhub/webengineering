@@ -19,15 +19,15 @@
 		<link rel="stylesheet" href="css/iconfont.css">
 		<link rel="stylesheet" href="css/reg.css">
 		<link rel="stylesheet" href="css/selectResigter.css" />
-		<!--导入密码加密-->
-		<script src="js/jquery.md5.js"></script>
+		<script src="js/jquery.js"></script>
 		<!--导入选择界面-->
 		<link rel="stylesheet" href="css/dialog.css" />
 		<script src="js/mDialog.js"></script>
 		<script src="js/mDialogMin.js"></script>
 
-		<script src="js/jquery.js"></script>
 		<script src="js/agree.js"></script>
+		<!--导入密码加密-->
+		<script src="js/jquery.md5.js"></script>
 		<script src="js/login.js"></script>
 	</head>
 
@@ -89,7 +89,7 @@
 						<p class="p-input pos">
 							<label for="veri-code">输入验证码</label>
 							<input type="number" id="veri-code">
-							<a href="javascript:;" class="send">发送验证码</a>
+							<a href="javascript:;" class="send" id="sendPhoneCheckCode">发送验证码</a>
 							<span class="time hide"><em>120</em>s</span>
 							<span class="tel-warn error hide">验证码错误</span>
 						</p>
@@ -113,9 +113,13 @@
 		</div>
 		<script>
 			//换一张验证码
-			$('.code').find('img').attr('src', '/getLoginCheckCode.action?' + Math.random()).click(function(event) {
+			$('.code').find('img').attr('src', '/getLoginCheckCode.action').click(function(event) {
 				$(this).attr('src', '/getLoginCheckCode.action?' + Math.random());
 			});
+
+			
+
+
 
 			//展示选择注册项 ,弹框
 			function showResigter() {
@@ -139,26 +143,44 @@
 			}
 			//2秒后跳转教师注册页面 
 			function teacherRegister() {
-				setTimeout(function() {
-					$.ajax({
-						type: "get",
-						url: "",
-						async: false,
-						data: {
-							"register": "teacher"
-						},
-						success: function() {
-
-						},
-						error: function() {
-
-						}
-					});
-				}, 2000);
+				window.location.href="teacherreg.action";
+				//setTimeout(function() {
+//					$.ajax({
+//						type: "post",
+//						url: "/teacherreg.action",
+//						async: false,
+//						data: {
+//							"register": "teacher"
+//						},
+//						success: function() {
+//							//window.location.href="http://www.baidu.com";
+//						},
+//						error: function() {
+//							alert("跳转失败");
+//						}
+//					});
+//				}, 2000);
+				
 			}
 			//2秒后跳转学生注册页面 
 			function studentRegister() {
-				setTimeout('window.location.href = "http://www.baidu.com" ', 2000);
+				window.location.href="studentreg.action";
+//				setInterval(function() {
+//					$.ajax({
+//						type: "post",
+//						url: "/teacherreg.action",
+//						async: true,
+//						data: {
+//							"register": "student"
+//						},
+//						success: function() {
+//
+//						},
+//						error: function() {
+//					
+//						}
+//					});
+//				}, 2000);
 			}
 		</script>
 

@@ -207,12 +207,12 @@
 								<!--工号-->
 								<div class="item col-xs-12">
 									<span class="intelligent-label f-fl">
-                                <b class="ftx04">*</b>工号：</span>
+                                <b class="ftx04">*</b>学号：</span>
 									<div class="f-fl item-ifo">
-										<input type="text" class="txt03 f-r3 required" tabindex="2" data-valid="isNonEmpty||isInt" data-error="工号不能为空||工号格式只能为数字" maxlength="11" id="staffid" name="teacher_id" />
+										<input type="text" class="txt03 f-r3 required" tabindex="2" data-valid="isNonEmpty||isInt" data-error="学号不能为空||学号格式只能为数字" maxlength="11" id="staffid" name="teacher_id" />
 										<span class="ie8 icon-close close hide"></span>
 										<label class="icon-sucessfill blank hide"></label>
-										<label class="focus">请填写有效的工号(最多11位)</label>
+										<label class="focus">请填写有效的学号(最多11位)</label>
 										<label class="focus valid"></label>
 									</div>
 								</div>
@@ -451,7 +451,7 @@
 					if(!verifyCheck._click()) return;
 					$.ajax({
 						type:"post",
-						url:"${pageContext.request.contextPath}/addNewTeacher.action",
+						url:"${pageContext.request.contextPath}/addNewStudent.action",
 						async:false,
 						dataType:"json",
 						data:{"username":$("#adminNo").val(),"password":$("#password").val(),"phone":$("#phone").val(),"name":$("#realname").val(),"staffid":$("#staffid").val(),

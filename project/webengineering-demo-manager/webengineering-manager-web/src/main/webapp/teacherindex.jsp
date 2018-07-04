@@ -36,7 +36,7 @@
 								<a href="#">登录</a>
 								<a href="#">注册</a>
 							</c:if>
-							<c:if test="${!enpty user }">
+							<c:if test="${!empty user }">
 								<a href="#">个人中心</a>
 								<a href="/logoutUser.action">注销</a>
 							</c:if>
@@ -130,8 +130,23 @@
 											<li>
 												<a href="#">&lt;</a>
 											</li>
-											
-												<c:if test="${messagebean.pageIndex <=2 }">
+												<c:if test="${messagebean.totalPages <= 4 }">
+													<c:forEach var = "i" begin="1" end="${messagebean.totalPages}">
+														<c:if test="${messagebean.pageIndex == i }">
+															<li>
+																<a href="#"> 0 </a>
+															</li>
+														</c:if>
+														<c:if test="${messagebean.pageIndex != i }">
+															<li>
+																<a href="#"> ${i } </a>
+															</li>
+														</c:if>
+														
+													</c:forEach>
+												</c:if>
+												<c:if test="${messagebean.totalPages >= 5 }">
+													<c:if test="${messagebean.pageIndex <=2 }">
 													<c:forEach var = "i" begin="1" end="5">
 														<c:if test="${messagebean.pageIndex == i }">
 															<li>
@@ -173,6 +188,8 @@
 														</c:if>
 													</c:forEach>
 												</c:if>
+												</c:if>
+												
 											<li>
 												<a href="#">&gt;</a>
 											</li>
@@ -194,7 +211,7 @@
 					</div>
 
 					<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs" style="align-content: center; padding-left: 0px; padding-right: 0px;">
-						<div id="personalBox" style="padding-left: 0px; padding-right: 0px; padding-bottom: 10px; background-image: url(img/背景1.jpg); width: auto;">
+						<div id="personalBox" style="padding-left: 0px; padding-right: 0px; padding-bottom: 10px; background-image: url(images/背景1.jpg); width: auto;">
 							<div class="text-center">
 								<img src="images/头像.jpg" class="img-circle" id="touxiang" style="height: 100px; width: 100px;" />
 							</div>

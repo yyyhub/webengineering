@@ -149,35 +149,12 @@ $(function(){
 			$('.num2-err').text('手机号不合法，请重新输入');
 			return false;
 		}
-		$.ajax({
-            type: "GET",
-			url: "",
-			data: {"phone":phone,"type":"login"},
-			async: false,
-            success:function(data){
-            	//向后台请求发送手机验证码成功后所要调用的函数
-                /**if (data.code == '0') {
-                    $('.num2-err').addClass('hide');
-                    // console.log('aa');
-                    // return true;
-                } else {
-                    //$('.num2-err').removeClass('hide').text(data.msg);
-                    // console.log('bb');
-                    alert("后台错误，请重新发送请求");
-					status = false;
-					// return false;
-                }**/
-            },
-            error:function(){
-            	status = false;
-                // return false;
-            }
-        });
+		
 		return status;
 	}
 	//手机验证码验证
 	function checkPhoneCode(pCode){
-		if (pCode == '111') {
+		if (pCode == '') {
 			$('.error').removeClass('hide').text('请输入验证码');
 			return false;
 		} 
@@ -203,7 +180,8 @@ $(function(){
 				var inp = $.trim($('#num').val());
 				var pass = $.trim($('#pass').val());
 				if (checkAccount(inp) && checkPass(pass)) {
-					var ldata = {userinp:inp,password:pass};
+					var encodepass = $.md5(pass);
+					var ldata = {userinp:inp,password:encodepass};
 					if (!$('.code').hasClass('hide')) {
 						code = $.trim($('#veri').val());
 						if (!checkCode(code)) {
@@ -220,7 +198,9 @@ $(function(){
 			            success:function(data){
 			                if (data.code == '0') {
 			                    // globalTip({'msg':'登录成功!','setTime':3,'jump':true,'URL':'http://www.ui.cn'});
-			                    globalTip(data.msg);
+			                    //globalTip(data.msg);
+			                    alert("跳转首页");
+			                    window.location.href="/jumpToUserIndex.action";
 			                } else if(data.code == '2') {
 			                	$(".log-btn").off('click').addClass("off");
 			                    $('.pass-err').removeClass('hide').find('em').text(data.msg);
@@ -261,15 +241,17 @@ $(function(){
 				var pcode = $.trim($('#veri-code').val());
 				if (checkPhone(phone) && checkPhoneCode(pcode)) {
 					$.ajax({
-			            url: '/plogin',
+			            url: "/checkPhoneLoginInfo",
 			            type: 'post',
 			            dataType: 'json',
-			            async: true,
+			            async: false,
 			            data: {phone:phone,code:pcode},
 			            success:function(data){
 			                if (data.code == '0') {
 			                	// globalTip({'msg':'登录成功!','setTime':3,'jump':true,'URL':'http://www.ui.cn'});
-			                	globalTip(data.msg);
+			                	//globalTip(data.msg);
+			                	alert("跳转首页");
+			                	window.location.href="/jumpToUserIndex.action";
 			                } else if(data.code == '1') {
 			                	$(".log-btn").off('click').addClass("off");
 			                    $('.num2-err').removeClass('hide').text(data.msg);
@@ -305,22 +287,22 @@ $(function(){
 		var phone = $.trim($('#num2').val());
 		if (checkPhone(phone)) {
 				$.ajax({
-		            url: '/getcode',
-		            type: 'post',
-		            dataType: 'json',
-		            async: true,
-		            data: {phone:phone,type:"login"},
-		            success:function(data){
-		                if (data.code == '0') {
-		                    
-		                } else {
-		                    
-		                }
-		            },
-		            error:function(){
-		                
-		            }
-		        });
+					type: "post",
+					url: "/sendLoginPhoneCheckCode.action",
+					async: false,
+					dataType: "json",
+					data: {
+						"phone": phone
+					},
+					success: function(data) {
+						if(!data.isSuccess) {
+							$('.num2-err').removeClass('hide').text("发送失败，请输入已注册的手机号");
+						}
+					},
+					error: function() {
+						alert("验证码发送失败");
+					}
+				});
 	       	var oTime = $(".form-data .time"),
 			oSend = $(".form-data .send"),
 			num = parseInt(oTime.text()),
