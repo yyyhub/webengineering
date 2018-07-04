@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>实现多图预览 兼容IE6,7,8</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<script type="text/javascript" src="js/svg.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="js/上传图片.js" ></script>
+		<link rel="stylesheet" href="css/上传图片.css" />
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+
+		<div class="item">
+			<svg class="icon addImg" aria-hidden="true">
+				<use xlink:href="#icon-tianjiatupian"></use>
+			</svg>
+			<input name="url" type="file" class="upload_input" name="CoursePicture" onChange="preview(this)" />
+			<div class="preview"></div>
+			<div class="click" onClick="loadImg(this)"></div>
+			<div class="delete" onClick="deleteImg(this)">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#icon-shanchu4"></use>
+				</svg>
+			</div>
+		</div>
+
+		<div style="clear: left;"></div>
+
+		
+
+	</body>
+
+</html>
