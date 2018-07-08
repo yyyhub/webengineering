@@ -11,7 +11,7 @@
 ## 发布部署war包使用步骤：  
 1.下载project文件夹下的war包  
 2.自行配置tomcat服务器，将war包放入tomcat服务器底下（1.要求版本必须高于tomcat7，2.将server.xml文件底下的网站路径改为war包所在路径，3.修改tomcat服务器的字符编码：打开server.xml文件找到并修改为  
-'''
-<Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443" URIEncoding="UTF-8"/>  
-'''  
+
+> <Connector connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443" URIEncoding="UTF-8"/>  
+
 3.开启tomcat服务器即可通过网上访问（如果需要配置成外网服务器，只需自行配置tomcat服务器，使其能够被外网访问到即可）  
