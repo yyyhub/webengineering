@@ -23,7 +23,7 @@ public class PageActionFilter implements Filter {
     			"/checkUserNameLoginInfo.action","/sendLoginPhoneCheckCode.action","/checkPhoneLoginInfo.action",
     			"/getcheckcode.action","/sendPhoneCheckCode.action","/checkusername.action","/checkphonenumber.action",
     			"/checkccode.action","/checkPhoneCode.action","/addNewTeacher.action","/jumpToTeacherIndex.action",
-    			"/unlogin.action","/logoutUser.action","addNewStudent.action"};
+    			"/unlogin.action","/logoutUser.action","/addNewStudent.action","/getCourseInfo.action"};
     	boolean isAccept = false;
     	for (String accpt: acceptURI) {
     		if (accpt.equals(uri))
