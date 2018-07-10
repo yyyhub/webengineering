@@ -72,9 +72,9 @@ public class IndexPageControll {
 			
 		if (courseid == null)
 			msg = "创建失败，已创建该课程";
-		if (courseid == -1)
+		else if (courseid == -1)
 			msg = "创建课程失败";
-		String result = "{\"clssPicsrc\":"+url+"\"msg\":"+msg+"}";
-		return result;
+		//String result = "{\"msg\":"+msg+"}";
+		return "";
 	}
 }

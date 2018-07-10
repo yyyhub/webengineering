@@ -267,19 +267,21 @@
 					async: false,
 					processData : false,
 					contentType : false,
-					dataType:"json",
+					dataType:"text",
 					success: function(data) {
-						alert(data.clssPicsrc);
+						//alert(data.clssPicsrc);
 						$("#SearchResult").hide();
+						window.location.reload();
 						/*showResult();*/
 						/*alert("success");*/
 						/*$("#SearchResult").show();*/
 					},
-					error: function(XMLHttpRequest) {
-						alert(XMLHttpRequest.status);
-						alert(XMLHttpRequest.responseText);
-						alert("创建成功");
-						$("#SearchResult").hide();
+					error: function(data) {
+						//alert(XMLHttpRequest.status);
+						//alert(XMLHttpRequest.responseText);
+						//alert("创建成功");
+						alert(data.msg)
+						//$("#SearchResult").hide();
 					}
 				});
 			}

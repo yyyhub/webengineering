@@ -472,7 +472,7 @@
 							$("#times").text(c);
 						},
 						after: function() {
-							window.location.href = "/jumpToUserIndex.action";
+							window.location.href = "${pageContext.request.contextPath}/jumpToUserIndex.action";
 						}
 					});
 				});
