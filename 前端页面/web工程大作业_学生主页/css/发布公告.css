@@ -1,0 +1,17 @@
+#t_sina{width:390px;padding:10px;background:#fff;margin:50px auto 0;font-size:12px;border:1px solid #ccc;}
+#t_sina h2{padding:10px 0 10px 10px;border-bottom:1px solid #ebebeb;color:#333;font-size:14px;}
+#content{width:390px;height:345px;overflow:hidden;}
+#content ul{width:390px;}
+#content li{width:390px;padding:10px 0;overflow:hidden;border-bottom:1px dotted #9f9f9f;}
+#content .pic{float:left;width:50px;height:50px;}
+#content .pic a{display:block;width:50px;height:50px;background:#eee;}
+#content .pic a:hover{background:#00FFFF;}
+#content p{float:right;width:315px;margin-right:10px;display:inline;line-height:16px;color:#666;}
+#content p a{color:#6eafd5;font-family:arial;text-decoration:none;}
+#content p a:hover{text-decoration:underline;}
+#content p span{color:#999;}
+#t_sina dt{font-size:14px;height:40px;line-height:40px;}
+#t_sina dd{padding-bottom:5px;color:#666;}
+#t_sina .text{width:320px;height:35px;line-height:20px;font-size:12px;font-family:arial;color:#666;position:relative;left:20px;}
+#t_sina textarea{width:320px;height:150px;line-height:20px;overflow:auto;font-size:12px;font-family:arial;color:#666;position:relative;left:20px;}
+#t_sina .btn{position:relative;left:55px;width:120px;height:30px;}
