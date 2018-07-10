@@ -56,7 +56,7 @@
 					        <span class="icon-bar"></span>
 					        <span class="icon-bar"></span>
 					    </button>
-						<a class="navbar-brand" href="#" style="color: white;font-size: 25px;">首页</a>
+						<a class="navbar-brand" href="/jumpToUserIndex.action" style="color: white;font-size: 25px;">首页</a>
 					</div>
 
 					<div class="collapse navbar-collapse" id="ToBeHidden">
@@ -73,16 +73,17 @@
 											success: function(data) {
 												if(data.sign == true) {
 													window.location.href = "/jumpToMyCourse.action";
-												} else {
-//													window.location.href = "index.jsp";
 												}
-												alert("success");
+												else{
+													alert("请以学生身份登录");
+													window.location.href = "/login.jsp";
+												}
+												
 											},
 											error: function() {
 												alert("error");
 											}
 										});
-										//										window.location.href = "stucoursepage.jsp";
 									});
 								</script>
 							</li>
@@ -115,7 +116,7 @@
 						</script>
 						<form class="navbar-form navbar-right" role="search" id="searchcourse" style="margin-top: 5px;margin-bottom: 5px;">
 							<div class="form-group">
-								<input type="text" class="form-control" name="searchclass" placeholder="搜索您想要的内容" style="border: 2px solid #324b4e;background: #F9F0DA;border-radius: 24px;">
+								<input type="text" class="form-control" name="searchclass" placeholder="请输入你要加入的班级号" style="border: 2px solid #324b4e;background: #F9F0DA;border-radius: 24px;">
 							</div>
 							<button type="button" class="btn btn-default" onclick="submitsearch()" style="border: 1px solid #324b4e;margin-left: 5px;">搜索</button>
 						</form>

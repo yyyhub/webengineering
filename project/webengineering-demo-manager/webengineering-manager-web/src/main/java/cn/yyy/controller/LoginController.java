@@ -262,6 +262,7 @@ public class LoginController {
 		session.removeAttribute("phoneCode");
 		return json;
 	}
+	
 	@RequestMapping("/teacherreg")
 	public String teacherReg(HttpSession session) {
 		System.out.println("您点击了教师注册");

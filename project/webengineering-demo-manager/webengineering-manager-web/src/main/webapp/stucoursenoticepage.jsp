@@ -7,7 +7,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>课程管理</title>
+		<title>学生课程（公告）</title>
 		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap2.min.css" />
@@ -17,6 +17,7 @@
 		<link rel="stylesheet" href="css/searchstyle.css" />
 		<link rel="stylesheet" href="css/导航栏样式.css" />
 		<link rel="stylesheet" href="css/学生课程页面（总览）.css" />
+		<link rel="stylesheet" href="css/消息组件.css" />
 	</head>
 
 	<body class="container">
@@ -64,7 +65,7 @@
 							function submitsearch() {
 								$.ajax({
 									type: "GET",
-									url: "/searchCourse.action",
+									url: "",
 									data: {
 										"searchclass": $("#searchcourse").val()
 									},
@@ -82,7 +83,7 @@
 						</script>
 						<form class="navbar-form navbar-right" role="search" style="margin-top: 5px;margin-bottom: 5px;">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="请输入你要加入的班级号" id="searchcourse" name="searchclass" style="border: 2px solid #324b4e;background: #F9F0DA;border-radius: 24px;">
+								<input type="text" class="form-control" placeholder="搜索您想要的内容" id="searchcourse" name="searchclass" style="border: 2px solid #324b4e;background: #F9F0DA;border-radius: 24px;">
 							</div>
 							<button type="button" class="btn btn-default" onclick="submitsearch()" style="border: 1px solid #324b4e;margin-left: 5px;">搜索</button>
 						</form>
@@ -91,39 +92,103 @@
 			</nav>
 		</div>
 
-		<!--课程-->
-		<div class="container course courses">
-			<div class="row">
-				<c:forEach var="clazz" items="${sessionScope.classes}">
-					<c:forEach var="course" items="${sessionScope.courses}">
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 ">
-							<div class="courseMessage" style="width: 250px;margin-top: 7px;">
-								<div style="text-align: center;">
-									<!--img-->
-									<a href="/jumpToCourseNotice.action">
-										<img src="images/课程.jpg" style="width: 240px; height: 150px;" />
-									</a>
-								</div>
-								<div style="text-align: center;">
-									<!--text-->
-									<p>课程名称：<span>${course.coursename}</span></p>
-									<p>班级：<span>${clazz.classname}</span></p>
-									<p>班级人数：<span>${clazz.personnum}</span></p>
-								</div>
-							</div>
-						</div>
-					</c:forEach>
-				</c:forEach>
-			</div>
+		<!--选中课程信息-->
+		<div class="container">
+			<ul class="list-inline" style="padding-top: 10px;">
+				<li>课程名称</li>
+				<li>学校</li>
+				<li>任课教师</li>
+				<li>课堂班级</li>
+			</ul>
+		</div>
 
-			
+		<!--左侧导航栏和右侧公告-->
+		
+		<div class="col-lg-2 col-md-2 col-sm-2">
+			<ul class="nav nav-pills hidden-lg hidden-md hidden-sm" >
+
+				<li role="presentation" class="active" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">公告</a>
+				</li>
+				<li role="presentation" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">问题</a>
+				</li>
+				<li role="presentation" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">作业</a>
+				</li>
+				<li role="presentation" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">讨论</a>
+				</li>
+			</ul>
+			<ul class="nav nav-pills nav-stacked hidden-xs" >
+
+				<li role="presentation" class="active" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">公告</a>
+				</li>
+				<li role="presentation" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">问题</a>
+				</li>
+				<li role="presentation" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">作业</a>
+				</li>
+				<li role="presentation" style="padding-top: 5px;padding-bottom: 5px;">
+					<a href="#">讨论</a>
+				</li>
+			</ul>
 
 		</div>
+		<!--右侧公告内容-->
+		<div class="col-lg-10 col-md-10 col-sm-10">
+			<div class="bloglist" style="margin-left: 0px; padding-right: 0px;background-image: url(images/消息背景2.jpg);border-radius: 8px;">
+				<div class="messageBox">
+					<h3><a href="#" style="color: black;">【公告】消息主题</a></h3>
+					<ul style="width: auto;margin-right: 10px;">
+						<div class="dot-ellipsis dot-height-50 dot-resize-update">
+							<p id="1"> 公告内容摘要：
+								<!--描述：最多70个字，最后要加上...-->
+								一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一 二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十...
+							</p>
+						</div>
+						<a href="#" class="readmore">查看&gt;&gt;</a>
+					</ul>
+					<p class="dateview"><span>2017-10-13 15:20</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
+				</div>
+
+				<div class="messageBox">
+					<h3><a href="#" style="color: black;">【公告】消息主题</a></h3>
+					<ul style="width: auto;margin-right: 10px;">
+						<div class="dot-ellipsis dot-height-50 dot-resize-update">
+							<p id="1"> 公告内容摘要：
+								<!--描述：最多70个字，最后要加上...-->
+								一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一 二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十...
+							</p>
+						</div>
+						<a href="#" class="readmore">查看&gt;&gt;</a>
+					</ul>
+					<p class="dateview"><span>2017-10-13 15:20</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
+				</div>
+
+				<div class="messageBox">
+					<h3><a href="#" style="color: black;">【公告】消息主题</a></h3>
+					<ul style="width: auto;margin-right: 10px;">
+						<div class="dot-ellipsis dot-height-50 dot-resize-update">
+							<p id="1"> 公告内容摘要：
+								<!--描述：最多70个字，最后要加上...-->
+								一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一 二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十...
+							</p>
+						</div>
+						<a href="#" class="readmore">查看&gt;&gt;</a>
+					</ul>
+					<p class="dateview"><span>2017-10-13 15:20</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
+				</div>
+			</div>
+		</div>
+
 		<!--分页-->
 		<div class="container mypage">
 			<ul class="pager" style="text-align:center; width: 100%;margin-bottom: 5px;">
 				<li>
-					<a> <span aria-hidden="true">&laquo;</span>
+					<a><span aria-hidden="true">&laquo;</span>
 					</a>
 				</li>
 				<li>
@@ -171,7 +236,7 @@
 			}
 		</script>
 		<div id="SearchResult" style="display: none; width: 400px;height: 336px; background-color: white;float: left;position: absolute;left: 30%;right: 50%;top: 30%;bottom: 50%; z-index: 1;">
-			<div class="courseMessage" style="width: 400px;margin-top: 0px;background-image: url(img/背景1.jpg);">
+			<div class="courseMessage" style="width: 400px;margin-top: 0px;background-image: url(images/背景1.jpg);">
 				<div style="text-align: center;font-size: 20px;">
 					<p>您查找的课程是否为：<span>课程名</span>？</p>
 				</div>
@@ -179,7 +244,7 @@
 				<div style="text-align: center;">
 					<!--img-->
 					<a href="#">
-						<img src="img/课程.jpg" style="width: 240px; height: 150px;" />
+						<img src="images/课程.jpg" style="width: 240px; height: 150px;" />
 					</a>
 				</div>
 				<div style="text-align: center;">

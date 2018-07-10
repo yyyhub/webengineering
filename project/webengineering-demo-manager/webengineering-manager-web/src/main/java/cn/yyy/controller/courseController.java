@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,15 +30,14 @@ import cn.yyy.service.CourseService;
 import cn.yyy.service.SelectService;
 import common.utils.JsonUtil;
 
-/**
- * @author 陈旻皓 15130110002
- *
- *         Email:604344057@qq.com
- */
+
 @Controller
 public class courseController {
+	@Autowired
 	private SelectService selectService;
+	@Autowired
 	private ClassService classService;
+	@Autowired
 	private CourseService courseService;
 
 	@RequestMapping("/getCourseInfo")
@@ -47,12 +47,22 @@ public class courseController {
 		if (identityStr.equals("student")) {
 			StudentInfo studentInfo = (StudentInfo) session.getAttribute("user");
 			Integer stuId = studentInfo.getStudentid();
+			System.out.println("stuId:"+stuId);
 			List<SelectKey> selectList = selectService.getSelectsIdByStudentid(stuId);
+			if(!selectList.isEmpty()) {
+				System.out.println("selectclassid:"+selectList.get(0).getClassid());
+			}
 			List<Class> classList = new ArrayList<Class>();
 			List<Course> courseList = new ArrayList<Course>();
 			for(int i = 0; i < selectList.size(); i++) {
 				classList.add(classService.getClassByClassId(selectList.get(i).getClassid()));
 				courseList.add(courseService.getCourseByClassId(selectList.get(i).getClassid()));
+			}
+			if(!classList.isEmpty()) {
+				System.out.println("class:"+classList.get(0).getClassname());
+			}
+			if(!courseList.isEmpty()) {
+				System.out.println("course:"+courseList.get(0).getCoursename());
 			}
 			session.setAttribute("classes", classList);
 			session.setAttribute("courses", courseList);
@@ -64,7 +74,13 @@ public class courseController {
 	
 	@RequestMapping("/jumpToMyCourse")
 	public String jumpToMyCourse(HttpSession session) {
-		System.out.println("跳转至课程");
+		System.out.println("跳转至课程页面");
 		return "stucoursepage";
+	}
+	
+	@RequestMapping("/jumpToCourseNotice")
+	public String jumpToCourseNotice(HttpSession session) {
+		System.out.println("跳转至课程公告");
+		return "stucoursenoticepage";
 	}
 }
