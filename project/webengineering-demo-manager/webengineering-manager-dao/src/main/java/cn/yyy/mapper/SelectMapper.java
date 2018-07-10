@@ -17,6 +17,12 @@ public interface SelectMapper {
     int insertSelective(SelectKey record);
 
     List<SelectKey> selectByExample(SelectExample example);
+    
+    //按照studentid查找出select的序列，解决了select关键词的冲突
+    List<SelectKey> selectByStudentid(@Param("studentid") int studentid);
+    
+    //按照classid查找出select的序列，解决了select关键词的冲突
+    List<SelectKey> selectByCalssid(@Param("classid") int classid);
 
     int updateByExampleSelective(@Param("record") SelectKey record, @Param("example") SelectExample example);
 

@@ -17,18 +17,12 @@ public class SelectServiceImp implements SelectService{
 	private SelectMapper selectMapper;
 	
 	public List<SelectKey> getSelectsByClassId(Integer classid) {
-		SelectExample selectExample = new SelectExample();
-		Criteria criteria = selectExample.createCriteria();
-		criteria.andClassidEqualTo(classid);
-		List<SelectKey> selectKeys = selectMapper.selectByExample(selectExample);
+		List<SelectKey> selectKeys = selectMapper.selectByCalssid(classid);
 		return selectKeys;
 	}
 	
 	public List<SelectKey> getSelectsIdByStudentid(Integer studentid) {
-		SelectExample selectExample = new SelectExample();
-		Criteria criteria = selectExample.createCriteria();
-		criteria.andStudentidEqualTo(studentid);
-		List<SelectKey> selectKeys = selectMapper.selectByExample(selectExample);
+		List<SelectKey> selectKeys = selectMapper.selectByStudentid(studentid);
 		return selectKeys;
 	}
 }

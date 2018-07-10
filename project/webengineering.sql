@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : liwei
-Source Server Version : 50717
+Source Server         : MYSQL57
+Source Server Version : 50722
 Source Host           : localhost:3306
-Source Database       : web
+Source Database       : webengineering
 
 Target Server Type    : MYSQL
-Target Server Version : 50717
+Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-06-28 19:33:44
+Date: 2018-07-10 08:21:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for class
+-- Table structure for `class`
 -- ----------------------------
 DROP TABLE IF EXISTS `class`;
 CREATE TABLE `class` (
@@ -27,28 +27,29 @@ CREATE TABLE `class` (
   PRIMARY KEY (`classid`),
   KEY `clacourseid` (`courseid`),
   CONSTRAINT `clacourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=800000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of class
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for college
+-- Table structure for `college`
 -- ----------------------------
 DROP TABLE IF EXISTS `college`;
 CREATE TABLE `college` (
   `collegeid` int(11) NOT NULL AUTO_INCREMENT,
   `collegename` varchar(255) NOT NULL,
   PRIMARY KEY (`collegeid`)
-) ENGINE=InnoDB AUTO_INCREMENT=500000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=500001 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of college
 -- ----------------------------
+INSERT INTO `college` VALUES ('500000', '软件学院');
 
 -- ----------------------------
--- Table structure for course
+-- Table structure for `course`
 -- ----------------------------
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
@@ -61,14 +62,20 @@ CREATE TABLE `course` (
   KEY `coucollegeid` (`collegeid`),
   CONSTRAINT `coucollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `couteacherid` FOREIGN KEY (`teacherid`) REFERENCES `teacher` (`teacherid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=700000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=700014 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of course
 -- ----------------------------
+INSERT INTO `course` VALUES ('700003', 'web工程', '300002', '500000');
+INSERT INTO `course` VALUES ('700004', '并行计算', '300002', '500000');
+INSERT INTO `course` VALUES ('700010', 'a', '300002', '500000');
+INSERT INTO `course` VALUES ('700011', 'b', '300002', '500000');
+INSERT INTO `course` VALUES ('700012', 'c', '300002', '500000');
+INSERT INTO `course` VALUES ('700013', 'e', '300002', '500000');
 
 -- ----------------------------
--- Table structure for job
+-- Table structure for `job`
 -- ----------------------------
 DROP TABLE IF EXISTS `job`;
 CREATE TABLE `job` (
@@ -85,14 +92,14 @@ CREATE TABLE `job` (
   KEY `jobtaskid` (`taskid`),
   CONSTRAINT `jobstudentid` FOREIGN KEY (`studentid`) REFERENCES `student` (`studentid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `jobtaskid` FOREIGN KEY (`taskid`) REFERENCES `task` (`taskid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=110000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of job
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for message
+-- Table structure for `message`
 -- ----------------------------
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
@@ -102,19 +109,24 @@ CREATE TABLE `message` (
   `messagecontent` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `sendtime` datetime DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `subject` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`messageid`),
   KEY `messenduid` (`senduid`),
   KEY `mesreceiveuid` (`receiveuid`),
   CONSTRAINT `mesreceiveuid` FOREIGN KEY (`receiveuid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `messenduid` FOREIGN KEY (`senduid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=600000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=600014 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of message
 -- ----------------------------
+INSERT INTO `message` VALUES ('600003', '-1', '100007', '[恭喜您创建成功课程web工程，课程号为：700003]', '未读', '2018-07-05 05:34:12', '创建课程成功', '创建');
+INSERT INTO `message` VALUES ('600004', '-1', '100007', '[恭喜您创建成功课程并行计算，课程号为：700004]', '未读', '2018-07-10 07:36:43', '创建课程成功', '创建');
+INSERT INTO `message` VALUES ('600013', '-1', '100007', '[恭喜您创建成功课程e，课程号为：700013]', '未读', '2018-07-10 08:13:47', '创建课程成功', '创建');
 
 -- ----------------------------
--- Table structure for school
+-- Table structure for `school`
 -- ----------------------------
 DROP TABLE IF EXISTS `school`;
 CREATE TABLE `school` (
@@ -2307,7 +2319,7 @@ INSERT INTO `school` VALUES ('402177', '\"浙江农业商贸职业学院\"');
 INSERT INTO `school` VALUES ('402178', '\"浙江电力职业技术学院\"');
 
 -- ----------------------------
--- Table structure for select
+-- Table structure for `select`
 -- ----------------------------
 DROP TABLE IF EXISTS `select`;
 CREATE TABLE `select` (
@@ -2324,7 +2336,7 @@ CREATE TABLE `select` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for student
+-- Table structure for `student`
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
@@ -2340,14 +2352,14 @@ CREATE TABLE `student` (
   CONSTRAINT `stucollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `stuschoolid` FOREIGN KEY (`schoolid`) REFERENCES `school` (`schoolid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `stuuserid` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=200000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for task
+-- Table structure for `task`
 -- ----------------------------
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
@@ -2362,14 +2374,14 @@ CREATE TABLE `task` (
   KEY `taskcourseid` (`courseid`),
   CONSTRAINT `taskcourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `taskteacherid` FOREIGN KEY (`teacherid`) REFERENCES `teacher` (`teacherid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=900000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of task
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for teacher
+-- Table structure for `teacher`
 -- ----------------------------
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher` (
@@ -2385,14 +2397,15 @@ CREATE TABLE `teacher` (
   CONSTRAINT `teacollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `teaschoolid` FOREIGN KEY (`schoolid`) REFERENCES `school` (`schoolid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `teauserid` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=300000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=300003 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of teacher
 -- ----------------------------
+INSERT INTO `teacher` VALUES ('300002', '11111', '401707', '500000', '100007');
 
 -- ----------------------------
--- Table structure for user
+-- Table structure for `user`
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -2406,8 +2419,10 @@ CREATE TABLE `user` (
   `jointime` datetime NOT NULL,
   `headicon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=100000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100008 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('-1', '系统', '111111111aaaaaaa', '系统', '', '10086', '', '2018-07-05 05:22:36', '');
+INSERT INTO `user` VALUES ('100007', 'a11111', '49dec5fb8af4eeef7c95e7f5c66c8ae6', '余涌越', '', '13559001823', '1770170582@qq.com', '2018-07-03 14:06:35', '');

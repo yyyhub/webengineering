@@ -66,7 +66,13 @@
   <sql id="Base_Column_List" >
     studentid, classid
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.SelectExample" >
+  <select id="selectByCalssid" resultType="cn.yyy.pojo.SelectKey" parameterType="java.lang.Integer" >
+ 	 select * from `select` where classid = #{classid}
+  </select>
+  <select id="selectByStudentid" resultType="cn.yyy.pojo.SelectKey" parameterType="java.lang.Integer">
+  	select * from `select` where studentid = #{studentid}
+  </select>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.yyy.pojo.SelectExample" >
     select
     <if test="distinct" >
       distinct
