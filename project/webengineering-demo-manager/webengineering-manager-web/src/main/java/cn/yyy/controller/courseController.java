@@ -49,27 +49,31 @@ public class courseController {
 			Integer stuId = studentInfo.getStudentid();
 			System.out.println("stuId:"+stuId);
 			List<SelectKey> selectList = selectService.getSelectsIdByStudentid(stuId);
-			if(!selectList.isEmpty()) {
-				System.out.println("selectclassid:"+selectList.get(0).getClassid());
-			}
 			List<Class> classList = new ArrayList<Class>();
 			List<Course> courseList = new ArrayList<Course>();
 			for(int i = 0; i < selectList.size(); i++) {
 				classList.add(classService.getClassByClassId(selectList.get(i).getClassid()));
 				courseList.add(courseService.getCourseByClassId(selectList.get(i).getClassid()));
 			}
-			if(!classList.isEmpty()) {
-				System.out.println("class:"+classList.get(0).getClassname());
-			}
-			if(!courseList.isEmpty()) {
-				System.out.println("course:"+courseList.get(0).getCoursename());
-			}
+			int classnum=classList.size();
+			int classpagenum=(classnum/8)+1;
+			session.setAttribute("classnum", classnum);
+			session.setAttribute("classpagenum", classpagenum);
 			session.setAttribute("classes", classList);
 			session.setAttribute("courses", courseList);
 			return "{\"sign\":"+true+"}";
 		} else {	
 			return "{\"sign\":"+false+"}";
 		}
+	}
+	
+	@RequestMapping("/getClazzInfo")
+	@ResponseBody
+	public String getClazzInfo(String classname,HttpSession session, HttpServletResponse response) {
+		//需要一个根据班级名获得班级对象的方法
+		System.out.println("classname:"+classname);
+		return "{\"sign\":"+true+"}";
+		
 	}
 	
 	@RequestMapping("/jumpToMyCourse")
@@ -82,5 +86,17 @@ public class courseController {
 	public String jumpToCourseNotice(HttpSession session) {
 		System.out.println("跳转至课程公告");
 		return "stucoursenoticepage";
+	}
+	
+	@RequestMapping("/jumpToCourseQuestion")
+	public String jumpToCourseQuestion(HttpSession session) {
+		System.out.println("跳转至课程问题");
+		return "stucoursequestionpage";
+	}
+	
+	@RequestMapping("/jumpToCourseHomeWork")
+	public String jumpToCourseHomeWork(HttpSession session) {
+		System.out.println("跳转至课程作业");
+		return "stucoursehomeworkpage";
 	}
 }

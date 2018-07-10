@@ -108,11 +108,11 @@ CREATE TABLE `message` (
   KEY `mesreceiveuid` (`receiveuid`),
   CONSTRAINT `mesreceiveuid` FOREIGN KEY (`receiveuid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `messenduid` FOREIGN KEY (`senduid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=600015 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=600019 DEFAULT CHARSET=utf8;
 
 /*Data for the table `message` */
 
-insert  into `message`(`messageid`,`senduid`,`receiveuid`,`messagecontent`,`state`,`sendtime`,`title`,`subject`) values (600003,-1,100007,'[恭喜您创建成功课程web工程，课程号为：700003]','未读','2018-07-05 05:34:12','创建课程成功','创建'),(600004,-1,100007,'[恭喜您创建成功课程并行计算，课程号为：700004]','未读','2018-07-10 07:36:43','创建课程成功','创建'),(600013,-1,100007,'[恭喜您创建成功课程e，课程号为：700013]','未读','2018-07-10 08:13:47','创建课程成功','创建'),(600014,-1,100007,'[恭喜您创建成功课程高等数学，课程号为：700014]','未读','2018-07-10 16:50:23','创建课程成功','创建');
+insert  into `message`(`messageid`,`senduid`,`receiveuid`,`messagecontent`,`state`,`sendtime`,`title`,`subject`) values (600003,-1,100007,'[恭喜您创建成功课程web工程，课程号为：700003]','未读','2018-07-05 05:34:12','创建课程成功','创建'),(600004,-1,100007,'[恭喜您创建成功课程并行计算，课程号为：700004]','未读','2018-07-10 07:36:43','创建课程成功','创建'),(600013,-1,100007,'[恭喜您创建成功课程e，课程号为：700013]','未读','2018-07-10 08:13:47','创建课程成功','创建'),(600014,-1,100007,'[恭喜您创建成功课程高等数学，课程号为：700014]','未读','2018-07-10 16:50:23','创建课程成功','创建'),(600015,-1,100008,'[您申请加入课堂web工程一班成功]','未读','2018-07-11 15:30:24','加入课堂成功','加入'),(600016,-1,100008,'[您申请加入课堂体系结构一班成功]','未读','2018-07-11 15:35:46','加入课堂成功','加入'),(600017,-1,100008,'[您申请加入课堂java一班成功]','未读','2018-07-11 15:43:12','加入课堂成功','加入'),(600018,-1,100008,'[您申请加入课堂算法一班成功]','未读','2018-07-11 15:50:14','加入课堂成功','加入');
 
 /*Table structure for table `school` */
 

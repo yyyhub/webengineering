@@ -248,7 +248,59 @@ public class RegistController {
 		
 	}
 	
+	@RequestMapping("/userIndex")
+	public String userIndex(HttpSession session) {
+		//System.out.println("跳转至主页");
+		Object user = session.getAttribute("user");
+		if (user == null)
+			return "index";
+		Object identity = session.getAttribute("identity");
+		if (identity == null)
+			return "index";
+		else {
+			String identitystr = (String)identity;
+			if (identitystr.equals("teacher")) {
+				return "teacherindex";
+			}else if (identitystr.equals("student")) {
+				return "studentindex";
+			}else {
+				return "index";
+			}
+		}
+		
+		
+	}
+	
+	@RequestMapping("/updateUserMessage")
+	@ResponseBody
+	public void updateUserMessage(int pageIndex,HttpSession session) {
+		System.out.println("更新消息页");
+		System.out.println("pageIndex:"+pageIndex);
+		Object user = session.getAttribute("user");
+		if (user == null)
+			return;
+		Object identity = session.getAttribute("identity");
+		if (identity == null)
+			return;
+		else {
+			String identitystr = (String)identity;
+			if (identitystr.equals("teacher")) {
+				getMessageInfosByUid(((TeacherInfo)user).getUserid(),pageIndex,3,session);
+				return;
+			}else if (identitystr.equals("student")) {
+				getMessageInfosByUid(((StudentInfo)user).getUserid(),pageIndex,3,session);
+				System.out.println("更新学生成功");
+				return;
+			}else {
+				return;
+			}
+		}
+		
+		
+	}
+	
 	private void getMessageInfosByUid(Integer userid,int pageIndex,int pageSize,HttpSession session) {
+		System.out.println("进来的index"+pageIndex);
 		PageBean<Message> messagesbean = messageService.getMessageByReceiveId(userid, pageIndex, pageSize);
 		session.setAttribute("messagebean", messagesbean);
 		List<MessageInfo> messages = new ArrayList<>();

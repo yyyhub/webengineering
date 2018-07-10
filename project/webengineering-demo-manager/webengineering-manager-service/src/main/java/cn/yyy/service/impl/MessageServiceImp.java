@@ -20,7 +20,7 @@ public class MessageServiceImp implements MessageService{
 		if (pageIndex < 0) {
 			throw new RuntimeException("页数不能为负");
 		}
-		List<Message> messages = messageMapper.selectByreceiveuidLimit(receiveid, pageIndex, pageSize);
+		List<Message> messages = messageMapper.selectByreceiveuidLimit(receiveid, pageIndex*pageSize, pageSize);
 		PageBean<Message> pageBean = new PageBean<>();
 		int totalRecords = messageMapper.selectByreceiveuidcount(receiveid);
 		pageBean.setPageIndex(pageIndex);

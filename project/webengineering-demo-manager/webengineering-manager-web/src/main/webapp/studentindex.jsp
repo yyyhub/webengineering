@@ -36,7 +36,7 @@
 						<a href="#">登录</a>
 						<a href="#">注册</a>
 					</c:if>
-					<c:if test="${!empty user }">
+					<c:if test="${!empty user}">
 						<a href="#">个人中心</a>
 						<a href="/logoutUser.action">注销</a>
 					</c:if>
@@ -73,12 +73,11 @@
 											success: function(data) {
 												if(data.sign == true) {
 													window.location.href = "/jumpToMyCourse.action";
-												}
-												else{
+												} else {
 													alert("请以学生身份登录");
 													window.location.href = "/login.jsp";
 												}
-												
+
 											},
 											error: function() {
 												alert("error");
@@ -162,22 +161,69 @@
 							<div class="row" style="text-align: center;">
 								<ul class="pager" style="text-align:center; width: 100%;margin-bottom: 5px;">
 									<li>
-										<a> <span aria-hidden="true">&laquo;</span>
+										<a href="javascript:;" id="leftbigarrow"> <span aria-hidden="true">&laquo;</span>
 										</a>
 									</li>
+
+									<script>
+										$("#leftbigarrow").click(function() {
+											$.ajax({
+												type: "post",
+												url: "/updateUserMessage.action",
+												async: false,
+												data: {
+													"pageIndex": 0
+												},
+												success: function() {
+													window.location.href = "/userIndex.action";
+
+												},
+												error: function() {
+													alert("error");
+												}
+											});
+										});
+									</script>
+
 									<li>
-										<a href="#">&lt;</a>
+										<a href="javascript:;" id="leftsmallarrow">&lt;</a>
 									</li>
+
+									<script>
+										$("#leftsmallarrow").click(function() {
+											var index = ${messagebean.pageIndex};
+											if(index == 0) {
+												alert("已经是第一页");
+												return;
+											}
+											$.ajax({
+												type: "post",
+												url: "/updateUserMessage.action",
+												async: false,
+												data: {
+													"pageIndex": ${messagebean.pageIndex - 1}
+												},
+												success: function() {
+													window.location.href = "/userIndex.action";
+
+												},
+												error: function() {
+													alert("error");
+												}
+											});
+										});
+									</script>
+
 									<c:if test="${messagebean.totalPages <= 4 }">
 										<c:forEach var="i" begin="1" end="${messagebean.totalPages}">
-											<c:if test="${messagebean.pageIndex == i }">
+											<c:if test="${messagebean.pageIndex == i-1 }">
 												<li>
-													<a href="#"> 0 </a>
+													<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
 												</li>
 											</c:if>
-											<c:if test="${messagebean.pageIndex != i }">
+											<c:if test="${messagebean.pageIndex != i-1 }">
 												<li>
-													<a href="#"> ${i } </a>
+													<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
 												</li>
 											</c:if>
 
@@ -186,58 +232,118 @@
 									<c:if test="${messagebean.totalPages >= 5 }">
 										<c:if test="${messagebean.pageIndex <=2 }">
 											<c:forEach var="i" begin="1" end="5">
-												<c:if test="${messagebean.pageIndex == i }">
+												<c:if test="${messagebean.pageIndex == i-1 }">
 													<li>
-														<a href="#"> 0 </a>
+														<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
 													</li>
 												</c:if>
-												<c:if test="${messagebean.pageIndex != i }">
+												<c:if test="${messagebean.pageIndex != i-1 }">
 													<li>
-														<a href="#"> ${i } </a>
+														<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
 													</li>
 												</c:if>
 											</c:forEach>
 										</c:if>
 										<c:if test="${messagebean.pageIndex >= messagebean.totalPages - 2 }">
 											<c:forEach var="i" begin="${messagebean.totalPages - 4 }" end="${messagebean.totalPages }">
-												<c:if test="${messagebean.pageIndex == i }">
+												<c:if test="${messagebean.pageIndex == i-1 }">
 													<li>
-														<a href="#"> 0 </a>
+														<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
 													</li>
 												</c:if>
-												<c:if test="${messagebean.pageIndex != i }">
+												<c:if test="${messagebean.pageIndex != i-1 }">
 													<li>
-														<a href="#"> ${i } </a>
+														<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
 													</li>
 												</c:if>
 											</c:forEach>
 										</c:if>
 										<c:if test="${messagebean.pageIndex < messagebean.totalPages - 2 && messagebean.pageIndex > 2}">
 											<c:forEach var="i" begin="${messagebean.pageIndex - 2 }" end="${messagebean.pageIndex + 2 }">
-												<c:if test="${messagebean.pageIndex == i }">
+												<c:if test="${messagebean.pageIndex == i-1 }">
 													<li>
-														<a href="#"> 0 </a>
+														<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
 													</li>
 												</c:if>
-												<c:if test="${messagebean.pageIndex != i }">
+												<c:if test="${messagebean.pageIndex != i-1 }">
 													<li>
-														<a href="#"> ${i } </a>
+														<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
 													</li>
 												</c:if>
 											</c:forEach>
 										</c:if>
 									</c:if>
+
+									<script>
+										$(".pageselectbutton").click(function() {
+											var a = $(this).html();
+											$.ajax({
+												type: "post",
+												url: "/updateUserMessage.action",
+												async: false,
+												data: {"pageIndex":a-1},
+												success: function() {
+													window.location.href = "/userIndex.action";
+												},
+												error: function() {
+													alert("error");
+												}
+											});
+										});
+									</script>
+
 									<li>
-										<a href="#">&gt;</a>
+										<a href="javascript:;" id="rightsmallarrow">&gt;</a>
 									</li>
+
+									<script>
+										$("#rightsmallarrow").click(function() {
+											$.ajax({
+												type: "post",
+												url: "/updateUserMessage.action",
+												async: false,
+												data: {
+													"pageIndex": ${messagebean.pageIndex + 1}
+												},
+												success: function() {
+													window.location.href = "/userIndex.action";
+												},
+												error: function() {
+													alert("error");
+												}
+											});
+										});
+									</script>
+
 									<li>
-										<a href="#" aria-label="Next">
+										<a href="javascript:;" aria-label="Next" id="rightbigarrow">
 											<span aria-hidden="true">&raquo;</span>
 										</a>
 									</li>
+
+									<script>
+										$("#rightbigarrow").click(function() {
+											$.ajax({
+												type: "post",
+												url: "/updateUserMessage.action",
+												async: false,
+												data: {
+													"pageIndex": ${messagebean.totalPages - 1}
+												},
+												success: function() {
+													window.location.href = "/userIndex.action";
+
+												},
+												error: function() {
+													alert("error");
+												}
+											});
+										});
+									</script>
+
 								</ul>
 								<p style="text-align: center;font-family: '微软雅黑';margin-top: 0px;">
-									共<span> ${messagebean.pageIndex }</span>页&nbsp;&nbsp;&nbsp;共<span>${messagebean.totalPages }</span>条
+									共<span> ${messagebean.totalPages}</span>页&nbsp;&nbsp;&nbsp;共<span>${messagebean.totalRecords }</span>条
 								</p>
 							</div>
 						</div>
@@ -259,7 +365,30 @@
 						<p>姓名：<span>${user.name }</span></p>
 						<p>所在院校：<span>${user.schoolname }</span></p>
 						<p>所在专业：<span>${user.collegename }</span></p>
-						<a type="button" class="btn btn-default" href="#">我的课程</a>
+						<a type="button" class="btn btn-default" href="javascript:;" id="mycourse">我的课程</a>
+
+						<script>
+							$("#mycourse").click(function() {
+								$.ajax({
+									type: "post",
+									url: "/getCourseInfo.action",
+									async: false,
+									dataType: "json",
+									success: function(data) {
+										if(data.sign == true) {
+											window.location.href = "/jumpToMyCourse.action";
+										} else {
+											alert("请以学生身份登录");
+											window.location.href = "/login.jsp";
+										}
+
+									},
+									error: function() {
+										alert("error");
+									}
+								});
+							});
+						</script>
 					</div>
 				</div>
 

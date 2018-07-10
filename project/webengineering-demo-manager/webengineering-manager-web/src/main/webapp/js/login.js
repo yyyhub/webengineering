@@ -176,7 +176,7 @@ $(function(){
 		if (tab == 'account_number') { 
 			$(".log-btn").click(function(){
 				// var type = 'phone';
-				alert("点击按钮");
+				//alert("点击按钮");
 				var inp = $.trim($('#num').val());
 				var pass = $.trim($('#pass').val());
 				if (checkAccount(inp) && checkPass(pass)) {
@@ -199,7 +199,7 @@ $(function(){
 			                if (data.code == '0') {
 			                    // globalTip({'msg':'登录成功!','setTime':3,'jump':true,'URL':'http://www.ui.cn'});
 			                    //globalTip(data.msg);
-			                    alert("跳转首页");
+			                    //alert("跳转首页");
 			                    window.location.href="/jumpToUserIndex.action";
 			                } else if(data.code == '2') {
 			                	$(".log-btn").off('click').addClass("off");
@@ -250,7 +250,7 @@ $(function(){
 			                if (data.code == '0') {
 			                	// globalTip({'msg':'登录成功!','setTime':3,'jump':true,'URL':'http://www.ui.cn'});
 			                	//globalTip(data.msg);
-			                	alert("跳转首页");
+			                	//alert("跳转首页");
 			                	window.location.href="/jumpToUserIndex.action";
 			                } else if(data.code == '1') {
 			                	$(".log-btn").off('click').addClass("off");

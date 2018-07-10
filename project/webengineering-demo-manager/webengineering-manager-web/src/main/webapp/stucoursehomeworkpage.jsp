@@ -7,7 +7,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>学生课程（公告）</title>
+		<title>学生课程（作业）</title>
 		<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap2.min.css" />
@@ -29,7 +29,7 @@
 				</div>
 				<div class="col-lg-4 text-right" style="padding-top: 30px;">
 					<a href="#">个人中心</a>
-					<a href="/logoutUser.action">注销</a>
+					<a href="#">注销</a>
 				</div>
 			</div>
 		</div>
@@ -46,13 +46,13 @@
 					        <span class="icon-bar"></span>
 					        <span class="icon-bar"></span>
 					    </button>
-						<a class="navbar-brand" href="/jumpToUserIndex.action" style="color: white;font-size: 25px;">首页</a>
+						<a class="navbar-brand" href="#" style="color: white;font-size: 25px;">首页</a>
 					</div>
 
 					<div class="collapse navbar-collapse" id="ToBeHidden">
 						<ul class="nav navbar-nav">
 							<li>
-								<a href="/jumpToMyCourse.action" style="color: white;font-size: 20px;">我的课程 <span class="sr-only">(current)</span></a>
+								<a href="#" style="color: white;font-size: 20px;">我的课程 <span class="sr-only">(current)</span></a>
 							</li>
 							<li>
 								<a href="#" style="color: white;font-size: 20px;">我的作业</a>
@@ -135,51 +135,75 @@
 					<a href="#">讨论</a>
 				</li>
 			</ul>
-
 		</div>
 		<!--右侧公告内容-->
 		<div class="col-lg-10 col-md-10 col-sm-10">
 			<div class="bloglist" style="margin-left: 0px; padding-right: 0px;background-image: url(images/消息背景2.jpg);border-radius: 8px;">
 				<div class="messageBox">
-					<h3><a href="#" style="color: black;">【公告】消息主题</a></h3>
-					<ul style="width: auto;margin-right: 10px;">
-						<div class="dot-ellipsis dot-height-50 dot-resize-update">
-							<p id="1"> 公告内容摘要：
-								<!--描述：最多70个字，最后要加上...-->
-								一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一 二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十...
+					<h3 style="margin-bottom: 0px;">
+						<a href="#" style="color: black;">【作业】作业题目</a>
+						
+					</h3>
+					<ul style="width: 100%;margin-right: 10px;">
+						<div class="dot-ellipsis dot-height-50 dot-resize-update" style="margin-right: 20px;">
+							<p style="margin-bottom: 5px;"> 课程名称：
+								<span>操作系统</span>
+							</p>
+							<p style="margin-bottom: 5px;">
+								提交状态：<span>已提交/未提交</span>
+							</p>
+							<p style="margin-bottom: 5px;">
+								截止日期：<span>2017-7-20 18：00</span>
 							</p>
 						</div>
-						<a href="#" class="readmore">查看&gt;&gt;</a>
+						<a href="#" class="readmore" style="margin-right: 30px;margin-top: 0px;">查看&gt;&gt;</a>
 					</ul>
-					<p class="dateview"><span>2017-10-13 15:20</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
+					<!--下面的时间使作业发布的时间-->
+					<p class="dateview"><span>2017-10-13 15:20（作业发布的时间）</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
 				</div>
-
 				<div class="messageBox">
-					<h3><a href="#" style="color: black;">【公告】消息主题</a></h3>
-					<ul style="width: auto;margin-right: 10px;">
-						<div class="dot-ellipsis dot-height-50 dot-resize-update">
-							<p id="1"> 公告内容摘要：
-								<!--描述：最多70个字，最后要加上...-->
-								一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一 二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十...
+					<h3 style="margin-bottom: 0px;">
+						<a href="#" style="color: black;">【作业】作业题目</a>
+						
+					</h3>
+					<ul style="width: 100%;margin-right: 10px;">
+						<div class="dot-ellipsis dot-height-50 dot-resize-update" style="margin-right: 20px;">
+							<p style="margin-bottom: 5px;"> 课程名称：
+								<span>操作系统</span>
+							</p>
+							<p style="margin-bottom: 5px;">
+								提交状态：<span>已提交/未提交</span>
+							</p>
+							<p style="margin-bottom: 5px;">
+								截止日期：<span>2017-7-20 18：00</span>
 							</p>
 						</div>
-						<a href="#" class="readmore">查看&gt;&gt;</a>
+						<a href="#" class="readmore" style="margin-right: 30px;margin-top: 0px;">查看&gt;&gt;</a>
 					</ul>
-					<p class="dateview"><span>2017-10-13 15:20</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
+					<!--下面的时间使作业发布的时间-->
+					<p class="dateview"><span>2017-10-13 15:20（作业发布的时间）</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
 				</div>
-
 				<div class="messageBox">
-					<h3><a href="#" style="color: black;">【公告】消息主题</a></h3>
-					<ul style="width: auto;margin-right: 10px;">
-						<div class="dot-ellipsis dot-height-50 dot-resize-update">
-							<p id="1"> 公告内容摘要：
-								<!--描述：最多70个字，最后要加上...-->
-								一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一 二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十 一二三四五六七八九十...
+					<h3 style="margin-bottom: 0px;">
+						<a href="#" style="color: black;">【作业】作业题目</a>
+						
+					</h3>
+					<ul style="width: 100%;margin-right: 10px;">
+						<div class="dot-ellipsis dot-height-50 dot-resize-update" style="margin-right: 20px;">
+							<p style="margin-bottom: 5px;"> 课程名称：
+								<span>操作系统</span>
+							</p>
+							<p style="margin-bottom: 5px;">
+								提交状态：<span>已提交/未提交</span>
+							</p>
+							<p style="margin-bottom: 5px;">
+								截止日期：<span>2017-7-20 18：00</span>
 							</p>
 						</div>
-						<a href="#" class="readmore">查看&gt;&gt;</a>
+						<a href="#" class="readmore" style="margin-right: 30px;margin-top: 0px;">查看&gt;&gt;</a>
 					</ul>
-					<p class="dateview"><span>2017-10-13 15:20</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
+					<!--下面的时间使作业发布的时间-->
+					<p class="dateview"><span>2017-10-13 15:20（作业发布的时间）</span><span>消息状态：[<a href="#">未读/已读</a>]</span></p>
 				</div>
 			</div>
 		</div>
@@ -188,7 +212,7 @@
 		<div class="container mypage">
 			<ul class="pager" style="text-align:center; width: 100%;margin-bottom: 5px;">
 				<li>
-					<a><span aria-hidden="true">&laquo;</span>
+					<a> <span aria-hidden="true">&laquo;</span>
 					</a>
 				</li>
 				<li>

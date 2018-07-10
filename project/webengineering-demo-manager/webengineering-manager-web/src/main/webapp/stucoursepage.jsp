@@ -101,14 +101,14 @@
 								<div class="courseMessage" style="width: 250px;margin-top: 7px;">
 									<div style="text-align: center;">
 										<!--img-->
-										<a href="/jumpToCourseNotice.action">
+										<a href="/jumpToCourseNotice.action" class="mycoursebutton">
 											<img src="images/课程.jpg" style="width: 240px; height: 150px;" />
 										</a>
 									</div>
 									<div style="text-align: center;">
 										<!--text-->
 										<p>课程名称：<span>${course.coursename}</span></p>
-										<p>班级：<span>${clazz.classname}</span></p>
+										<p>班级：<span class="myclazznameinfo">${clazz.classname}</span></p>
 										<p>班级人数：<span>${clazz.personnum}</span></p>
 									</div>
 								</div>
@@ -119,6 +119,31 @@
 			</div>
 
 		</div>
+		
+		<script>
+			$(".mycoursebutton").click(function() {
+				//var clazznameinfo=$(this).find(span.myclazznameinfo).html();
+				//alert(clazznameinfo);
+				$.ajax({
+					type: "post",
+					url: "/getClazzInfo.action",
+					async: false,
+					dataType: "json",
+					data: {"classname":clazznameinfo},
+					success: function(data) {
+						if(data.sign == true) {
+							window.location.href = "/jumpToCourseNotice.action";
+						} else {
+							alert("请以学生身份登录");
+							window.location.href = "/login.jsp";
+						}
+					},
+					error: function() {
+						alert("error");
+					}
+				});
+			});
+		</script>
 		<!--分页-->
 		<div class="container mypage">
 			<ul class="pager" style="text-align:center; width: 100%;margin-bottom: 5px;">
@@ -154,7 +179,7 @@
 				</li>
 			</ul>
 			<p style="text-align: center;font-family: '微软雅黑';margin-top: 0px;">
-				共<span>几</span>页&nbsp;&nbsp;&nbsp;共<span>几</span>条
+				共<span>${classpagenum}</span>页&nbsp;&nbsp;&nbsp;共<span>${classnum}</span>条
 			</p>
 		</div>
 		<!--底部版权声明-->

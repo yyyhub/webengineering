@@ -132,83 +132,187 @@
 								<div class="col-lg-3 col-md-3 col-sm-3 hidden-xs"></div>
 								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center col-center-block" style="text-align: center;">
 									<div class="row" style="text-align: center;">
-										<ul class="pager" style="text-align: center; width: 100%; margin-bottom: 5px;">
+										<ul class="pager" style="text-align:center; width: 100%;margin-bottom: 5px;">
 											<li>
-												<a><span aria-hidden="true">&laquo;</span> </a>
+												<a href="javascript:;" id="leftbigarrow"> <span aria-hidden="true">&laquo;</span>
+												</a>
 											</li>
+
+											<script>
+												$("#leftbigarrow").click(function() {
+													$.ajax({
+														type: "post",
+														url: "/updateUserMessage.action",
+														async: false,
+														data: {
+															"pageIndex": 0
+														},
+														success: function() {
+															window.location.href = "/userIndex.action";
+
+														},
+														error: function() {
+															alert("error");
+														}
+													});
+												});
+											</script>
+
 											<li>
-												<a href="#">&lt;</a>
+												<a href="javascript:;" id="leftsmallarrow">&lt;</a>
 											</li>
-												<c:if test="${messagebean.totalPages <= 4 }">
-													<c:forEach var = "i" begin="1" end="${messagebean.totalPages}">
-														<c:if test="${messagebean.pageIndex == i }">
+
+											<script>
+												$("#leftsmallarrow").click(function() {
+													var index = ${messagebean.pageIndex};
+													if(index == 0) {
+														alert("已经是第一页");
+														return;
+													}
+													$.ajax({
+														type: "post",
+														url: "/updateUserMessage.action",
+														async: false,
+														data: {"pageIndex": ${messagebean.pageIndex-1}},
+														success: function() {
+															window.location.href = "/userIndex.action";
+
+														},
+														error: function() {
+															alert("error");
+														}
+													});
+												});
+											</script>
+
+											<c:if test="${messagebean.totalPages <= 4 }">
+												<c:forEach var="i" begin="1" end="${messagebean.totalPages}">
+													<c:if test="${messagebean.pageIndex == i-1 }">
+														<li>
+															<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
+														</li>
+													</c:if>
+													<c:if test="${messagebean.pageIndex != i-1 }">
+														<li>
+															<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
+														</li>
+													</c:if>
+
+												</c:forEach>
+											</c:if>
+											<c:if test="${messagebean.totalPages >= 5 }">
+												<c:if test="${messagebean.pageIndex <=2 }">
+													<c:forEach var="i" begin="1" end="5">
+														<c:if test="${messagebean.pageIndex == i-1 }">
 															<li>
-																<a href="#"> 0 </a>
+																<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
 															</li>
 														</c:if>
-														<c:if test="${messagebean.pageIndex != i }">
+														<c:if test="${messagebean.pageIndex != i-1 }">
 															<li>
-																<a href="#"> ${i } </a>
-															</li>
-														</c:if>
-														
-													</c:forEach>
-												</c:if>
-												<c:if test="${messagebean.totalPages >= 5 }">
-													<c:if test="${messagebean.pageIndex <=2 }">
-													<c:forEach var = "i" begin="1" end="5">
-														<c:if test="${messagebean.pageIndex == i }">
-															<li>
-																<a href="#"> 0 </a>
-															</li>
-														</c:if>
-														<c:if test="${messagebean.pageIndex != i }">
-															<li>
-																<a href="#"> ${i } </a>
+																<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
 															</li>
 														</c:if>
 													</c:forEach>
 												</c:if>
 												<c:if test="${messagebean.pageIndex >= messagebean.totalPages - 2 }">
-													<c:forEach var = "i" begin="${messagebean.totalPages - 4 }" end="${messagebean.totalPages }">
-														<c:if test="${messagebean.pageIndex == i }">
+													<c:forEach var="i" begin="${messagebean.totalPages - 4 }" end="${messagebean.totalPages }">
+														<c:if test="${messagebean.pageIndex == i-1 }">
 															<li>
-																<a href="#"> 0 </a>
+																<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
 															</li>
 														</c:if>
-														<c:if test="${messagebean.pageIndex != i }">
+														<c:if test="${messagebean.pageIndex != i-1 }">
 															<li>
-																<a href="#"> ${i } </a>
+																<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
 															</li>
 														</c:if>
 													</c:forEach>
 												</c:if>
 												<c:if test="${messagebean.pageIndex < messagebean.totalPages - 2 && messagebean.pageIndex > 2}">
-													<c:forEach var = "i" begin="${messagebean.pageIndex - 2 }" end="${messagebean.pageIndex + 2 }">
-														<c:if test="${messagebean.pageIndex == i }">
+													<c:forEach var="i" begin="${messagebean.pageIndex - 2 }" end="${messagebean.pageIndex + 2 }">
+														<c:if test="${messagebean.pageIndex == i-1 }">
 															<li>
-																<a href="#"> 0 </a>
+																<a href="javascript:;" class="pageselectbutton" style="background-color:#CCCCCC;"> ${i } </a>
 															</li>
 														</c:if>
-														<c:if test="${messagebean.pageIndex != i }">
+														<c:if test="${messagebean.pageIndex != i-1 }">
 															<li>
-																<a href="#"> ${i } </a>
+																<a href="javascript:;" class="pageselectbutton" style="background-color: white;"> ${i } </a>
 															</li>
 														</c:if>
 													</c:forEach>
 												</c:if>
-												</c:if>
-												
+											</c:if>
+
+											<script>
+												$(".pageselectbutton").click(function() {
+													var a = $(this).html();
+													$.ajax({
+														type: "post",
+														url: "/updateUserMessage.action",
+														async: false,
+														data: {
+															"pageIndex": a - 1
+														},
+														success: function() {
+															window.location.href = "/userIndex.action";
+														},
+														error: function() {
+															alert("error");
+														}
+													});
+												});
+											</script>
+
 											<li>
-												<a href="#">&gt;</a>
+												<a href="javascript:;" id="rightsmallarrow">&gt;</a>
 											</li>
+
+											<script>
+												$("#rightsmallarrow").click(function() {
+													$.ajax({
+														type: "post",
+														url: "/updateUserMessage.action",
+														async: false,
+														data: {"pageIndex": ${messagebean.pageIndex+1}},
+														success: function() {
+															window.location.href = "/userIndex.action";
+														},
+														error: function() {
+															alert("error");
+														}
+													});
+												});
+											</script>
+
 											<li>
-												<a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+												<a href="javascript:;" aria-label="Next" id="rightbigarrow">
+													<span aria-hidden="true">&raquo;</span>
 												</a>
 											</li>
+
+											<script>
+												$("#rightbigarrow").click(function() {
+													$.ajax({
+														type: "post",
+														url: "/updateUserMessage.action",
+														async: false,
+														data: {"pageIndex": ${messagebean.totalPages-1}},
+														success: function() {
+															window.location.href = "/userIndex.action";
+
+														},
+														error: function() {
+															alert("error");
+														}
+													});
+												});
+											</script>
+
 										</ul>
-										<p style="text-align: center; font-family: '微软雅黑'; margin-top: 0px;">
-											共<span> ${messagebean.totalPages }</span>页&nbsp;&nbsp;&nbsp;共<span>${messagebean.totalRecords }</span>条
+										<p style="text-align: center;font-family: '微软雅黑';margin-top: 0px;">
+											共<span> ${messagebean.totalPages}</span>页&nbsp;&nbsp;&nbsp;共<span>${messagebean.totalRecords }</span>条
 										</p>
 									</div>
 								</div>
@@ -244,84 +348,84 @@
 
 				</div>
 				<!--搜索结果（浮动）-->
-		<script>
-			function hiddenResult() {
-				$("#SearchResult").hide();
-
-			}
-		</script>
-		<script>
-			function CreateClass() {
-				
-				var formData = new FormData();
-				var img_file=document.getElementById("CoursePicture").files[0];
-				var coursename = document.getElementById("courseName").value;
-				
-				formData.append("coursepicture",img_file);
-				formData.append("coursename",coursename);
-				
-				$.ajax({
-					type: "POST",
-					url: "/createCourse.action",
-					data:formData,
-					async: false,
-					processData : false,
-					contentType : false,
-					dataType:"text",
-					success: function(data) {
-						//alert(data.clssPicsrc);
+				<script>
+					function hiddenResult() {
 						$("#SearchResult").hide();
-						window.location.reload();
-						/*showResult();*/
-						/*alert("success");*/
-						/*$("#SearchResult").show();*/
-					},
-					error: function(data) {
-						//alert(XMLHttpRequest.status);
-						//alert(XMLHttpRequest.responseText);
-						//alert("创建成功");
-						alert(data.msg)
-						//$("#SearchResult").hide();
+
 					}
-				});
-			}
-		</script>
-		<div id="SearchResult" style="display: none; width: 400px;height: 336px; background-color: white;float: left;position: absolute;left: 30%;right: 50%;top: 30%;bottom: 50%; z-index: 1;">
-			<div class="courseMessage" style="width: 400px;margin-top: 0px;background-image: url(images/背景1.jpg);">
-				<div style="text-align: center;font-size: 20px;">
-					<p>创建课堂</p>
-				</div>
+				</script>
+				<script>
+					function CreateClass() {
 
-				<div style="text-align: center;">
-					<div class="item" style="text-align: center;margin-left: 100px;margin-top: 0px;">
-						<svg class="icon addImg" aria-hidden="true">
-							<use xlink:href="#icon-tianjiatupian"></use>
-						</svg>
-						
-							<input style="display: none;" type="file" class="upload_input" name="CoursePicture" id="CoursePicture" onChange="preview(this)" />
-							<form> 课程名称：
-							<input type="text" name="courseName" id="courseName" style="border-radius: 8px;margin-bottom: 5px;" /><br /> 
-						</form>
+						var formData = new FormData();
+						var img_file = document.getElementById("CoursePicture").files[0];
+						var coursename = document.getElementById("courseName").value;
 
-						<div class="preview"></div>
-						<div class="click" onClick="loadImg(this)"></div>
-						<div class="delete" onClick="deleteImg(this)">
-							<svg class="icon" aria-hidden="true">
-								<use xlink:href="#icon-shanchu4"></use>
-							</svg>
+						formData.append("coursepicture", img_file);
+						formData.append("coursename", coursename);
+
+						$.ajax({
+							type: "POST",
+							url: "/createCourse.action",
+							data: formData,
+							async: false,
+							processData: false,
+							contentType: false,
+							dataType: "text",
+							success: function(data) {
+								//alert(data.clssPicsrc);
+								$("#SearchResult").hide();
+								window.location.reload();
+								/*showResult();*/
+								/*alert("success");*/
+								/*$("#SearchResult").show();*/
+							},
+							error: function(data) {
+								//alert(XMLHttpRequest.status);
+								//alert(XMLHttpRequest.responseText);
+								//alert("创建成功");
+								alert(data.msg)
+								//$("#SearchResult").hide();
+							}
+						});
+					}
+				</script>
+				<div id="SearchResult" style="display: none; width: 400px;height: 336px; background-color: white;float: left;position: absolute;left: 30%;right: 50%;top: 30%;bottom: 50%; z-index: 1;">
+					<div class="courseMessage" style="width: 400px;margin-top: 0px;background-image: url(images/背景1.jpg);">
+						<div style="text-align: center;font-size: 20px;">
+							<p>创建课堂</p>
 						</div>
+
+						<div style="text-align: center;">
+							<div class="item" style="text-align: center;margin-left: 100px;margin-top: 0px;">
+								<svg class="icon addImg" aria-hidden="true">
+									<use xlink:href="#icon-tianjiatupian"></use>
+								</svg>
+
+								<input style="display: none;" type="file" class="upload_input" name="CoursePicture" id="CoursePicture" onChange="preview(this)" />
+								<form> 课程名称：
+									<input type="text" name="courseName" id="courseName" style="border-radius: 8px;margin-bottom: 5px;" /><br />
+								</form>
+
+								<div class="preview"></div>
+								<div class="click" onClick="loadImg(this)"></div>
+								<div class="delete" onClick="deleteImg(this)">
+									<svg class="icon" aria-hidden="true">
+										<use xlink:href="#icon-shanchu4"></use>
+									</svg>
+								</div>
+							</div>
+							<div style="clear: left;"></div>
+
+						</div>
+						<div style="text-align: center;padding-bottom: 5px;">
+							<p style="font-size: 18px;">您确定要选择加入该课程吗？</p>
+							<button type="button" class="btn btn-default" style="margin-right: 100px;" onclick="CreateClass()">确定</button>
+							<button type="button" class="btn btn-default" onclick="hiddenResult()">取消</button>
+						</div>
+
 					</div>
-					<div style="clear: left;"></div>
-
 				</div>
-				<div style="text-align: center;padding-bottom: 5px;">
-					<p style="font-size: 18px;">您确定要选择加入该课程吗？</p>
-					<button type="button" class="btn btn-default" style="margin-right: 100px;" onclick="CreateClass()">确定</button>
-					<button type="button" class="btn btn-default" onclick="hiddenResult()">取消</button>
-				</div>
-
-			</div>
-		</div>
 				<div class="row text-center" id="below" style="margin-left: 0px; margin-right: 0px; border-radius: 8px; height: 50px;">
 					<p>版权声明</p>
 				</div>
