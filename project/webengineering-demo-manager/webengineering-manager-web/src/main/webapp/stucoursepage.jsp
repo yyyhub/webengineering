@@ -96,27 +96,27 @@
 			<div class="row">
 				<c:forEach var="clazz" items="${sessionScope.classes}">
 					<c:forEach var="course" items="${sessionScope.courses}">
-						<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 ">
-							<div class="courseMessage" style="width: 250px;margin-top: 7px;">
-								<div style="text-align: center;">
-									<!--img-->
-									<a href="/jumpToCourseNotice.action">
-										<img src="images/课程.jpg" style="width: 240px; height: 150px;" />
-									</a>
-								</div>
-								<div style="text-align: center;">
-									<!--text-->
-									<p>课程名称：<span>${course.coursename}</span></p>
-									<p>班级：<span>${clazz.classname}</span></p>
-									<p>班级人数：<span>${clazz.personnum}</span></p>
+						<c:if test="${clazz.courseid == course.courseid}">
+							<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 ">
+								<div class="courseMessage" style="width: 250px;margin-top: 7px;">
+									<div style="text-align: center;">
+										<!--img-->
+										<a href="/jumpToCourseNotice.action">
+											<img src="images/课程.jpg" style="width: 240px; height: 150px;" />
+										</a>
+									</div>
+									<div style="text-align: center;">
+										<!--text-->
+										<p>课程名称：<span>${course.coursename}</span></p>
+										<p>班级：<span>${clazz.classname}</span></p>
+										<p>班级人数：<span>${clazz.personnum}</span></p>
+									</div>
 								</div>
 							</div>
-						</div>
+						</c:if>
 					</c:forEach>
 				</c:forEach>
 			</div>
-
-			
 
 		</div>
 		<!--分页-->

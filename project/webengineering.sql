@@ -28,11 +28,11 @@ CREATE TABLE `class` (
   PRIMARY KEY (`classid`),
   KEY `clacourseid` (`courseid`),
   CONSTRAINT `clacourseid` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1000001 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1000005 DEFAULT CHARSET=utf8;
 
 /*Data for the table `class` */
 
-insert  into `class`(`classid`,`classname`,`courseid`,`personnum`) values (1000001,'web工程一班',700003,111);
+insert  into `class`(`classid`,`classname`,`courseid`,`personnum`) values (1000001,'web工程一班',700003,111),(1000002,'体系结构一班',700015,111),(1000003,'java一班',700016,111),(1000004,'算法一班',700017,111);
 
 /*Table structure for table `college` */
 
@@ -62,11 +62,11 @@ CREATE TABLE `course` (
   KEY `coucollegeid` (`collegeid`),
   CONSTRAINT `coucollegeid` FOREIGN KEY (`collegeid`) REFERENCES `college` (`collegeid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `couteacherid` FOREIGN KEY (`teacherid`) REFERENCES `teacher` (`teacherid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=700015 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=700018 DEFAULT CHARSET=utf8;
 
 /*Data for the table `course` */
 
-insert  into `course`(`courseid`,`coursename`,`teacherid`,`collegeid`) values (700003,'web工程',300002,500000),(700004,'并行计算',300002,500000),(700010,'a',300002,500000),(700011,'b',300002,500000),(700012,'c',300002,500000),(700013,'e',300002,500000),(700014,'高等数学',300002,500000);
+insert  into `course`(`courseid`,`coursename`,`teacherid`,`collegeid`) values (700003,'web工程',300002,500000),(700004,'并行计算',300002,500000),(700010,'a',300002,500000),(700011,'b',300002,500000),(700012,'c',300002,500000),(700013,'e',300002,500000),(700014,'高等数学',300002,500000),(700015,'软件体系结构',300002,500000),(700016,'java',300002,500000),(700017,'算法',300002,500000);
 
 /*Table structure for table `job` */
 
@@ -143,7 +143,7 @@ CREATE TABLE `select` (
 
 /*Data for the table `select` */
 
-insert  into `select`(`studentid`,`classid`) values (1,1000001);
+insert  into `select`(`studentid`,`classid`) values (1,1000001),(1,1000002),(1,1000003),(1,1000004);
 
 /*Table structure for table `student` */
 
